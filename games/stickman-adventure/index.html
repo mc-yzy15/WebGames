@@ -1,120 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>火柴人冒险</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #1a1a2e;
-            font-family: Arial, sans-serif;
-        }
-        .game-container {
-            text-align: center;
-        }
-        #gameCanvas {
-            border: 2px solid #ffffff;
-            background-color: #16213e;
-        }
-        .controls {
-            margin-top: 10px;
-        }
-        .control-btn {
-            padding: 8px 16px;
-            margin: 0 5px;
-            background-color: #e94560;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1>火柴人冒险</h1>
-        <canvas id="gameCanvas" width="400" height="300"></canvas>
-        <div class="controls">
-            <button class="control-btn" onclick="moveLeft()">← 左移</button>
-            <button class="control-btn" onclick="jump()">↑ 跳跃</button>
-            <button class="control-btn" onclick="moveRight()">→ 右移</button>
+    <div class="cyber-container">
+        <canvas id="gameCanvas"></canvas>
+        <div class="hud-panel">
+            <div class="health-bar">
+                <span>🛡️ 生命值:</span>
+                <div class="bar-container">
+                    <div class="health-progress"></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <button id="jumpBtn" class="cyber-button">▲ 跳跃</button>
+                <button id="attackBtn" class="cyber-button">⚡ 攻击</button>
+            </div>
         </div>
     </div>
-    <script>
-        // 火柴人冒险游戏逻辑实现
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const player = {
-            x: 50,
-            y: 250,
-            width: 30,
-            height: 50,
-            velocityY: 0,
-            isJumping: false
-        };
-        const gravity = 0.5;
-        const platforms = [
-            { x: 0, y: 290, width: 400, height: 10 }
-            // TODO: 添加更多平台
-        ];
-
-        function drawPlayer() {
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(player.x, player.y, player.width, player.height);
-        }
-
-        function drawPlatforms() {
-            ctx.fillStyle = '#4a47a3';
-            platforms.forEach(platform => {
-                ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
-            });
-        }
-
-        function update() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            player.velocityY += gravity;
-            player.y += player.velocityY;
-
-            // 平台碰撞检测
-            platforms.forEach(platform => {
-                if (
-                    player.x < platform.x + platform.width &&
-                    player.x + player.width > platform.x &&
-                    player.y + player.height > platform.y &&
-                    player.y + player.height < platform.y + platform.velocityY
-                ) {
-                    player.isJumping = false;
-                    player.velocityY = 0;
-                    player.y = platform.y - player.height;
-                }
-            });
-
-            drawPlayer();
-            drawPlatforms();
-            requestAnimationFrame(update);
-        }
-
-        function jump() {
-            if (!player.isJumping) {
-                player.velocityY = -12;
-                player.isJumping = true;
-            }
-        }
-
-        function moveLeft() {
-            player.x -= 10;
-        }
-
-        function moveRight() {
-            player.x += 10;
-        }
-
-        update();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

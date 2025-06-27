@@ -1,98 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>扫雷游戏</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
-        .game-container {
-            text-align: center;
-        }
-        #gameBoard {
-            border-collapse: collapse;
-            margin: 20px auto;
-        }
-        #gameBoard td {
-            width: 30px;
-            height: 30px;
-            border: 1px solid #999;
-            background-color: #ccc;
-            text-align: center;
-            cursor: pointer;
-        }
-        #gameBoard td.revealed {
-            background-color: #eee;
-        }
-        .controls {
-            margin-bottom: 10px;
-        }
-    </style>
+    <title>扫雷</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>扫雷游戏</h1>
-        <div class="controls">
-            <button id="startBtn">开始游戏</button>
-            <div id="status">准备就绪</div>
+        <canvas id="gameCanvas"></canvas>
+        <div class="game-controls">
+            <div id="mineCounter">剩余地雷：10</div>
+            <button id="newGameBtn">新游戏</button>
         </div>
-        <table id="gameBoard"></table>
     </div>
-    <script>
-        // 扫雷游戏逻辑实现
-        const boardSize = 10;
-        const mineCount = 10;
-        let gameBoard = [];
-        let revealed = [];
-        let gameActive = false;
-
-        function initGame() {
-            const boardElement = document.getElementById('gameBoard');
-            boardElement.innerHTML = '';
-            gameBoard = createBoard();
-            revealed = Array(boardSize).fill().map(() => Array(boardSize).fill(false));
-            gameActive = true;
-            renderBoard();
-        }
-
-        function createBoard() {
-            // 创建游戏板和地雷
-            const board = Array(boardSize).fill().map(() => Array(boardSize).fill(0));
-            // TODO: 随机放置地雷
-            return board;
-        }
-
-        function renderBoard() {
-            const boardElement = document.getElementById('gameBoard');
-            for (let y = 0; y < boardSize; y++) {
-                const row = document.createElement('tr');
-                for (let x = 0; x < boardSize; x++) {
-                    const cell = document.createElement('td');
-                    if (revealed[y][x]) {
-                        cell.classList.add('revealed');
-                        // TODO: 显示地雷或数字
-                    }
-                    cell.addEventListener('click', () => revealCell(x, y));
-                    row.appendChild(cell);
-                }
-                boardElement.appendChild(row);
-            }
-        }
-
-        function revealCell(x, y) {
-            if (!gameActive || revealed[y][x]) return;
-            // TODO: 实现单元格揭示逻辑
-        }
-
-        document.getElementById('startBtn').addEventListener('click', initGame);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,36 @@
+/* 扫雷游戏基础样式 - 遵循项目视觉规范 */
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: #1a1a2e;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+#gameCanvas {
+    border: 2px solid #303060;
+    margin-bottom: 15px;
+}
+
+.game-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+}
+
+#mineCounter {
+    color: #00ffff;
+    font-size: 1.2em;
+}
+
+#newGameBtn {
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #0066ff, #00aaff);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
