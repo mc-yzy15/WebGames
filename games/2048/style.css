@@ -1,19 +1,29 @@
 /* 2048游戏现代科技风格样式 */
+:root {
+    --primary-bg: #1a1a2e;
+    --secondary-bg: #25254a;
+    --accent-color: #00ffff;
+    --button-gradient: linear-gradient(135deg, #0066ff, #00aaff);
+    --border-color: #303060;
+    --text-color: #ffffff;
+    --shadow-effect: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
 .game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    background: #1a1a2e;
+    background: var(--primary-bg);
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    box-shadow: var(--shadow-effect);
 }
 
 #gameBoard {
     display: grid;
     grid-gap: 10px;
     padding: 15px;
-    background: #25254a;
+    background: var(--secondary-bg);
     border-radius: 8px;
 }
 
@@ -34,16 +44,16 @@
     display: flex;
     gap: 2rem;
     margin-bottom: 1.5rem;
-    color: #00ffff;
+    color: var(--accent-color);
     font-size: 1.2em;
 }
 
 #newGameBtn {
     padding: 12px 30px;
-    background: linear-gradient(135deg, #0066ff, #00aaff);
+    background: var(--button-gradient);
     border: none;
     border-radius: 25px;
-    color: white;
+    color: var(--text-color);
     cursor: pointer;
     transition: all 0.3s ease;
 }

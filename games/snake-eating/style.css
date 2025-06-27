@@ -1,53 +1,65 @@
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
+body {
+:root {
+    --primary-bg: #1a1a2e;
+    --secondary-bg: #25254a;
+    --accent-color: #00ffff;
+    --button-gradient: linear-gradient(135deg, #0066ff, #00aaff);
+    --border-color: #303060;
+    --text-color: #ffffff;
+    --shadow-effect: 0 0 20px rgba(0, 255, 255, 0.3);
+}
 
-        .game-container {
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 100%;
-            flex-wrap: wrap;
-        }
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: var(--primary-bg);
+    font-family: Arial, sans-serif;
+}
 
-        #gameCanvas {
-            border: 2px solid #333;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 0 auto;
-        }
+.game-container {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+    flex-wrap: wrap;
+}
 
-        #gameControls {
-            text-align: center;
-            margin: 0 auto;
-            padding: 0 8px;
-        }
+#gameCanvas {
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    box-shadow: var(--shadow-effect);
+    margin: 0 auto;
+}
 
-        #gameScore {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+#gameControls {
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 8px;
+}
 
-        #score {
-            font-size: 24px;
-            margin: 10px 0;
-        }
+#gameScore {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-        #startBtn {
-            font-size: 18px;
-            padding: 12px 24px;
-            background: linear-gradient(145deg, #f0f0f0, #cacaca);
-            color: #333;
-            border: none;
+#score {
+    font-size: 24px;
+    margin: 10px 0;
+    color: var(--accent-color);
+}
+
+#startBtn {
+    font-size: 18px;
+    padding: 12px 24px;
+    background: var(--button-gradient);
+    color: var(--text-color);
+    border: none;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -154,3 +166,4 @@
             grid-column: 2;
             grid-row: 3;
         }
+    }

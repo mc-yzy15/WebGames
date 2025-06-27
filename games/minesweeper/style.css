@@ -1,16 +1,25 @@
 /* 扫雷游戏基础样式 - 遵循项目视觉规范 */
+:root {
+    --primary-bg: #1a1a2e;
+    --accent-color: #00ffff;
+    --button-gradient: linear-gradient(135deg, #0066ff, #00aaff);
+    --border-color: #303060;
+    --text-color: #ffffff;
+    --shadow-effect: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
 .game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background: #1a1a2e;
+    background: var(--primary-bg);
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    box-shadow: var(--shadow-effect);
 }
 
 #gameCanvas {
-    border: 2px solid #303060;
+    border: 2px solid var(--border-color);
     margin-bottom: 15px;
 }
 
@@ -22,14 +31,14 @@
 }
 
 #mineCounter {
-    color: #00ffff;
+    color: var(--accent-color);
     font-size: 1.2em;
 }
 
 #newGameBtn {
     padding: 8px 20px;
-    background: linear-gradient(135deg, #0066ff, #00aaff);
-    color: white;
+    background: var(--button-gradient);
+    color: var(--text-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;

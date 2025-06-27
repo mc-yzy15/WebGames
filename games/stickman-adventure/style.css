@@ -1,8 +1,18 @@
 /* 火柴人冒险游戏现代科技风格样式 */
+:root {
+    --primary-bg: #0d0221;
+    --secondary-bg: #1a0f41;
+    --accent-color: #ff00ff;
+    --button-gradient: linear-gradient(135deg, #6a0dad, #9d4edd);
+    --border-color: #6a0dad;
+    --text-color: #e0e0ff;
+    --shadow-effect: 0 0 30px rgba(100, 0, 255, 0.5);
+}
+
 body {
-    background: #0d0221;
-    background-image: radial-gradient(circle at center, #2d1b69 0%, #0d0221 100%);
-    color: #e0e0ff;
+    background: var(--primary-bg);
+    background-image: radial-gradient(circle at center, #2d1b69 0%, var(--primary-bg) 100%);
+    color: var(--text-color);
 }
 
 .game-container {
@@ -12,14 +22,14 @@ body {
     margin: 20px auto;
     background: rgba(10, 5, 30, 0.8);
     border-radius: 15px;
-    box-shadow: 0 0 30px rgba(100, 0, 255, 0.5);
-    border: 1px solid #6a0dad;
+    box-shadow: var(--shadow-effect);
+    border: 1px solid var(--border-color);
 }
 
 #gameCanvas {
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, #1a0f41, #0d0221);
+    background: linear-gradient(to bottom, var(--secondary-bg), var(--primary-bg));
 }
 
 .hud {
@@ -38,7 +48,7 @@ body {
 }
 
 .health-bar span {
-    text-shadow: 0 0 5px #ff00ff;
+    text-shadow: 0 0 5px var(--accent-color);
 }
 
 .health-meter {

@@ -1,53 +1,64 @@
 // 扫雷游戏基础逻辑
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const mineCounter = document.getElementById('mineCounter');
-const newGameBtn = document.getElementById('newGameBtn');
+// 扫雷游戏核心模块
+const Minesweeper = (() => {
+    // DOM元素
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const mineCounter = document.getElementById('mineCounter');
+    const newGameBtn = document.getElementById('newGameBtn');
 
-// 游戏常量
-const GRID_SIZE = 10;
-const CELL_SIZE = 30;
+    // 游戏配置
+    const CONFIG = {
+        GRID_SIZE: 10,
+        CELL_SIZE: 30,
+        TOTAL_MINES: 10
+    };
 
-// 游戏状态变量
-let board = [];
-let mines = [];
-let revealed = [];
-let flags = [];
-let gameOver = false;
-let totalMines = 10;
-let remainingMines = totalMines;
-let cellsRevealed = 0;
-let firstClick = true;
+    // 游戏状态
+    let state = {
+        board: [],
+        mines: [],
+        revealed: [],
+        flags: [],
+        gameOver: false,
+        remainingMines: CONFIG.TOTAL_MINES,
+        cellsRevealed: 0,
+        firstClick: true
+    };
 
-function initGame() {
-    // 重置游戏状态
-    board = [];
-    mines = [];
-    revealed = [];
-    flags = [];
-    gameOver = false;
-    remainingMines = totalMines;
-    cellsRevealed = 0;
-    firstClick = true;
-    mineCounter.textContent = remainingMines;
+    // 初始化游戏
+    function initGame() {
+        // 重置游戏状态
+        state = {
+            board: [],
+            mines: [],
+            revealed: [],
+            flags: [],
+            gameOver: false,
+            remainingMines: CONFIG.TOTAL_MINES,
+            cellsRevealed: 0,
+            firstClick: true
+        };
+        
+        updateMineCounter();
 
-    // 设置画布尺寸
-    canvas.width = GRID_SIZE * CELL_SIZE;
-    canvas.height = GRID_SIZE * CELL_SIZE;
+        // 设置画布尺寸
+        canvas.width = CONFIG.GRID_SIZE * CONFIG.CELL_SIZE;
+        canvas.height = CONFIG.GRID_SIZE * CONFIG.CELL_SIZE;
 
-    // 初始化游戏板
-    for (let y = 0; y < GRID_SIZE; y++) {
-        board[y] = [];
-        revealed[y] = [];
-        flags[y] = [];
-        for (let x = 0; x < GRID_SIZE; x++) {
-            board[y][x] = 0; // 0表示无雷
-            revealed[y][x] = false;
-            flags[y][x] = false;
+        // 初始化游戏板
+        for (let y = 0; y < CONFIG.GRID_SIZE; y++) {
+            state.board[y] = [];
+            state.revealed[y] = [];
+            state.flags[y] = [];
+            for (let x = 0; x < CONFIG.GRID_SIZE; x++) {
+                state.board[y][x] = 0; // 0表示无雷
+                state.revealed[y][x] = false;
+                state.flags[y][x] = false;
+            }
         }
-    }
 
-    // 添加事件监听
+        // 添加事件监听
     canvas.removeEventListener('click', handleCellClick);
     canvas.removeEventListener('contextmenu', handleRightClick);
     canvas.addEventListener('click', handleCellClick);
@@ -55,7 +66,24 @@ function initGame() {
 
     // 绘制初始游戏板
     drawBoard();
-}
+    }
+
+    // 更新地雷计数器
+    function updateMineCounter() {
+        mineCounter.textContent = state.remainingMines;
+    }
+
+    // 公开方法
+    return {
+        init: initGame
+    };
+})();
+
+// 事件监听
+newGameBtn.addEventListener('click', Minesweeper.init);
+
+// 初始化游戏
+Minesweeper.init();
 
 // 生成地雷
 function generateMines(firstClickX, firstClickY) {
