@@ -1,0 +1,156 @@
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .game-container {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 100%;
+            flex-wrap: wrap;
+        }
+
+        #gameCanvas {
+            border: 2px solid #333;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        #gameControls {
+            text-align: center;
+            margin: 0 auto;
+            padding: 0 8px;
+        }
+
+        #gameScore {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #score {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        #startBtn {
+            font-size: 18px;
+            padding: 12px 24px;
+            background: linear-gradient(145deg, #f0f0f0, #cacaca);
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 5px 5px 10px #bebebe,
+                -5px -5px 10px #ffffff;
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #startBtn::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 8px 8px 0 0;
+            pointer-events: none;
+        }
+
+        #startBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 12px #bebebe,
+                -6px -6px 12px #ffffff;
+            background: linear-gradient(145deg, #f5f5f5, #d0d0d0);
+        }
+
+        #startBtn:active {
+            transform: translateY(1px);
+            box-shadow: inset 4px 4px 8px #bebebe,
+                inset -4px -4px 8px #ffffff;
+            background: linear-gradient(145deg, #e6e6e6, #c0c0c0);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 180px;
+            margin: 20px auto;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            background: linear-gradient(145deg, #f0f0f0, #cacaca);
+            color: #333;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 5px 5px 10px #bebebe,
+                -5px -5px 10px #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            right: 5%;
+            bottom: 5%;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 12px #bebebe,
+                -6px -6px 12px #ffffff;
+        }
+
+        .control-btn:active {
+            transform: translateY(1px);
+            box-shadow: inset 4px 4px 8px #bebebe,
+                inset -4px -4px 8px #ffffff;
+        }
+
+        #up {
+            grid-column: 2;
+        }
+
+        #left {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        #right {
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        #down {
+            grid-column: 2;
+            grid-row: 3;
+        }
