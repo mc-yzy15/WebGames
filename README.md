@@ -24,7 +24,7 @@
 ## 🚀 如何运行
 
 无需克隆仓库，直接访问以下网址即可运行游戏：
-[https://webgames.yzy15.dpdns.org](https://webgames.yzy15.dpdns.org)
+[https://webgames.yzy15.dpdns.org/menu](https://webgames.yzy15.dpdns.org/menu)
 
 在网页中选择你感兴趣的游戏，即可开始体验！
 
