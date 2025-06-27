@@ -45,7 +45,7 @@
 
 ## 📝 许可证
 
-本项目采用 [MIT License](LICENSE)。你可以自由使用、修改和分发代码，但需保留版权声明。
+本项目采用 [Apache License 2.0](LICENSE)。
 
 ## 📬 联系我们
 
