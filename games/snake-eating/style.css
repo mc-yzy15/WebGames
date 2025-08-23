@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 body {
+=======
+>>>>>>> 544ccbd (FIX)
 :root {
     --primary-bg: #1a1a2e;
     --secondary-bg: #25254a;
@@ -13,7 +16,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+<<<<<<< HEAD
     height: 100vh;
+=======
+    min-height: 100vh;
+>>>>>>> 544ccbd (FIX)
     margin: 0;
     background-color: var(--primary-bg);
     font-family: Arial, sans-serif;
@@ -22,23 +29,43 @@ body {
 .game-container {
     text-align: center;
     display: flex;
+<<<<<<< HEAD
     align-items: center;
     justify-content: space-between;
     max-width: 100%;
     flex-wrap: wrap;
+=======
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+>>>>>>> 544ccbd (FIX)
 }
 
 #gameCanvas {
     border: 2px solid var(--border-color);
     border-radius: 5px;
     box-shadow: var(--shadow-effect);
+<<<<<<< HEAD
     margin: 0 auto;
+=======
+    margin: 0 auto 20px;
+    width: 300px;
+    height: 300px;
+>>>>>>> 544ccbd (FIX)
 }
 
 #gameControls {
     text-align: center;
     margin: 0 auto;
     padding: 0 8px;
+<<<<<<< HEAD
+=======
+    width: 100%;
+    max-width: 300px;
+>>>>>>> 544ccbd (FIX)
 }
 
 #gameScore {
@@ -46,6 +73,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+<<<<<<< HEAD
+=======
+    margin-bottom: 20px;
+>>>>>>> 544ccbd (FIX)
 }
 
 #score {
@@ -60,6 +91,7 @@ body {
     background: var(--button-gradient);
     color: var(--text-color);
     border: none;
+<<<<<<< HEAD
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -167,3 +199,138 @@ body {
             grid-row: 3;
         }
     }
+=======
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 5px 5px 10px #bebebe,
+        -5px -5px 10px #ffffff;
+    position: relative;
+    overflow: hidden;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#startBtn::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+}
+
+#startBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px #bebebe,
+        -6px -6px 12px #ffffff;
+    background: linear-gradient(145deg, #f5f5f5, #d0d0d0);
+}
+
+#startBtn:active {
+    transform: translateY(1px);
+    box-shadow: inset 4px 4px 8px #bebebe,
+        inset -4px -4px 8px #ffffff;
+    background: linear-gradient(145deg, #e6e6e6, #c0c0c0);
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 180px;
+    margin: 20px auto;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    background: linear-gradient(145deg, #f0f0f0, #cacaca);
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 10px #bebebe,
+        -5px -5px 10px #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+.control-btn::before {
+    content: '';
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px #bebebe,
+        -6px -6px 12px #ffffff;
+}
+
+.control-btn:active {
+    transform: translateY(1px);
+    box-shadow: inset 4px 4px 8px #bebebe,
+        inset -4px -4px 8px #ffffff;
+}
+
+#up {
+    grid-column: 2;
+}
+
+#left {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#right {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+#down {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+    .controls {
+        width: 150px;
+    }
+    
+    .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    #score {
+        font-size: 20px;
+    }
+    
+    #startBtn {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+    
+    #gameCanvas {
+        width: 250px;
+        height: 250px;
+    }
+}
+>>>>>>> 544ccbd (FIX)
