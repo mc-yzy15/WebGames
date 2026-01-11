@@ -1,5 +1,5 @@
 /* 游戏样式文件 */
-* {
+    {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -7,9 +7,14 @@
 }
 
 body {
-    font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
-    background: linear-gradient(135deg, #fdf6e3 0%, #e8c8a0 50%, #d4a574 100%);
-    user-select:
+    body {
+        ily: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+
+        body {
+            bly: "Microsoft YaHei", cgapplo-system, BldnkMacSys:elFont, "PingFang SC", sansesrrgf;
+            font-fa bly: "Microsoft YaHei", cgapplo-system, BldnkMarSys:elFont, "PingFang SC", sansesrrgf;
+            barkground: lentar1g35diend(#3ddeg, #fdf6e3 0%6e##8c8a0 50%, %%#d a57# 100%5; 100%5; 100%);
+            eeeeuser-select: ::
     .card {
         border-radius: 24px;
     }
@@ -158,8 +163,8 @@ body {
 
 .container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(28vw, 180px), 1fr));
-    gap: clamp(1.2vh, 2.2vw, 1.8vh);
+    grid-template-columns: repeat(auto-fit, minmax(min(32vw, 220px), 1fr));
+    gap: clamp(1.5vh, 2.5vw, 2.2vh);
     padding: 2.5vh;
     transition: all 0.3s ease;
     margin: 0 auto;
@@ -167,14 +172,14 @@ body {
 }
 
 .card {
-    min-height: 100px;
+    min-height: 120px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: clamp(0.75em, 2.2vw, 1.1em);
+    font-size: clamp(0.8em, 2vw, 1.2em);
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3);
@@ -182,12 +187,15 @@ body {
     position: relative;
     overflow: hidden;
     word-wrap: break-word;
-    padding: 2vh 1.5vw;
+    padding: 2.5vh 2vw;
     text-align: center;
-    line-height: 1.4;
+    line-height: 1.5;
     white-space: normal;
     flex: 1;
-    min-width: 120px;
+    min-width: 150px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
 }
 
 .card:hover {

@@ -132,22 +132,27 @@
                 <h3 id="exportTitle"><span class="icon">📥</span> 导出游戏数据</h3>
                 <p>请选择导出格式：</p>
 
-                <div class="export-options">
-                    <button class="control-btn success" onclick="downloadEncryptedData()" aria-label="导出加密文件"
+                <div class="export-options" style="display: flex; flex-direction: column; gap: 1.5vh;">
+                    <button class="control-btn success" onclick="downloadEncryptedData()" aria-label="导出完整加密文件"
                         style="flex: 1; min-width: 150px;">
-                        <span class="icon">🔒</span> 导出加密文件 (.yzgdatae)
+                        <span class="icon">🔒</span> 导出完整加密文件 (.yzgdatae)
                     </button>
-                    <button class="control-btn warning" onclick="downloadPlainData()" aria-label="导出明文文件"
+                    <button class="control-btn warning" onclick="downloadPlainData()" aria-label="导出完整明文文件"
                         style="flex: 1; min-width: 150px;">
-                        <span class="icon">📄</span> 导出明文文件 (.yzgdata)
+                        <span class="icon">📄</span> 导出完整明文文件 (.yzgdata)
+                    </button>
+                    <button class="control-btn info" onclick="downloadLeaderboardData()" aria-label="仅导出排行榜数据"
+                        style="flex: 1; min-width: 150px;">
+                        <span class="icon">🏆</span> 仅导出排行榜数据 (.yzgldrb)
                     </button>
                 </div>
 
                 <div class="file-format-hint">
                     <strong>格式说明：</strong>
                     <ul>
-                        <li><strong>.yzgdatae</strong> - AES加密，安全性高，防止篡改</li>
-                        <li><strong>.yzgdata</strong> - JSON明文，带校验码，便于查看</li>
+                        <li><strong>.yzgdatae</strong> - AES加密，包含完整游戏数据，安全性高</li>
+                        <li><strong>.yzgdata</strong> - JSON明文，包含完整游戏数据，便于查看</li>
+                        <li><strong>.yzgldrb</strong> - 仅包含排行榜数据，可用于排行榜分享</li>
                     </ul>
                 </div>
 

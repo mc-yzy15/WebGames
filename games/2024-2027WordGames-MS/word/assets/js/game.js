@@ -1899,6 +1899,26 @@ const DataEncryptor = {
         };
     },
 
+    // 导出排行榜数据（仅排行榜数据，不包含玩家进度）
+    async exportLeaderboardData() {
+        const data = {
+            version: GameState.gameVersion,
+            levelRecords: GameState.levelRecords,
+            totalRecords: GameState.totalRecords,
+            speedrunRecords: GameState.speedrunRecords,
+            exportTime: Date.now(),
+            type: 'leaderboard_only'
+        };
+
+        const encrypted = await this.encryptData(data);
+        if (!encrypted) throw new Error('加密失败');
+
+        return {
+            content: encrypted,
+            filename: `wordgame_leaderboards_${new Date().toISOString().slice(0, 10)}.yzgldrb`
+        };
+    },
+
     // 导入数据
     async importData(content, isEncrypted) {
         try {
@@ -1912,7 +1932,7 @@ const DataEncryptor = {
             }
 
             // 验证数据完整性
-            if (!data.version || !data.playerName) {
+            if (!data.version) {
                 throw new Error('数据格式错误');
             }
 
@@ -1924,6 +1944,79 @@ const DataEncryptor = {
             return data;
         } catch (e) {
             console.error('导入失败:', e);
+            throw e;
+        }
+    },
+
+    // 仅导入排行榜数据
+    async importLeaderboardData(content, isEncrypted) {
+        try {
+            const data = await this.importData(content, isEncrypted);
+            
+            // 验证是否为排行榜数据
+            if (!data.levelRecords || !data.totalRecords) {
+                throw new Error('无效的排行榜数据格式');
+            }
+
+            // 合并排行榜数据
+            if (data.levelRecords) {
+                for (const difficulty in data.levelRecords) {
+                    if (!GameState.levelRecords[difficulty]) {
+                        GameState.levelRecords[difficulty] = {};
+                    }
+                    for (const level in data.levelRecords[difficulty]) {
+                        if (!GameState.levelRecords[difficulty][level]) {
+                            GameState.levelRecords[difficulty][level] = [];
+                        }
+                        // 合并记录并去重
+                        const existingIds = new Set(GameState.levelRecords[difficulty][level].map(r => r.recordId));
+                        const newRecords = data.levelRecords[difficulty][level].filter(r => !existingIds.has(r.recordId));
+                        GameState.levelRecords[difficulty][level].push(...newRecords);
+                        // 按分数和时间排序
+                        GameState.levelRecords[difficulty][level].sort((a, b) => b.score - a.score || a.time - b.time);
+                        // 只保留前50名
+                        GameState.levelRecords[difficulty][level] = GameState.levelRecords[difficulty][level].slice(0, 50);
+                    }
+                }
+            }
+
+            if (data.totalRecords) {
+                for (const difficulty in data.totalRecords) {
+                    if (!GameState.totalRecords[difficulty]) {
+                        GameState.totalRecords[difficulty] = [];
+                    }
+                    // 合并记录并去重
+                    const existingIds = new Set(GameState.totalRecords[difficulty].map(r => r.recordId));
+                    const newRecords = data.totalRecords[difficulty].filter(r => !existingIds.has(r.recordId));
+                    GameState.totalRecords[difficulty].push(...newRecords);
+                    // 按分数和时间排序
+                    GameState.totalRecords[difficulty].sort((a, b) => b.totalScore - a.totalScore || a.totalTime - b.totalTime);
+                    // 只保留前50名
+                    GameState.totalRecords[difficulty] = GameState.totalRecords[difficulty].slice(0, 50);
+                }
+            }
+
+            if (data.speedrunRecords) {
+                // 合并速通记录并去重
+                const existingIds = new Set(GameState.speedrunRecords.map(r => r.recordId));
+                const newRecords = data.speedrunRecords.filter(r => !existingIds.has(r.recordId));
+                GameState.speedrunRecords.push(...newRecords);
+                // 按难度和时间排序
+                GameState.speedrunRecords.sort((a, b) => {
+                    const difficultyOrder = { easy: 0, normal: 1, hard: 2 };
+                    if (difficultyOrder[a.difficulty] !== difficultyOrder[b.difficulty]) {
+                        return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
+                    }
+                    return a.totalTime - b.totalTime;
+                });
+                // 只保留前50名
+                GameState.speedrunRecords = GameState.speedrunRecords.slice(0, 50);
+            }
+
+            GameState.saveLeaderboards();
+            return true;
+        } catch (e) {
+            console.error('导入排行榜数据失败:', e);
             throw e;
         }
     }
@@ -2469,6 +2562,17 @@ async function downloadEncryptedData() {
         alert('✅ 加密数据导出成功！');
     } catch (e) {
         alert('❌ 导出失败: ' + e.message);
+    }
+}
+
+async function downloadLeaderboardData() {
+    try {
+        const data = await DataEncryptor.exportLeaderboardData();
+        downloadFile(data.content, data.filename, 'application/octet-stream');
+        hideExportModal();
+        alert('✅ 排行榜数据导出成功！');
+    } catch (e) {
+        alert('❌ 导出排行榜数据失败: ' + e.message);
     }
 }
 

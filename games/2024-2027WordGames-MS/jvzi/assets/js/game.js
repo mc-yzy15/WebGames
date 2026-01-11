@@ -453,19 +453,43 @@ const GameState = {
     },
 
     // 获取关卡记录
-    getLevelRecords(level) {
-        return this.levelRecords[level] || [];
+    getLevelRecords(level, difficulty = this.difficulty) {
+        return this.levelRecords[difficulty]?.[level] || [];
     },
 
     // 获取总记录
-    getTotalRecords() {
-        return this.totalRecords;
+    getTotalRecords(difficulty = this.difficulty) {
+        return this.totalRecords[difficulty] || [];
+    },
+
+    // 获取速通记录
+    getSpeedrunRecords(difficulty = null) {
+        if (!difficulty) {
+            return this.speedrunRecords;
+        }
+        return this.speedrunRecords.filter(record => record.difficulty === difficulty);
+    },
+
+    // 设置难度
+    setDifficulty(difficulty) {
+        if (this.difficulties[difficulty]) {
+            this.difficulty = difficulty;
+            this.saveProgress();
+            return true;
+        }
+        return false;
+    },
+
+    // 获取当前难度配置
+    getCurrentDifficultyConfig() {
+        return this.difficulties[this.difficulty] || this.difficulties.normal;
     },
 
     // 计算得分
     calculateScore(time, mistakes, pairs) {
+        const config = this.getCurrentDifficultyConfig();
         const baseScore = 100;
-        const timePenalty = Math.min(time * 0.5, 30);
+        const timePenalty = Math.min(time * config.timeFactor, 30);
         const mistakePenalty = mistakes * 5;
         const bonus = pairs * 2;
         const score = Math.max(0, Math.round(baseScore - timePenalty - mistakePenalty + bonus));
@@ -726,12 +750,23 @@ function handleMismatch(card1, card2) {
     card1.classList.add('mismatch');
     card2.classList.add('mismatch');
 
-    setTimeout(() => {
-        card1.classList.remove('selected', 'mismatch');
-        card2.classList.remove('mismatch');
-        GameState.selectedCard = null;
-        updateUI();
-    }, 600);
+    // 检查是否超过当前难度的最大容错次数
+    const config = GameState.getCurrentDifficultyConfig();
+    if (GameState.mistakes > config.maxMistakes) {
+        setTimeout(() => {
+            // 游戏结束，重置
+            GameState.stopTimer();
+            alert(`❌ 游戏结束！您已超过最大容错次数（${config.maxMistakes}次）。`);
+            startLevel(GameState.currentLevel);
+        }, 600);
+    } else {
+        setTimeout(() => {
+            card1.classList.remove('selected', 'mismatch');
+            card2.classList.remove('mismatch');
+            GameState.selectedCard = null;
+            updateUI();
+        }, 600);
+    }
 }
 
 function renderGame() {
@@ -754,8 +789,11 @@ function startLevel(level) {
         return;
     }
 
-    const startIdx = (level - 1) * GameState.pairsPerLevel;
-    const endIdx = Math.min(startIdx + GameState.pairsPerLevel, ALL_EXPRESSIONS.length);
+    const config = GameState.getCurrentDifficultyConfig();
+    const pairsPerLevel = config.pairsPerLevel;
+
+    const startIdx = (level - 1) * pairsPerLevel;
+    const endIdx = Math.min(startIdx + pairsPerLevel, ALL_EXPRESSIONS.length);
     GameState.currentExpressions = ALL_EXPRESSIONS.slice(startIdx, endIdx);
     GameState.totalPairs = GameState.currentExpressions.length;
     GameState.matchedPairs = 0;
@@ -771,7 +809,7 @@ function startLevel(level) {
     updateUI();
 
     document.getElementById('level').textContent = level;
-    document.getElementById('progress').textContent = `关卡 ${level}/${GameState.levels} | 总分: ${GameState.totalScore}`;
+    document.getElementById('progress').textContent = `关卡 ${level}/${GameState.levels} | 总分: ${GameState.totalScore} | 难度: ${GameState.difficulty === 'easy' ? '简单' : GameState.difficulty === 'normal' ? '普通' : '困难'}`;
 }
 
 function showCongrats() {
