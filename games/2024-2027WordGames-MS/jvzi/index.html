@@ -2,11 +2,16 @@
 <html lang="zh-CN">
 
 <head>
+    <!-- 文档元数据 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="theme-color" content="#d4a574">
+
+    <!-- 页面标题 -->
     <title>饺子游戏</title>
-    <!-- 外部样式资源引用 -->
+
+    <!-- 外部资源引用 -->
+    <!-- 样式资源 -->
     <link rel="stylesheet" href="./assets/css/game.css"
         onerror="this.onerror=null; console.error('Failed to load CSS file');">
 
@@ -15,149 +20,177 @@
 </head>
 
 <body>
+    <!-- 游戏主界面容器 -->
+    <div class="game-container">
+        <!-- 游戏标题 -->
+        <header class="header">饺子游戏</header>
 
-    <!-- 游戏主界面 -->
-    <div class="header">饺子游戏</div>
+        <!-- 游戏控制按钮区 -->
+        <nav class="game-controls">
+            <button class="control-btn" onclick="showLevelSelect()" aria-label="选择关卡">
+                <span class="icon">🎮</span> 选择关卡
+            </button>
+            <button class="control-btn secondary" onclick="showLeaderboard()" aria-label="查看排行榜">
+                <span class="icon">🏆</span> 排行榜
+            </button>
+            <button class="control-btn success" onclick="showExportModal()" aria-label="导出成绩">
+                <span class="icon">📤</span> 导出成绩
+            </button>
+            <button class="control-btn warning" onclick="showImportModal()" aria-label="导入成绩">
+                <span class="icon">📥</span> 导入成绩
+            </button>
+            <button class="control-btn danger" onclick="showClearDataModal()" aria-label="清除数据">
+                <span class="icon">🗑️</span> 清除数据
+            </button>
+        </nav>
 
-    <div class="game-controls">
-        <button class="control-btn" onclick="showLevelSelect()">
-            <span class="icon">🎮</span> 选择关卡
-        </button>
-        <button class="control-btn secondary" onclick="showLeaderboard()">
-            <span class="icon">🏆</span> 排行榜
-        </button>
-        <button class="control-btn success" onclick="showExportModal()">
-            <span class="icon">📤</span> 导出成绩
-        </button>
-        <button class="control-btn warning" onclick="showImportModal()">
-            <span class="icon">📥</span> 导入成绩
-        </button>
-        <button class="control-btn danger" onclick="showClearDataModal()">
-            <span class="icon">🗑️</span> 清除数据
-        </button>
-    </div>
-
-    <div class="progress">进度: <span id="progress">关卡 1/10</span> | 总分: <span id="totalScore">0</span></div>
-    <div class="level-info">当前关卡: <span id="level">1</span> | 匹配所有英文与中文对！</div>
-
-    <div class="stats">
-        <div class="stat-item">本关用时: <span id="time" class="timer-display">0.000</span> 秒</div>
-        <div class="stat-item">试错次数: <span id="mistakes">0</span></div>
-        <div class="stat-item">本关分数: <span id="levelScore">0</span> <span id="stars" class="stars"></span></div>
-    </div>
-
-    <div class="container" id="game"></div>
-
-    <!-- 排行榜面板 -->
-    <div class="leaderboard-panel" id="leaderboardPanel">
-        <div class="leaderboard-container">
-            <div class="leaderboard-header">
-                <h2>🏆 排行榜</h2>
-                <button class="close-btn" onclick="hideLeaderboard()">×</button>
+        <!-- 游戏进度信息 -->
+        <section class="game-info">
+            <div class="progress">
+                进度: <span id="progress">关卡 1/10</span> | 总分: <span id="totalScore">0</span>
             </div>
-            <div class="leaderboard-tabs" id="leaderboardTabs">
-                <!-- 选项卡由JS动态生成 -->
+            <div class="level-info">
+                当前关卡: <span id="level">1</span> | 匹配所有英文与中文对！
             </div>
-            <ul class="leaderboard-list" id="leaderboardContent">
-                <!-- 排行榜内容由JS动态生成 -->
-            </ul>
-        </div>
+        </section>
+
+        <!-- 游戏统计数据 -->
+        <section class="game-stats">
+            <div class="stats">
+                <div class="stat-item">
+                    本关用时: <span id="time" class="timer-display">0.000</span> 秒
+                </div>
+                <div class="stat-item">
+                    试错次数: <span id="mistakes">0</span>
+                </div>
+                <div class="stat-item">
+                    本关分数: <span id="levelScore">0</span> <span id="stars" class="stars"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 游戏卡片容器 -->
+        <main class="game-board">
+            <div class="container" id="game"></div>
+        </main>
     </div>
 
-    <!-- 导入导出对话框 -->
-    <div class="modal" id="importModal">
-        <div class="modal-content">
-            <h3><span class="icon">📤</span> 导入游戏数据</h3>
-            <p>请选择要导入的.yzgdatae或.yzgdata文件：</p>
-
-            <div class="file-format-hint">
-                <strong>支持的文件格式：</strong>
-                <ul>
-                    <li><strong>.yzgdatae</strong> - 加密数据文件（推荐）</li>
-                    <li><strong>.yzgdata</strong> - 未加密数据文件（带校验）</li>
+    <!-- 模态对话框容器 -->
+    <div class="modals-container">
+        <!-- 排行榜面板 -->
+        <div class="leaderboard-panel" id="leaderboardPanel" role="dialog" aria-modal="true"
+            aria-labelledby="leaderboardTitle">
+            <div class="leaderboard-container">
+                <div class="leaderboard-header">
+                    <h2 id="leaderboardTitle">🏆 排行榜</h2>
+                    <button class="close-btn" onclick="hideLeaderboard()" aria-label="关闭排行榜">×</button>
+                </div>
+                <div class="leaderboard-tabs" id="leaderboardTabs">
+                    <!-- 选项卡由JS动态生成 -->
+                </div>
+                <ul class="leaderboard-list" id="leaderboardContent">
+                    <!-- 排行榜内容由JS动态生成 -->
                 </ul>
             </div>
+        </div>
 
-            <div style="text-align: center; margin: 3vh 0;">
-                <input type="file" id="importFile" accept=".yzgdatae,.yzgdata" style="display: none;"
-                    onchange="handleFileImport(this.files[0])">
-                <button class="control-btn success" onclick="document.getElementById('importFile').click()">
-                    <span class="icon">📁</span> 选择文件
-                </button>
+        <!-- 导入数据对话框 -->
+        <div class="modal" id="importModal" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+            <div class="modal-content">
+                <h3 id="importTitle"><span class="icon">📤</span> 导入游戏数据</h3>
+                <p>请选择要导入的.yzgdatae或.yzgdata文件：</p>
+
+                <div class="file-format-hint">
+                    <strong>支持的文件格式：</strong>
+                    <ul>
+                        <li><strong>.yzgdatae</strong> - 加密数据文件（推荐）</li>
+                        <li><strong>.yzgdata</strong> - 未加密数据文件（带校验）</li>
+                    </ul>
+                </div>
+
+                <div class="file-upload-section">
+                    <input type="file" id="importFile" accept=".yzgdatae,.yzgdata" style="display: none;"
+                        onchange="handleFileImport(this.files[0])">
+                    <button class="control-btn success" onclick="document.getElementById('importFile').click()"
+                        aria-label="选择文件">
+                        <span class="icon">📁</span> 选择文件
+                    </button>
+                </div>
+
+                <div id="importStatus" class="status-message"
+                    style="display: none; padding: 2vh; background: #f8f9fa; border-radius: 10px; margin: 2vh 0;"></div>
+
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideImportModal()" aria-label="取消导入">取消</button>
+                </div>
             </div>
+        </div>
 
-            <div id="importStatus"
-                style="display: none; padding: 2vh; background: #f8f9fa; border-radius: 10px; margin: 2vh 0;"></div>
+        <!-- 导出数据对话框 -->
+        <div class="modal" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+            <div class="modal-content">
+                <h3 id="exportTitle"><span class="icon">📥</span> 导出游戏数据</h3>
+                <p>请选择导出格式：</p>
 
-            <div class="modal-buttons">
-                <button class="control-btn secondary" onclick="hideImportModal()">取消</button>
+                <div class="export-options">
+                    <button class="control-btn success" onclick="downloadEncryptedData()" aria-label="导出加密文件"
+                        style="flex: 1; min-width: 150px;">
+                        <span class="icon">🔒</span> 导出加密文件 (.yzgdatae)
+                    </button>
+                    <button class="control-btn warning" onclick="downloadPlainData()" aria-label="导出明文文件"
+                        style="flex: 1; min-width: 150px;">
+                        <span class="icon">📄</span> 导出明文文件 (.yzgdata)
+                    </button>
+                </div>
+
+                <div class="file-format-hint">
+                    <strong>格式说明：</strong>
+                    <ul>
+                        <li><strong>.yzgdatae</strong> - AES加密，安全性高，防止篡改</li>
+                        <li><strong>.yzgdata</strong> - JSON明文，带校验码，便于查看</li>
+                    </ul>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideExportModal()" aria-label="关闭导出对话框">关闭</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 关卡选择对话框 -->
+        <div class="modal" id="levelModal" role="dialog" aria-modal="true" aria-labelledby="levelSelectTitle">
+            <div class="modal-content">
+                <h3 id="levelSelectTitle"><span class="icon">🎮</span> 选择关卡</h3>
+                <p>选择要挑战的关卡（绿色为已通关）：</p>
+                <div class="level-grid" id="levelGrid">
+                    <!-- 关卡按钮由JS动态生成 -->
+                </div>
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideLevelSelect()" aria-label="取消选择关卡">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 清除数据确认对话框 -->
+        <div class="modal" id="clearDataModal" role="dialog" aria-modal="true" aria-labelledby="clearDataTitle">
+            <div class="modal-content">
+                <h3 id="clearDataTitle"><span class="icon">⚠️</span> 清除游戏数据</h3>
+                <p class="warning-text">
+                    此操作将清除所有游戏数据，包括：<br>
+                    • 当前游戏进度<br>
+                    • 所有排行榜记录<br>
+                    • 已完成的关卡<br><br>
+                    <strong style="color: #e74c3c;">此操作不可撤销！</strong>
+                </p>
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideClearDataModal()" aria-label="取消清除数据">取消</button>
+                    <button class="control-btn danger" onclick="clearAllGameData()" aria-label="确认清除数据">确认清除</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 导出对话框 -->
-    <div class="modal" id="exportModal">
-        <div class="modal-content">
-            <h3><span class="icon">📥</span> 导出游戏数据</h3>
-            <p>请选择导出格式：</p>
-
-            <div style="display: flex; gap: 2vw; margin-bottom: 3vh; flex-wrap: wrap;">
-                <button class="control-btn success" onclick="downloadEncryptedData()"
-                    style="flex: 1; min-width: 150px;">
-                    <span class="icon">🔒</span> 导出加密文件 (.yzgdatae)
-                </button>
-                <button class="control-btn warning" onclick="downloadPlainData()" style="flex: 1; min-width: 150px;">
-                    <span class="icon">📄</span> 导出明文文件 (.yzgdata)
-                </button>
-            </div>
-
-            <div class="file-format-hint">
-                <strong>格式说明：</strong>
-                <ul>
-                    <li><strong>.yzgdatae</strong> - AES加密，安全性高，防止篡改</li>
-                    <li><strong>.yzgdata</strong> - JSON明文，带校验码，便于查看</li>
-                </ul>
-            </div>
-
-            <div class="modal-buttons">
-                <button class="control-btn secondary" onclick="hideExportModal()">关闭</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 关卡选择对话框 -->
-    <div class="modal" id="levelModal">
-        <div class="modal-content">
-            <h3><span class="icon">🎮</span> 选择关卡</h3>
-            <p>选择要挑战的关卡（绿色为已通关）：</p>
-            <div class="level-grid" id="levelGrid">
-                <!-- 关卡按钮由JS动态生成 -->
-            </div>
-            <div class="modal-buttons">
-                <button class="control-btn secondary" onclick="hideLevelSelect()">取消</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 清除数据确认对话框 -->
-    <div class="modal" id="clearDataModal">
-        <div class="modal-content">
-            <h3><span class="icon">⚠️</span> 清除游戏数据</h3>
-            <p style="line-height: 1.5;">
-                此操作将清除所有游戏数据，包括：<br>
-                • 当前游戏进度<br>
-                • 所有排行榜记录<br>
-                • 已完成的关卡<br><br>
-                <strong style="color: #e74c3c;">此操作不可撤销！</strong>
-            </p>
-            <div class="modal-buttons">
-                <button class="control-btn secondary" onclick="hideClearDataModal()">取消</button>
-                <button class="control-btn danger" onclick="clearAllGameData()">确认清除</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 外部JavaScript资源引用 -->
+    <!-- JavaScript资源 -->
     <script src="./assets/js/game.js"
         onerror="this.onerror=null; console.error('Failed to load JavaScript file'); alert('游戏资源加载失败，请刷新页面重试');"></script>
 </body>
