@@ -866,17 +866,30 @@ function renderGame() {
     const container = document.getElementById('game');
     container.innerHTML = '';
 
-    // 按照一中一英的顺序排列卡片
-    const cards = [];
+    // 按照一中一英的顺序创建卡片对
+    const cardPairs = [];
     GameState.currentExpressions.forEach((expr) => {
-        // 交替添加中文和英文卡片
         const chiCard = createCard(expr.chi, 'chinese', expr);
         const engCard = createCard(expr.eng, 'english', expr);
-        cards.push(chiCard, engCard);
+        // 随机决定卡片对中是中文在前还是英文在前
+        if (Math.random() > 0.5) {
+            cardPairs.push(chiCard, engCard);
+        } else {
+            cardPairs.push(engCard, chiCard);
+        }
     });
 
-    // 不需要随机排列，直接按照一中一英顺序显示
-    cards.forEach(card => container.appendChild(card));
+    // 对卡片对数组进行随机排序
+    for (let i = cardPairs.length - 1; i > 0; i--) {
+        // 确保交换的是完整的卡片对
+        const j = Math.floor(Math.random() * (i / 2)) * 2;
+        // 交换两个卡片对
+        [cardPairs[i], cardPairs[i-1], cardPairs[j], cardPairs[j+1]] = 
+        [cardPairs[j], cardPairs[j+1], cardPairs[i], cardPairs[i-1]];
+    }
+
+    // 显示随机排列的卡片
+    cardPairs.forEach(card => container.appendChild(card));
 }
 
 function startLevel(level) {
