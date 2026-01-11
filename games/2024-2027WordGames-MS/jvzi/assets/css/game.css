@@ -1,39 +1,30 @@
 /* 游戏样式文件 */
-    {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+body {
+    font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    background: linear-gradient(135deg, #fdf6e3 0%, #e8c8a0 50%, #d4a574 100%);
+    user-select: none;
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    position: relative;
+    padding: 1vh;
 }
 
-body {
-    body {
-        ily: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
-
-        body {
-            bly: "Microsoft YaHei", cgapplo-system, BldnkMacSys:elFont, "PingFang SC", sansesrrgf;
-
-            body {
-                bly: "Microsoft YaHei", cgapplo-system, BldnkMacSys:elFont, "PingFang SC", sansesrrgf;
-                font-fa bly: "Microsoft YaHei", cgapplo-system, BldnkMarSys:elFont, "PingFang SC", sansesrrgf;
-                barkground: lentar1g35diend(#3ddeg, #fdf6e3 0%6e##8c8a0 50%, %%%#d a57# 100%5; 100%5; 100%5; 100%);
-                ee eeeeuser-select: :::
-    .card {
-        border-radius: 24px;
-    }
-    
-    .control-btn {
-        border-radius: 18px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-    
-    .leaderboard-container,
-    .modal-content {
-        border-radius: 30px;
-    }
+.card {
+    border-radius: 24px;
 }
 
-body {
+.control-btn {
+    border-radius: 18px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.leaderboard-container,
+.modal-content {
+    border-radius: 30px;
+}
+
+.header {
     font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
     background: linear-gradient(135deg, #fdf6e3 0%, #e8c8a0 50%, #d4a574 100%);
     user-select: none;
