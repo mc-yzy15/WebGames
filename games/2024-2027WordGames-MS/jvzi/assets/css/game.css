@@ -1,5 +1,4 @@
 /* 游戏样式文件 */
-/* 基础样式重置 */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,9 +6,10 @@
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
 }
 
-/* 像素密度适配 */
-@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
-    /* 高分屏优化 */
+body {
+    font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    background: linear-gradient(135deg, #fdf6e3 0%, #e8c8a0 50%, #d4a574 100%);
+    user-select:
     .card {
         border-radius: 24px;
     }
@@ -167,7 +167,7 @@ body {
 }
 
 .card {
-    aspect-ratio: 5/3;
+    min-height: 100px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -182,8 +182,12 @@ body {
     position: relative;
     overflow: hidden;
     word-wrap: break-word;
-    padding: 1vh 0.8vw;
+    padding: 2vh 1.5vw;
     text-align: center;
+    line-height: 1.4;
+    white-space: normal;
+    flex: 1;
+    min-width: 120px;
 }
 
 .card:hover {

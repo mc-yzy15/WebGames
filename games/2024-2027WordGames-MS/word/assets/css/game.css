@@ -8,17 +8,19 @@
 }
 
 /* 像素密度适配 */
-@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+@media (-webkit-min-device-pixel-ratio: 1.5),
+(min-resolution: 144dpi) {
+
     /* 高分屏优化 */
     .card {
         border-radius: 24px;
     }
-    
+
     .control-btn {
         border-radius: 18px;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
-    
+
     .leaderboard-container,
     .modal-content {
         border-radius: 30px;
@@ -67,7 +69,8 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    touch-action: manipulation;    min-height: 44px;
+    touch-action: manipulation;
+    min-height: 44px;
     min-width: 44px;
     display: flex;
     align-items: center;
@@ -77,7 +80,7 @@ body {
 
 .control-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
 .control-btn:active {
@@ -105,11 +108,11 @@ body {
     font-size: clamp(1em, 2.8vw, 1.3em);
     margin: 1.2vh 0;
     color: #34495e;
-    background: rgba(255,255,255,0.6);
+    background: rgba(255, 255, 255, 0.6);
     padding: 0.5vh 2vw;
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .level-info {
@@ -131,11 +134,11 @@ body {
     margin: 0 auto 2.5vh;
     font-size: clamp(0.85em, 2.2vw, 1.1em);
     color: #7f8c8d;
-    background: rgba(255,255,255,0.4);
+    background: rgba(255, 255, 255, 0.4);
     padding: 1vh 1vw;
     border-radius: 25px;
     backdrop-filter: blur(5px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     gap: 1vw;
     flex-wrap: wrap;
 }
@@ -145,7 +148,7 @@ body {
     flex: 1;
     padding: 0.5vh 0.5vw;
     border-radius: 10px;
-    background: rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.3);
     transition: background 0.3s ease;
     min-width: 120px;
 }
@@ -177,7 +180,7 @@ body {
     font-size: clamp(0.75em, 2.2vw, 1.1em);
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     overflow: hidden;
@@ -188,7 +191,7 @@ body {
 
 .card:hover {
     transform: translateY(-3%);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.2), 0 0 30px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 215, 0, 0.3);
 }
 
 .card:active {
@@ -213,9 +216,19 @@ body {
 }
 
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-8px);
+    }
+
+    75% {
+        transform: translateX(8px);
+    }
 }
 
 .english {
@@ -233,7 +246,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(10px);
     z-index: 1000;
     display: none;
@@ -249,14 +262,14 @@ body {
 }
 
 .leaderboard-container {
-    background: rgba(255,255,255,0.95);
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
     padding: 3vh 3vw;
     max-width: 90vw;
     width: 800px;
     max-height: 85vh;
     overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .leaderboard-header {
@@ -292,11 +305,62 @@ body {
     transform: scale(1.1);
 }
 
+/* 排行榜控制区域 */
+.leaderboard-controls {
+    margin-bottom: 2vh;
+}
+
+.difficulty-selector {
+    margin-bottom: 1.5vh;
+    padding: 2vh;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.difficulty-selector h3 {
+    margin: 0 0 1vh 0;
+    color: #495057;
+    font-size: clamp(1em, 2.5vw, 1.2em);
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 1vw;
+    flex-wrap: wrap;
+}
+
+.difficulty-btn {
+    padding: 0.8vh 2vw;
+    border: 2px solid #3498db;
+    background: white;
+    color: #3498db;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    font-size: clamp(0.8em, 2vw, 1em);
+}
+
+.difficulty-btn:hover {
+    background: #3498db;
+    color: white;
+}
+
+.difficulty-btn.active {
+    background: #3498db;
+    color: white;
+}
+
 .leaderboard-tabs {
     display: flex;
     gap: 1vw;
     margin-bottom: 2vh;
     flex-wrap: wrap;
+    background: #f8f9fa;
+    padding: 1vh;
+    border-radius: 10px;
+    overflow-x: auto;
 }
 
 .tab-btn {
@@ -308,6 +372,8 @@ body {
     transition: all 0.2s ease;
     font-weight: 600;
     font-size: clamp(0.8em, 2vw, 1em);
+    white-space: nowrap;
+    min-width: 80px;
 }
 
 .tab-btn.active {
@@ -324,14 +390,19 @@ body {
     padding: 1.5vh 1.5vw;
     border-bottom: 1px solid #eee;
     display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
+    grid-template-columns: auto 1fr auto auto auto auto;
     gap: 2vw;
     align-items: center;
     font-size: clamp(0.9em, 2.2vw, 1.1em);
+    transition: background-color 0.2s ease;
+}
+
+.leaderboard-list li:hover {
+    background-color: rgba(52, 152, 219, 0.05);
 }
 
 .leaderboard-list li:nth-child(-n+3) {
-    background: linear-gradient(90deg, rgba(255,215,0,0.1), transparent);
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), transparent);
 }
 
 .rank {
@@ -339,6 +410,7 @@ body {
     font-size: 1.2em;
     color: #e74c3c;
     min-width: 30px;
+    text-align: center;
 }
 
 .name {
@@ -350,16 +422,36 @@ body {
 
 .level {
     color: #7f8c8d;
+    min-width: 80px;
 }
 
 .score {
     font-weight: bold;
     color: #27ae60;
+    min-width: 60px;
+    text-align: right;
 }
 
 .time {
     color: #3498db;
     font-family: monospace;
+    min-width: 100px;
+    text-align: right;
+}
+
+.difficulty {
+    color: #f39c12;
+    font-weight: bold;
+    min-width: 60px;
+    text-align: right;
+}
+
+.leaderboard-content {
+    background: white;
+    border-radius: 10px;
+    padding: 1vh;
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
 /* 导入导出对话框样式 */
@@ -369,7 +461,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(10px);
     z-index: 1001;
     display: none;
@@ -389,7 +481,7 @@ body {
     width: 500px;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .modal h3 {
@@ -498,49 +590,49 @@ body {
         font-size: 3.5em;
         padding: 3vh 0;
     }
-    
+
     .game-controls {
         gap: 3vw;
         margin-bottom: 3vh;
     }
-    
+
     .control-btn {
         font-size: 1.3em;
         padding: 1.5vh 3vw;
         min-height: 56px;
         min-width: 56px;
     }
-    
+
     .progress,
     .level-info {
         font-size: 1.5em;
         padding: 1.5vh 3vw;
     }
-    
+
     .stats {
         font-size: 1.2em;
         padding: 1.5vh 2vw;
         max-width: 80vw;
     }
-    
+
     .container {
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 3vh;
         padding: 3vh;
         max-width: 1600px;
     }
-    
+
     .card {
         min-height: 132px;
         font-size: 1.3em;
         padding: 2vh 1.5vw;
     }
-    
+
     .leaderboard-container {
         width: 1000px;
         padding: 4vh 5vw;
     }
-    
+
     .modal-content {
         width: 600px;
         padding: 4vh 5vw;
@@ -551,23 +643,23 @@ body {
     .header {
         font-size: 4em;
     }
-    
+
     .container {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         max-width: 1800px;
         gap: 4vh;
         padding: 4vh;
     }
-    
+
     .card {
         min-height: 150px;
         font-size: 1.5em;
     }
-    
+
     .leaderboard-container {
         width: 1200px;
     }
-    
+
     .modal-content {
         width: 700px;
     }
@@ -575,6 +667,7 @@ body {
 
 /* 触摸屏优化 */
 @media (pointer: coarse) {
+
     /* 增大触摸目标尺寸 */
     .card {
         min-height: 120px;
@@ -582,9 +675,10 @@ body {
         padding: 2vh 1.5vw;
         border-radius: 20px;
     }
-    
+
     /* 优化按钮尺寸和反馈 */
-    .control-btn, .level-btn {
+    .control-btn,
+    .level-btn {
         min-height: 64px;
         min-width: 64px;
         font-size: 1.2em;
@@ -592,7 +686,7 @@ body {
         border-radius: 20px;
         transition: all 0.15s ease;
     }
-    
+
     /* 增强触摸反馈 */
     .control-btn:active,
     .level-btn:active,
@@ -600,7 +694,7 @@ body {
         transform: scale(0.92);
         opacity: 0.8;
     }
-    
+
     /* 优化列表项触摸体验 */
     .leaderboard-list li {
         padding: 2.5vh 4vw;
@@ -608,18 +702,18 @@ body {
         gap: 1.5vh;
         font-size: 1.2em;
     }
-    
+
     /* 增大图标尺寸 */
     .icon {
         font-size: 1.5em;
     }
-    
+
     /* 优化模态框触摸体验 */
     .modal-content {
         padding: 4vh 5vw;
         font-size: 1.2em;
     }
-    
+
     /* 优化滑块和输入控件 */
     input[type="file"] {
         min-height: 64px;
@@ -628,13 +722,23 @@ body {
 
 /* 动画 */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes pulse {
-    from { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6), inset 0 0 10px rgba(255, 215, 0, 0.2); }
-    to { box-shadow: 0 0 35px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 215, 0, 0.3); }
+    from {
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.6), inset 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+
+    to {
+        box-shadow: 0 0 35px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 215, 0, 0.3);
+    }
 }
 
 /* 禁用动画的选项 */
@@ -653,21 +757,21 @@ body {
         gap: 1.5vh;
         padding: 1.5vh;
     }
-    
+
     .card {
         font-size: clamp(0.7em, 3vw, 0.9em);
         padding: 0.8vh 0.6vw;
     }
-    
+
     .game-controls {
         gap: 1vw;
     }
-    
+
     .control-btn {
         padding: 1vh 2vw;
         font-size: clamp(0.8em, 3vw, 1em);
     }
-    
+
     .modal-content {
         padding: 2vh 2vw;
     }
@@ -678,16 +782,16 @@ body {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
         gap: 1vh;
     }
-    
+
     .card {
         font-size: clamp(0.65em, 3.5vw, 0.85em);
     }
-    
+
     .stats {
         flex-direction: column;
         gap: 1vh;
     }
-    
+
     .stat-item {
         min-width: auto;
     }

@@ -1475,10 +1475,28 @@ const GameState = {
     levelScore: 0,
     playerName: '玩家',
     levels: 10,
-    pairsPerLevel: 9,
+    difficulty: 'normal', // 难度：easy, normal, hard
+    difficulties: {
+        easy: {
+            pairsPerLevel: 6,
+            maxMistakes: Infinity, // 无限容错
+            timeFactor: 0.3 // 时间惩罚系数
+        },
+        normal: {
+            pairsPerLevel: 9,
+            maxMistakes: 3,
+            timeFactor: 0.5
+        },
+        hard: {
+            pairsPerLevel: 12,
+            maxMistakes: 1,
+            timeFactor: 0.8
+        }
+    },
     completedLevels: new Set(),
-    levelRecords: {}, // 各关卡排行榜 {level: [{name, score, time, date}]}
-    totalRecords: [],  // 总排行榜 [{name, totalScore, totalTime, levelsCompleted, date}]
+    levelRecords: {}, // 各关卡排行榜 {difficulty: {level: [{name, score, time, date}]}}
+    totalRecords: {}, // 总排行榜 {difficulty: [{name, totalScore, totalTime, levelsCompleted, date}]}
+    speedrunRecords: [], // 速通榜 [{name, totalTime, difficulty, date}]
     gameVersion: '1.3.0', // 游戏版本，用于数据兼容性检查
     encryptionSeed: "Ms.WuYYDS#2025UNIT5", // 加密种子
     timerInterval: null, // 计时器ID
@@ -1509,6 +1527,7 @@ const GameState = {
                 totalScore: this.totalScore,
                 completedLevels: Array.from(this.completedLevels),
                 playerName: this.playerName,
+                difficulty: this.difficulty,
                 saveTime: Date.now()
             };
             localStorage.setItem('wordGameProgress', JSON.stringify(data));
@@ -1528,6 +1547,7 @@ const GameState = {
                 this.totalScore = data.totalScore || 0;
                 this.completedLevels = new Set(data.completedLevels || []);
                 this.playerName = data.playerName || '玩家';
+                this.difficulty = data.difficulty || 'normal';
                 return true;
             }
         } catch (e) {
@@ -1541,6 +1561,7 @@ const GameState = {
         try {
             localStorage.setItem('wordGameLevelRecords', JSON.stringify(this.levelRecords));
             localStorage.setItem('wordGameTotalRecords', JSON.stringify(this.totalRecords));
+            localStorage.setItem('wordGameSpeedrunRecords', JSON.stringify(this.speedrunRecords));
             return true;
         } catch (e) {
             console.warn('保存排行榜失败:', e);
@@ -1552,12 +1573,14 @@ const GameState = {
     loadLeaderboards() {
         try {
             this.levelRecords = JSON.parse(localStorage.getItem('wordGameLevelRecords')) || {};
-            this.totalRecords = JSON.parse(localStorage.getItem('wordGameTotalRecords')) || [];
+            this.totalRecords = JSON.parse(localStorage.getItem('wordGameTotalRecords')) || {};
+            this.speedrunRecords = JSON.parse(localStorage.getItem('wordGameSpeedrunRecords')) || [];
             return true;
         } catch (e) {
             console.warn('加载排行榜失败:', e);
             this.levelRecords = {};
-            this.totalRecords = [];
+            this.totalRecords = {};
+            this.speedrunRecords = [];
             return false;
         }
     },
@@ -1568,12 +1591,14 @@ const GameState = {
             localStorage.removeItem('wordGameProgress');
             localStorage.removeItem('wordGameLevelRecords');
             localStorage.removeItem('wordGameTotalRecords');
+            localStorage.removeItem('wordGameSpeedrunRecords');
 
             this.currentLevel = 1;
             this.totalScore = 0;
             this.completedLevels = new Set();
             this.levelRecords = {};
-            this.totalRecords = [];
+            this.totalRecords = {};
+            this.speedrunRecords = [];
 
             return true;
         } catch (e) {
@@ -1584,8 +1609,12 @@ const GameState = {
 
     // 添加关卡记录
     addLevelRecord(level, time, mistakes, score) {
-        if (!this.levelRecords[level]) {
-            this.levelRecords[level] = [];
+        // 确保难度分类存在
+        if (!this.levelRecords[this.difficulty]) {
+            this.levelRecords[this.difficulty] = {};
+        }
+        if (!this.levelRecords[this.difficulty][level]) {
+            this.levelRecords[this.difficulty][level] = [];
         }
 
         const record = {
@@ -1594,16 +1623,17 @@ const GameState = {
             score: score,
             time: parseFloat(time),
             mistakes: mistakes,
+            difficulty: this.difficulty,
             date: Date.now(),
             recordId: this.generateRecordId()
         };
 
-        this.levelRecords[level].push(record);
-        this.levelRecords[level].sort((a, b) => b.score - a.score || a.time - b.time);
+        this.levelRecords[this.difficulty][level].push(record);
+        this.levelRecords[this.difficulty][level].sort((a, b) => b.score - a.score || a.time - b.time);
 
         // 只保留每个关卡前50名
-        if (this.levelRecords[level].length > 50) {
-            this.levelRecords[level] = this.levelRecords[level].slice(0, 50);
+        if (this.levelRecords[this.difficulty][level].length > 50) {
+            this.levelRecords[this.difficulty][level] = this.levelRecords[this.difficulty][level].slice(0, 50);
         }
 
         this.completedLevels.add(level);
@@ -1615,24 +1645,59 @@ const GameState = {
 
     // 添加总记录
     addTotalRecord(totalTime) {
+        // 确保难度分类存在
+        if (!this.totalRecords[this.difficulty]) {
+            this.totalRecords[this.difficulty] = [];
+        }
+
         const record = {
             name: this.playerName,
             totalScore: this.totalScore,
             totalTime: parseFloat(totalTime),
             levelsCompleted: this.levels,
+            difficulty: this.difficulty,
             date: Date.now(),
             recordId: this.generateRecordId()
         };
 
-        this.totalRecords.push(record);
-        this.totalRecords.sort((a, b) => b.totalScore - a.totalScore || a.totalTime - b.totalTime);
+        this.totalRecords[this.difficulty].push(record);
+        this.totalRecords[this.difficulty].sort((a, b) => b.totalScore - a.totalScore || a.totalTime - b.totalTime);
 
-        if (this.totalRecords.length > 50) {
-            this.totalRecords = this.totalRecords.slice(0, 50);
+        if (this.totalRecords[this.difficulty].length > 50) {
+            this.totalRecords[this.difficulty] = this.totalRecords[this.difficulty].slice(0, 50);
         }
+
+        // 添加到速通榜
+        this.addSpeedrunRecord(totalTime);
 
         this.saveLeaderboards();
         return record;
+    },
+
+    // 添加速通记录
+    addSpeedrunRecord(totalTime) {
+        const record = {
+            name: this.playerName,
+            totalTime: parseFloat(totalTime),
+            difficulty: this.difficulty,
+            levelsCompleted: this.levels,
+            date: Date.now(),
+            recordId: this.generateRecordId()
+        };
+
+        this.speedrunRecords.push(record);
+        this.speedrunRecords.sort((a, b) => {
+            // 先按难度排序（easy < normal < hard），再按时间排序
+            const difficultyOrder = { easy: 0, normal: 1, hard: 2 };
+            if (difficultyOrder[a.difficulty] !== difficultyOrder[b.difficulty]) {
+                return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
+            }
+            return a.totalTime - b.totalTime;
+        });
+
+        if (this.speedrunRecords.length > 50) {
+            this.speedrunRecords = this.speedrunRecords.slice(0, 50);
+        }
     },
 
     // 生成唯一的记录ID
@@ -1641,19 +1706,43 @@ const GameState = {
     },
 
     // 获取关卡记录
-    getLevelRecords(level) {
-        return this.levelRecords[level] || [];
+    getLevelRecords(level, difficulty = this.difficulty) {
+        return this.levelRecords[difficulty]?.[level] || [];
     },
 
     // 获取总记录
-    getTotalRecords() {
-        return this.totalRecords;
+    getTotalRecords(difficulty = this.difficulty) {
+        return this.totalRecords[difficulty] || [];
+    },
+
+    // 获取速通记录
+    getSpeedrunRecords(difficulty = null) {
+        if (!difficulty) {
+            return this.speedrunRecords;
+        }
+        return this.speedrunRecords.filter(record => record.difficulty === difficulty);
+    },
+
+    // 设置难度
+    setDifficulty(difficulty) {
+        if (this.difficulties[difficulty]) {
+            this.difficulty = difficulty;
+            this.saveProgress();
+            return true;
+        }
+        return false;
+    },
+
+    // 获取当前难度配置
+    getCurrentDifficultyConfig() {
+        return this.difficulties[this.difficulty] || this.difficulties.normal;
     },
 
     // 计算得分
     calculateScore(time, mistakes, pairs) {
+        const config = this.getCurrentDifficultyConfig();
         const baseScore = 100;
-        const timePenalty = Math.min(time * 0.5, 30);
+        const timePenalty = Math.min(time * config.timeFactor, 30);
         const mistakePenalty = mistakes * 5;
         const bonus = pairs * 2;
         const score = Math.max(0, Math.round(baseScore - timePenalty - mistakePenalty + bonus));
@@ -1699,64 +1788,89 @@ const GameState = {
 
 /* ========== 数据加密解密功能 ========== */
 const DataEncryptor = {
-    // XOR加密
-    xorEncrypt(text, key) {
-        let result = '';
-        for (let i = 0; i < text.length; i++) {
-            const charCode = text.charCodeAt(i) ^ key.charCodeAt(i % key.length);
-            result += String.fromCharCode(charCode);
-        }
-        return result;
-    },
-
-    // Base64编码
-    base64Encode(str) {
+    // 使用 Web Crypto API 生成 AES-256 密钥
+    async generateKey() {
         try {
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-                (match, p1) => String.fromCharCode('0x' + p1)));
+            const encoder = new TextEncoder();
+            const keyMaterial = await crypto.subtle.importKey(
+                'raw',
+                encoder.encode(GameState.encryptionSeed),
+                { name: 'PBKDF2' },
+                false,
+                ['deriveKey']
+            );
+
+            return crypto.subtle.deriveKey(
+                {
+                    name: 'PBKDF2',
+                    salt: encoder.encode('WordGameSalt_2024'),
+                    iterations: 100000,
+                    hash: 'SHA-256'
+                },
+                keyMaterial,
+                { name: 'AES-GCM', length: 256 },
+                false,
+                ['encrypt', 'decrypt']
+            );
         } catch (e) {
-            return btoa(unescape(encodeURIComponent(str)));
+            console.error('生成密钥失败:', e);
+            throw e;
         }
     },
 
-    // Base64解码
-    base64Decode(str) {
+    // AES-256-GCM 加密数据
+    async encryptData(data) {
         try {
-            return decodeURIComponent(atob(str).split('').map(c =>
-                '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-        } catch (e) {
-            return decodeURIComponent(escape(atob(str)));
-        }
-    },
-
-    // 生成校验和
-    generateChecksum(data) {
-        const str = JSON.stringify(data);
-        let sum = 0;
-        for (let i = 0; i < str.length; i++) {
-            sum = (sum + str.charCodeAt(i)) % 2147483647;
-        }
-        return sum.toString(16);
-    },
-
-    // 加密数据
-    encryptData(data) {
-        try {
+            const key = await this.generateKey();
+            const encoder = new TextEncoder();
             const jsonStr = JSON.stringify(data);
-            const encrypted = this.xorEncrypt(jsonStr, GameState.encryptionSeed);
-            return this.base64Encode(encrypted);
+            const iv = crypto.getRandomValues(new Uint8Array(12)); // 12字节IV，GCM模式推荐
+
+            const encryptedData = await crypto.subtle.encrypt(
+                {
+                    name: 'AES-GCM',
+                    iv: iv
+                },
+                key,
+                encoder.encode(jsonStr)
+            );
+
+            // 组合 IV 和加密数据
+            const combined = new Uint8Array(iv.length + encryptedData.byteLength);
+            combined.set(iv, 0);
+            combined.set(new Uint8Array(encryptedData), iv.length);
+
+            // 转换为 base64 字符串
+            return btoa(String.fromCharCode(...combined));
         } catch (e) {
             console.error('加密失败:', e);
             return null;
         }
     },
 
-    // 解密数据
-    decryptData(encryptedStr) {
+    // AES-256-GCM 解密数据
+    async decryptData(encryptedStr) {
         try {
-            const decoded = this.base64Decode(encryptedStr);
-            const decrypted = this.xorEncrypt(decoded, GameState.encryptionSeed);
-            return JSON.parse(decrypted);
+            const key = await this.generateKey();
+            // 转换 base64 为 Uint8Array
+            const combined = new Uint8Array([...atob(encryptedStr)].map(c => c.charCodeAt(0)));
+
+            // 分离 IV 和加密数据
+            const iv = combined.slice(0, 12);
+            const encryptedData = combined.slice(12);
+
+            const decryptedData = await crypto.subtle.decrypt(
+                {
+                    name: 'AES-GCM',
+                    iv: iv
+                },
+                key,
+                encryptedData
+            );
+
+            const decoder = new TextDecoder();
+            const jsonStr = decoder.decode(decryptedData);
+            return JSON.parse(jsonStr);
         } catch (e) {
             console.error('解密失败:', e);
             return null;
@@ -1764,7 +1878,7 @@ const DataEncryptor = {
     },
 
     // 导出加密数据
-    exportEncryptedData() {
+    async exportEncryptedData() {
         const data = {
             version: GameState.gameVersion,
             playerName: GameState.playerName,
@@ -1776,7 +1890,7 @@ const DataEncryptor = {
             exportTime: Date.now()
         };
 
-        const encrypted = this.encryptData(data);
+        const encrypted = await this.encryptData(data);
         if (!encrypted) throw new Error('加密失败');
 
         return {
@@ -1785,50 +1899,21 @@ const DataEncryptor = {
         };
     },
 
-    // 导出明文数据
-    exportPlainData() {
-        const data = {
-            version: GameState.gameVersion,
-            playerName: GameState.playerName,
-            totalScore: GameState.totalScore,
-            currentLevel: GameState.currentLevel,
-            completedLevels: Array.from(GameState.completedLevels),
-            levelRecords: GameState.levelRecords,
-            totalRecords: GameState.totalRecords,
-            exportTime: Date.now(),
-            checksum: this.generateChecksum({
-                totalScore: GameState.totalScore,
-                currentLevel: GameState.currentLevel,
-                completedLevels: Array.from(GameState.completedLevels)
-            })
-        };
-
-        return {
-            content: JSON.stringify(data, null, 2),
-            filename: `wordgame_${GameState.playerName}_${new Date().toISOString().slice(0, 10)}.yzgdata`
-        };
-    },
-
     // 导入数据
-    importData(content, isEncrypted) {
+    async importData(content, isEncrypted) {
         try {
             let data;
 
             if (isEncrypted) {
-                data = this.decryptData(content);
+                data = await this.decryptData(content);
             } else {
-                data = JSON.parse(content);
+                // 严格禁止导入明文敏感数据
+                throw new Error('禁止导入明文敏感数据，请使用加密数据格式');
+            }
 
-                // 验证校验和
-                const checksum = this.generateChecksum({
-                    totalScore: data.totalScore,
-                    currentLevel: data.currentLevel,
-                    completedLevels: data.completedLevels
-                });
-
-                if (checksum !== data.checksum) {
-                    throw new Error('校验和不匹配，数据可能已损坏');
-                }
+            // 验证数据完整性
+            if (!data.version || !data.playerName) {
+                throw new Error('数据格式错误');
             }
 
             // 版本兼容性检查
@@ -1877,17 +1962,24 @@ function handleCardClick(e) {
     if (card.classList.contains('matched') || card.classList.contains('selected')) return;
 
     if (GameState.selectedCard) {
-        const isMatch = checkMatch(GameState.selectedCard, card);
-        if (isMatch) {
-            matchCards(GameState.selectedCard, card);
-            GameState.matchedPairs++;
-            GameState.selectedCard = null;
-
-            if (GameState.matchedPairs === GameState.totalPairs) {
-                setTimeout(showCongrats, 600);
-            }
+        // 如果选择了同类型的卡片，取消上一个选择并选择当前卡片
+        if (GameState.selectedCard.dataset.type === card.dataset.type) {
+            GameState.selectedCard.classList.remove('selected');
+            card.classList.add('selected');
+            GameState.selectedCard = card;
         } else {
-            handleMismatch(GameState.selectedCard, card);
+            const isMatch = checkMatch(GameState.selectedCard, card);
+            if (isMatch) {
+                matchCards(GameState.selectedCard, card);
+                GameState.matchedPairs++;
+                GameState.selectedCard = null;
+
+                if (GameState.matchedPairs === GameState.totalPairs) {
+                    setTimeout(showCongrats, 600);
+                }
+            } else {
+                handleMismatch(GameState.selectedCard, card);
+            }
         }
     } else {
         card.classList.add('selected');
@@ -1911,12 +2003,23 @@ function handleMismatch(card1, card2) {
     card1.classList.add('mismatch');
     card2.classList.add('mismatch');
 
-    setTimeout(() => {
-        card1.classList.remove('selected', 'mismatch');
-        card2.classList.remove('mismatch');
-        GameState.selectedCard = null;
-        updateUI();
-    }, 600);
+    // 检查是否超过当前难度的最大容错次数
+    const config = GameState.getCurrentDifficultyConfig();
+    if (GameState.mistakes > config.maxMistakes) {
+        setTimeout(() => {
+            // 游戏结束，重置
+            GameState.stopTimer();
+            alert(`❌ 游戏结束！您已超过最大容错次数（${config.maxMistakes}次）。`);
+            startLevel(GameState.currentLevel);
+        }, 600);
+    } else {
+        setTimeout(() => {
+            card1.classList.remove('selected', 'mismatch');
+            card2.classList.remove('mismatch');
+            GameState.selectedCard = null;
+            updateUI();
+        }, 600);
+    }
 }
 
 function renderGame() {
@@ -1939,8 +2042,11 @@ function startLevel(level) {
         return;
     }
 
-    const startIdx = (level - 1) * GameState.pairsPerLevel;
-    const endIdx = Math.min(startIdx + GameState.pairsPerLevel, ALL_EXPRESSIONS.length);
+    const config = GameState.getCurrentDifficultyConfig();
+    const pairsPerLevel = config.pairsPerLevel;
+    
+    const startIdx = (level - 1) * pairsPerLevel;
+    const endIdx = Math.min(startIdx + pairsPerLevel, ALL_EXPRESSIONS.length);
     GameState.currentExpressions = ALL_EXPRESSIONS.slice(startIdx, endIdx);
     GameState.totalPairs = GameState.currentExpressions.length;
     GameState.matchedPairs = 0;
@@ -1956,7 +2062,7 @@ function startLevel(level) {
     updateUI();
 
     document.getElementById('level').textContent = level;
-    document.getElementById('progress').textContent = `关卡 ${level}/${GameState.levels} | 总分: ${GameState.totalScore}`;
+    document.getElementById('progress').textContent = `关卡 ${level}/${GameState.levels} | 总分: ${GameState.totalScore} | 难度: ${GameState.difficulty === 'easy' ? '简单' : GameState.difficulty === 'normal' ? '普通' : '困难'}`;
 }
 
 function showCongrats() {
@@ -2072,12 +2178,57 @@ function updateUI() {
 /* ========== 排行榜功能 ========== */
 function showLeaderboard(initialTab = 'level1') {
     const panel = document.getElementById('leaderboardPanel');
-    const tabsContainer = document.getElementById('leaderboardTabs');
-    const contentContainer = document.getElementById('leaderboardContent');
+    const leaderboardContainer = document.querySelector('.leaderboard-container');
+    
+    // 更新排行榜容器结构，添加难度选择
+    leaderboardContainer.innerHTML = `
+        <div class="leaderboard-header">
+            <h2>🏆 排行榜</h2>
+            <button class="close-btn" onclick="hideLeaderboard()">×</button>
+        </div>
+        
+        <!-- 难度选择区域 -->
+        <div class="leaderboard-controls">
+            <div class="difficulty-selector">
+                <h3>难度选择:</h3>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn ${GameState.difficulty === 'easy' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('easy')">简单</button>
+                    <button class="difficulty-btn ${GameState.difficulty === 'normal' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('normal')">普通</button>
+                    <button class="difficulty-btn ${GameState.difficulty === 'hard' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('hard')">困难</button>
+                </div>
+            </div>
+            
+            <div class="leaderboard-tabs" id="leaderboardTabs">
+                <!-- 选项卡将通过JS动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 排行榜内容区域 -->
+        <div class="leaderboard-content" id="leaderboardContent">
+            <!-- 内容将通过JS动态生成 -->
+        </div>
+    `;
     
     // 生成选项卡
+    generateLeaderboardTabs(initialTab);
+    
+    // 显示初始内容
+    if (initialTab === 'total') {
+        showTotalLeaderboard();
+    } else if (initialTab === 'speedrun') {
+        showSpeedrunLeaderboard();
+    } else {
+        const level = initialTab.replace('level', '');
+        showLevelLeaderboard(parseInt(level));
+    }
+    
+    panel.classList.add('active');
+}
+
+// 生成排行榜选项卡
+function generateLeaderboardTabs(initialTab) {
+    const tabsContainer = document.getElementById('leaderboardTabs');
     tabsContainer.innerHTML = '';
-    contentContainer.innerHTML = '';
     
     // 添加关卡选项卡
     for (let i = 1; i <= GameState.levels; i++) {
@@ -2095,17 +2246,48 @@ function showLeaderboard(initialTab = 'level1') {
     totalTab.onclick = () => showTotalLeaderboard();
     tabsContainer.appendChild(totalTab);
     
-    // 显示初始内容
+    // 添加速通榜选项卡
+    const speedrunTab = document.createElement('button');
+    speedrunTab.className = `tab-btn ${initialTab === 'speedrun' ? 'active' : ''}`;
+    speedrunTab.textContent = '速通榜';
+    speedrunTab.onclick = () => showSpeedrunLeaderboard();
+    tabsContainer.appendChild(speedrunTab);
+}
+
+// 切换排行榜难度
+function changeLeaderboardDifficulty(difficulty) {
+    GameState.setDifficulty(difficulty);
+    // 重新生成选项卡和内容
+    const activeTab = document.querySelector('.leaderboard-tabs .tab-btn.active');
+    let initialTab = 'level1';
+    if (activeTab) {
+        if (activeTab.textContent === '总排行榜') {
+            initialTab = 'total';
+        } else if (activeTab.textContent === '速通榜') {
+            initialTab = 'speedrun';
+        } else {
+            const level = activeTab.textContent.replace('第', '').replace('关', '');
+            initialTab = 'level' + level;
+        }
+    }
+    generateLeaderboardTabs(initialTab);
+    
+    // 重新显示内容
     if (initialTab === 'total') {
         showTotalLeaderboard();
+    } else if (initialTab === 'speedrun') {
+        showSpeedrunLeaderboard();
     } else {
         const level = initialTab.replace('level', '');
         showLevelLeaderboard(parseInt(level));
     }
     
-    panel.classList.add('active');
+    // 更新难度按钮状态
+    document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.difficulty-btn[onclick*="${difficulty}"]`).classList.add('active');
 }
 
+// 显示关卡排行榜
 function showLevelLeaderboard(level) {
     const contentContainer = document.getElementById('leaderboardContent');
     const tabs = document.querySelectorAll('.tab-btn');
@@ -2140,13 +2322,14 @@ function showLevelLeaderboard(level) {
     });
 }
 
+// 显示总排行榜
 function showTotalLeaderboard() {
     const contentContainer = document.getElementById('leaderboardContent');
     const tabs = document.querySelectorAll('.tab-btn');
     
     // 更新选项卡状态
     tabs.forEach(tab => tab.classList.remove('active'));
-    tabs[tabs.length - 1]?.classList.add('active');
+    tabs[tabs.length - 2]?.classList.add('active'); // 总排行榜是倒数第二个
     
     const records = GameState.getTotalRecords();
     
@@ -2169,6 +2352,41 @@ function showTotalLeaderboard() {
             <div class="score">${record.totalScore}分</div>
             <div class="time">${record.totalTime.toFixed(3)}s</div>
             <div class="level">${record.levelsCompleted}关</div>
+        `;
+        contentContainer.appendChild(li);
+    });
+}
+
+// 显示速通榜
+function showSpeedrunLeaderboard() {
+    const contentContainer = document.getElementById('leaderboardContent');
+    const tabs = document.querySelectorAll('.tab-btn');
+    
+    // 更新选项卡状态
+    tabs.forEach(tab => tab.classList.remove('active'));
+    tabs[tabs.length - 1]?.classList.add('active'); // 速通榜是最后一个
+    
+    const records = GameState.getSpeedrunRecords(GameState.difficulty);
+    
+    if (records.length === 0) {
+        contentContainer.innerHTML = `
+            <li style="text-align: center; padding: 4vh; color: #7f8c8d;">
+                暂无速通记录<br>
+                <small>完成所有关卡即可上榜！</small>
+            </li>
+        `;
+        return;
+    }
+    
+    contentContainer.innerHTML = '';
+    records.slice(0, 20).forEach((record, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="rank">${index + 1}</div>
+            <div class="name">${record.name}</div>
+            <div class="time">${record.totalTime.toFixed(3)}s</div>
+            <div class="level">${record.levelsCompleted}关</div>
+            <div class="difficulty">${record.difficulty === 'easy' ? '简单' : record.difficulty === 'normal' ? '普通' : '困难'}</div>
         `;
         contentContainer.appendChild(li);
     });
@@ -2243,23 +2461,12 @@ function hideExportModal() {
     document.getElementById('exportModal').classList.remove('active');
 }
 
-function downloadEncryptedData() {
+async function downloadEncryptedData() {
     try {
-        const data = DataEncryptor.exportEncryptedData();
+        const data = await DataEncryptor.exportEncryptedData();
         downloadFile(data.content, data.filename, 'application/octet-stream');
         hideExportModal();
         alert('✅ 加密数据导出成功！');
-    } catch (e) {
-        alert('❌ 导出失败: ' + e.message);
-    }
-}
-
-function downloadPlainData() {
-    try {
-        const data = DataEncryptor.exportPlainData();
-        downloadFile(data.content, data.filename, 'application/json');
-        hideExportModal();
-        alert('✅ 明文数据导出成功！');
     } catch (e) {
         alert('❌ 导出失败: ' + e.message);
     }
@@ -2287,14 +2494,14 @@ function handleFileImport(file) {
     statusDiv.innerHTML = `<p>正在处理文件: ${file.name}...</p>`;
     
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = async function(e) {
         try {
             const content = e.target.result;
             const isEncrypted = file.name.endsWith('.yzgdatae');
             
             statusDiv.innerHTML += '<p>正在解密/解析数据...</p>';
             
-            const data = DataEncryptor.importData(content, isEncrypted);
+            const data = await DataEncryptor.importData(content, isEncrypted);
             
             // 更新游戏状态
             GameState.playerName = data.playerName || '玩家';
