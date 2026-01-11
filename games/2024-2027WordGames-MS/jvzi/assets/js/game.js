@@ -1018,12 +1018,57 @@ function updateUI() {
 /* ========== 排行榜功能 ========== */
 function showLeaderboard(initialTab = 'level1') {
     const panel = document.getElementById('leaderboardPanel');
-    const tabsContainer = document.getElementById('leaderboardTabs');
-    const contentContainer = document.getElementById('leaderboardContent');
+    const leaderboardContainer = document.querySelector('.leaderboard-container');
+
+    // 更新排行榜容器结构，添加难度选择
+    leaderboardContainer.innerHTML = `
+        <div class="leaderboard-header">
+            <h2>🏆 排行榜</h2>
+            <button class="close-btn" onclick="hideLeaderboard()">×</button>
+        </div>
+        
+        <!-- 难度选择区域 -->
+        <div class="leaderboard-controls">
+            <div class="difficulty-selector">
+                <h3>难度选择:</h3>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn ${GameState.difficulty === 'easy' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('easy')">简单</button>
+                    <button class="difficulty-btn ${GameState.difficulty === 'normal' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('normal')">普通</button>
+                    <button class="difficulty-btn ${GameState.difficulty === 'hard' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('hard')">困难</button>
+                </div>
+            </div>
+            
+            <div class="leaderboard-tabs" id="leaderboardTabs">
+                <!-- 选项卡将通过JS动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 排行榜内容区域 -->
+        <div class="leaderboard-content" id="leaderboardContent">
+            <!-- 内容将通过JS动态生成 -->
+        </div>
+    `;
 
     // 生成选项卡
+    generateLeaderboardTabs(initialTab);
+
+    // 显示初始内容
+    if (initialTab === 'total') {
+        showTotalLeaderboard();
+    } else if (initialTab === 'speedrun') {
+        showSpeedrunLeaderboard();
+    } else {
+        const level = initialTab.replace('level', '');
+        showLevelLeaderboard(parseInt(level));
+    }
+
+    panel.classList.add('active');
+}
+
+// 生成排行榜选项卡
+function generateLeaderboardTabs(initialTab) {
+    const tabsContainer = document.getElementById('leaderboardTabs');
     tabsContainer.innerHTML = '';
-    contentContainer.innerHTML = '';
 
     // 添加关卡选项卡
     for (let i = 1; i <= GameState.levels; i++) {
@@ -1041,15 +1086,47 @@ function showLeaderboard(initialTab = 'level1') {
     totalTab.onclick = () => showTotalLeaderboard();
     tabsContainer.appendChild(totalTab);
 
-    // 显示初始内容
+    // 添加速通榜选项卡
+    const speedrunTab = document.createElement('button');
+    speedrunTab.className = `tab-btn ${initialTab === 'speedrun' ? 'active' : ''}`;
+    speedrunTab.textContent = '速通榜';
+    speedrunTab.onclick = () => showSpeedrunLeaderboard();
+    tabsContainer.appendChild(speedrunTab);
+}
+
+// 切换排行榜难度
+function changeLeaderboardDifficulty(difficulty) {
+    GameState.setDifficulty(difficulty);
+
+    // 获取当前激活的选项卡
+    let initialTab = 'level1';
+    const activeTab = document.querySelector('.tab-btn.active');
+    if (activeTab) {
+        if (activeTab.textContent === '总排行榜') {
+            initialTab = 'total';
+        } else if (activeTab.textContent === '速通榜') {
+            initialTab = 'speedrun';
+        } else {
+            const level = activeTab.textContent.replace('第', '').replace('关', '');
+            initialTab = 'level' + level;
+        }
+    }
+
+    generateLeaderboardTabs(initialTab);
+
+    // 重新显示内容
     if (initialTab === 'total') {
         showTotalLeaderboard();
+    } else if (initialTab === 'speedrun') {
+        showSpeedrunLeaderboard();
     } else {
         const level = initialTab.replace('level', '');
         showLevelLeaderboard(parseInt(level));
     }
 
-    panel.classList.add('active');
+    // 更新难度按钮状态
+    document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.difficulty-btn[onclick*="${difficulty}"]`).classList.add('active');
 }
 
 function showLevelLeaderboard(level) {
