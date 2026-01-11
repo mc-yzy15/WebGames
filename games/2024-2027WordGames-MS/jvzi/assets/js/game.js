@@ -866,14 +866,17 @@ function renderGame() {
     const container = document.getElementById('game');
     container.innerHTML = '';
 
+    // 按照一中一英的顺序排列卡片
     const cards = [];
     GameState.currentExpressions.forEach((expr) => {
-        const engCard = createCard(expr.eng, 'english', expr);
+        // 交替添加中文和英文卡片
         const chiCard = createCard(expr.chi, 'chinese', expr);
-        cards.push(engCard, chiCard);
+        const engCard = createCard(expr.eng, 'english', expr);
+        cards.push(chiCard, engCard);
     });
 
-    shuffle(cards).forEach(card => container.appendChild(card));
+    // 不需要随机排列，直接按照一中一英顺序显示
+    cards.forEach(card => container.appendChild(card));
 }
 
 function startLevel(level) {
