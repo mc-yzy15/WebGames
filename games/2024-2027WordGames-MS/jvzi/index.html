@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="theme-color" content="#d4a574">
     <title>饺子游戏</title>
-    <link rel="stylesheet" href="./assets/css/game.css">
+    <!-- 外部样式资源引用 -->
+    <link rel="stylesheet" href="./assets/css/game.css"
+        onerror="this.onerror=null; console.error('Failed to load CSS file');">
+
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="./assets/js/game.js" as="script">
 </head>
 
 <body>
@@ -152,7 +157,9 @@
         </div>
     </div>
 
-    <script src="./assets/js/game.js"></script>
+    <!-- 外部JavaScript资源引用 -->
+    <script src="./assets/js/game.js"
+        onerror="this.onerror=null; console.error('Failed to load JavaScript file'); alert('游戏资源加载失败，请刷新页面重试');"></script>
 </body>
 
 </html>

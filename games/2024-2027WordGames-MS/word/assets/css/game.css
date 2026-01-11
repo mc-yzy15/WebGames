@@ -492,43 +492,137 @@ body {
     margin-bottom: 0.5vh;
 }
 
-/* 高分屏优化 */
+/* 大屏设备响应式布局 */
 @media (min-width: 1920px) {
-    .container {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 2vh;
+    .header {
+        font-size: 3.5em;
+        padding: 3vh 0;
     }
+    
+    .game-controls {
+        gap: 3vw;
+        margin-bottom: 3vh;
+    }
+    
+    .control-btn {
+        font-size: 1.3em;
+        padding: 1.5vh 3vw;
+        min-height: 56px;
+        min-width: 56px;
+    }
+    
+    .progress,
+    .level-info {
+        font-size: 1.5em;
+        padding: 1.5vh 3vw;
+    }
+    
+    .stats {
+        font-size: 1.2em;
+        padding: 1.5vh 2vw;
+        max-width: 80vw;
+    }
+    
+    .container {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 3vh;
+        padding: 3vh;
+        max-width: 1600px;
+    }
+    
     .card {
-        min-height: 108px;
-        font-size: 1.1em;
+        min-height: 132px;
+        font-size: 1.3em;
+        padding: 2vh 1.5vw;
+    }
+    
+    .leaderboard-container {
+        width: 1000px;
+        padding: 4vh 5vw;
+    }
+    
+    .modal-content {
+        width: 600px;
+        padding: 4vh 5vw;
     }
 }
 
 @media (min-width: 2560px) {
-    .container {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        max-width: 1800px;
+    .header {
+        font-size: 4em;
     }
+    
+    .container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        max-width: 1800px;
+        gap: 4vh;
+        padding: 4vh;
+    }
+    
     .card {
-        min-height: 120px;
-        font-size: 1.2em;
+        min-height: 150px;
+        font-size: 1.5em;
+    }
+    
+    .leaderboard-container {
+        width: 1200px;
+    }
+    
+    .modal-content {
+        width: 700px;
     }
 }
 
 /* 触摸屏优化 */
 @media (pointer: coarse) {
+    /* 增大触摸目标尺寸 */
     .card {
-        min-height: 90px;
-        font-size: 1em;
+        min-height: 120px;
+        font-size: 1.1em;
+        padding: 2vh 1.5vw;
+        border-radius: 20px;
     }
+    
+    /* 优化按钮尺寸和反馈 */
     .control-btn, .level-btn {
-        min-height: 50px;
-        min-width: 50px;
-    }
-    .leaderboard-list li {
+        min-height: 64px;
+        min-width: 64px;
+        font-size: 1.2em;
         padding: 2vh 3vw;
+        border-radius: 20px;
+        transition: all 0.15s ease;
+    }
+    
+    /* 增强触摸反馈 */
+    .control-btn:active,
+    .level-btn:active,
+    .card:active {
+        transform: scale(0.92);
+        opacity: 0.8;
+    }
+    
+    /* 优化列表项触摸体验 */
+    .leaderboard-list li {
+        padding: 2.5vh 4vw;
         grid-template-columns: 1fr;
-        gap: 1vh;
+        gap: 1.5vh;
+        font-size: 1.2em;
+    }
+    
+    /* 增大图标尺寸 */
+    .icon {
+        font-size: 1.5em;
+    }
+    
+    /* 优化模态框触摸体验 */
+    .modal-content {
+        padding: 4vh 5vw;
+        font-size: 1.2em;
+    }
+    
+    /* 优化滑块和输入控件 */
+    input[type="file"] {
+        min-height: 64px;
     }
 }
 
