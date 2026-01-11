@@ -25,17 +25,6 @@ body {
 }
 
 .header {
-    font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
-    background: linear-gradient(135deg, #fdf6e3 0%, #e8c8a0 50%, #d4a574 100%);
-    user-select: none;
-    overflow-x: hidden;
-    min-height: 100vh;
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-    position: relative;
-    padding: 1vh;
-}
-
-.header {
     text-align: center;
     padding: 2.5vh 0;
     font-size: clamp(1.6em, 4.5vw, 2.8em);
