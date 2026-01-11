@@ -1020,32 +1020,37 @@ function showLeaderboard(initialTab = 'level1') {
     const panel = document.getElementById('leaderboardPanel');
     const leaderboardContainer = document.querySelector('.leaderboard-container');
 
-    // 更新排行榜容器结构，添加难度选择
+    // 更新排行榜容器结构，实现上部分选难度，下部分选关卡或速通榜，底下再显示排行榜
     leaderboardContainer.innerHTML = `
         <div class="leaderboard-header">
             <h2>🏆 排行榜</h2>
             <button class="close-btn" onclick="hideLeaderboard()">×</button>
         </div>
         
-        <!-- 难度选择区域 -->
-        <div class="leaderboard-controls">
-            <div class="difficulty-selector">
-                <h3>难度选择:</h3>
-                <div class="difficulty-buttons">
-                    <button class="difficulty-btn ${GameState.difficulty === 'easy' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('easy')">简单</button>
-                    <button class="difficulty-btn ${GameState.difficulty === 'normal' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('normal')">普通</button>
-                    <button class="difficulty-btn ${GameState.difficulty === 'hard' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('hard')">困难</button>
-                </div>
+        <!-- 上半部分：难度选择 -->
+        <div class="leaderboard-difficulty-section">
+            <h3>难度选择:</h3>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn ${GameState.difficulty === 'easy' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('easy')">简单</button>
+                <button class="difficulty-btn ${GameState.difficulty === 'normal' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('normal')">普通</button>
+                <button class="difficulty-btn ${GameState.difficulty === 'hard' ? 'active' : ''}" onclick="changeLeaderboardDifficulty('hard')">困难</button>
             </div>
-            
+        </div>
+        
+        <!-- 上半部分：关卡/速通榜选择 -->
+        <div class="leaderboard-tabs-section">
+            <h3>选择排行榜类型:</h3>
             <div class="leaderboard-tabs" id="leaderboardTabs">
                 <!-- 选项卡将通过JS动态生成 -->
             </div>
         </div>
         
-        <!-- 排行榜内容区域 -->
-        <div class="leaderboard-content" id="leaderboardContent">
-            <!-- 内容将通过JS动态生成 -->
+        <!-- 下半部分：排行榜内容 -->
+        <div class="leaderboard-content-section">
+            <h3>排行榜结果:</h3>
+            <div class="leaderboard-content" id="leaderboardContent">
+                <!-- 内容将通过JS动态生成 -->
+            </div>
         </div>
     `;
 

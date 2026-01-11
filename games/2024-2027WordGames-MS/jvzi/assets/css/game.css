@@ -166,7 +166,7 @@ body {
 
 .container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(32vw, 220px), 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: clamp(1.5vh, 2.5vw, 2.2vh);
     padding: 2.5vh;
     transition: all 0.3s ease;
