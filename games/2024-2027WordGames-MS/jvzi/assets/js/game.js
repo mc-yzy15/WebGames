@@ -1169,7 +1169,8 @@ function showTotalLeaderboard() {
 
     // 更新选项卡状态
     tabs.forEach(tab => tab.classList.remove('active'));
-    tabs[tabs.length - 1]?.classList.add('active');
+    const totalTab = Array.from(tabs).find(tab => tab.textContent === '总排行榜');
+    if (totalTab) totalTab.classList.add('active');
 
     const records = GameState.getTotalRecords();
 
@@ -1192,6 +1193,42 @@ function showTotalLeaderboard() {
             <div class="score">${record.totalScore}分</div>
             <div class="time">${record.totalTime.toFixed(3)}s</div>
             <div class="level">${record.levelsCompleted}关</div>
+        `;
+        contentContainer.appendChild(li);
+    });
+}
+
+// 显示速通榜
+function showSpeedrunLeaderboard() {
+    const contentContainer = document.getElementById('leaderboardContent');
+    const tabs = document.querySelectorAll('.tab-btn');
+
+    // 更新选项卡状态
+    tabs.forEach(tab => tab.classList.remove('active'));
+    const speedrunTab = Array.from(tabs).find(tab => tab.textContent === '速通榜');
+    if (speedrunTab) speedrunTab.classList.add('active');
+
+    const records = GameState.getSpeedrunRecords(GameState.difficulty);
+
+    if (records.length === 0) {
+        contentContainer.innerHTML = `
+            <li style="text-align: center; padding: 4vh; color: #7f8c8d;">
+                暂无速通记录<br>
+                <small>快速完成所有关卡即可上榜！</small>
+            </li>
+        `;
+        return;
+    }
+
+    contentContainer.innerHTML = '';
+    records.slice(0, 20).forEach((record, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="rank">${index + 1}</div>
+            <div class="name">${record.name}</div>
+            <div class="time">${record.totalTime.toFixed(3)}s</div>
+            <div class="level">${record.levelsCompleted}关</div>
+            <div class="difficulty">${record.difficulty === 'easy' ? '简单' : record.difficulty === 'normal' ? '普通' : '困难'}</div>
         `;
         contentContainer.appendChild(li);
     });
