@@ -1,4 +1,11 @@
 /* 游戏样式文件 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
 body {
     font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
     background: linear-gradient(135deg, #fdf6e3 0%, #e8c8a0 50%, #d4a574 100%);
@@ -624,7 +631,7 @@ body {
     }
 
     .container {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         max-width: 1800px;
         gap: 4vh;
         padding: 4vh;
@@ -732,7 +739,7 @@ body {
 /* 响应式调整 */
 @media (max-width: 768px) {
     .container {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.5vh;
         padding: 1.5vh;
     }
@@ -758,7 +765,7 @@ body {
 
 @media (max-width: 480px) {
     .container {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 1vh;
     }
 
