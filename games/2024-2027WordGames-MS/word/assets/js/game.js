@@ -2601,31 +2601,43 @@ function handleFileImport(file) {
     reader.onload = async function(e) {
         try {
             const content = e.target.result;
-            const isEncrypted = file.name.endsWith('.yzgdatae');
+            const isEncrypted = file.name.endsWith('.yzgdatae') || file.name.endsWith('.yzgldrb');
+            const isLeaderboardOnly = file.name.endsWith('.yzgldrb');
             
             statusDiv.innerHTML += '<p>正在解密/解析数据...</p>';
             
-            const data = await DataEncryptor.importData(content, isEncrypted);
-            
-            // 更新游戏状态
-            GameState.playerName = data.playerName || '玩家';
-            GameState.totalScore = data.totalScore || 0;
-            GameState.currentLevel = data.currentLevel || 1;
-            GameState.completedLevels = new Set(data.completedLevels || []);
-            GameState.levelRecords = data.levelRecords || {};
-            GameState.totalRecords = data.totalRecords || [];
-            
-            // 保存并更新UI
-            GameState.saveProgress();
-            GameState.saveLeaderboards();
-            startLevel(GameState.currentLevel);
-            
-            statusDiv.innerHTML = `
-                <p style="color: #27ae60; font-weight: bold;">✅ 导入成功！</p>
-                <p>玩家: ${GameState.playerName}</p>
-                <p>当前关卡: ${GameState.currentLevel}</p>
-                <p>总分: ${GameState.totalScore}</p>
-            `;
+            if (isLeaderboardOnly) {
+                // 仅导入排行榜数据
+                await DataEncryptor.importLeaderboardData(content, isEncrypted);
+                
+                statusDiv.innerHTML = `
+                    <p style="color: #27ae60; font-weight: bold;">✅ 排行榜数据导入成功！</p>
+                    <p>排行榜数据已合并到现有排行榜中</p>
+                `;
+            } else {
+                // 导入完整游戏数据
+                const data = await DataEncryptor.importData(content, isEncrypted);
+                
+                // 更新游戏状态
+                GameState.playerName = data.playerName || '玩家';
+                GameState.totalScore = data.totalScore || 0;
+                GameState.currentLevel = data.currentLevel || 1;
+                GameState.completedLevels = new Set(data.completedLevels || []);
+                GameState.levelRecords = data.levelRecords || {};
+                GameState.totalRecords = data.totalRecords || [];
+                
+                // 保存并更新UI
+                GameState.saveProgress();
+                GameState.saveLeaderboards();
+                startLevel(GameState.currentLevel);
+                
+                statusDiv.innerHTML = `
+                    <p style="color: #27ae60; font-weight: bold;">✅ 导入成功！</p>
+                    <p>玩家: ${GameState.playerName}</p>
+                    <p>当前关卡: ${GameState.currentLevel}</p>
+                    <p>总分: ${GameState.totalScore}</p>
+                `;
+            }
             
             setTimeout(hideImportModal, 3000);
         } catch (e) {

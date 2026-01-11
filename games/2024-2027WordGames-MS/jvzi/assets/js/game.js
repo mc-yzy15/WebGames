@@ -646,6 +646,26 @@ const DataEncryptor = {
         };
     },
 
+    // 导出排行榜数据（仅排行榜数据，不包含玩家进度）
+    async exportLeaderboardData() {
+        const data = {
+            version: GameState.gameVersion,
+            levelRecords: GameState.levelRecords,
+            totalRecords: GameState.totalRecords,
+            speedrunRecords: GameState.speedrunRecords,
+            exportTime: Date.now(),
+            type: 'leaderboard_only'
+        };
+
+        const encrypted = await this.encryptData(data);
+        if (!encrypted) throw new Error('加密失败');
+
+        return {
+            content: encrypted,
+            filename: `sentencegame_leaderboards_${new Date().toISOString().slice(0, 10)}.yzgldrb`
+        };
+    },
+
     // 导入数据
     async importData(content, isEncrypted) {
         try {
