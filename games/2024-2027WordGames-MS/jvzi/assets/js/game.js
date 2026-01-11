@@ -2,99 +2,210 @@
 
 /* ========== 游戏核心数据 ========== */
 const ALL_EXPRESSIONS = [
-    { eng: 'rules for having fun', chi: '娱乐规则' },
-    { eng: 'traffic rules', chi: '交通规则' },
-    { eng: 'in daily life', chi: '在日常生活中' },
-    { eng: 'develop over time', chi: '随着时间演变' },
-    { eng: 'vary across countries', chi: '因国家而异' },
-    { eng: 'a common practice behavior or rule=norm', chi: '规范 普遍的行为惯例或规则' },
-    { eng: 'a clear rule for quality or correctness=standard', chi: '标准 关于质量或正确性的明确规则' },
-    { eng: 'a well-organized system=good order', chi: '良好的秩序' },
-    { eng: 'a basis, the most important part that everything else needs=foundation', chi: '根基' },
-    { eng: 'explore different types of rules', chi: '探索不同类型的规则' },
-    { eng: 'follow the rules', chi: '遵守规则' },
-    { eng: 'challenge the rules', chi: '质疑规则' },
-    { eng: 'design new rules', chi: '制定新规则' },
-    { eng: 'zebra crossing', chi: '斑马线' },
-    { eng: 'break the rules', chi: '违反规则' },
-    { eng: 'kick the seats', chi: '踢座位' },
-    { eng: 'put your feet on seats', chi: '把脚放在座位上' },
-    { eng: 'block the way; block the noise;', chi: '挡路 阻隔噪音' },
-    { eng: 'clean up your litter', chi: '清理你的垃圾' },
-    { eng: 'look after the children', chi: '照看孩子' },
-    { eng: 'be quiet', chi: '保持安静' },
-    { eng: 'eat smelly food', chi: '吃有异味的食物' },
-    { eng: 'a quiet place', chi: '一个安静的地方' },
-    { eng: 'play loud music', chi: '播放大声的音乐' },
-    { eng: 'in surprise', chi: '惊讶地，吃惊地' },
-    { eng: 'in order to/so as to/ to…', chi: '为了，以便' },
-    { eng: 'feel angry/cross/mad/displeased; get annoyed turn as red as a tomato', chi: '感到生气/恼怒/愤怒/不悦/变得烦躁 气得满脸通红' },
-    { eng: 'several packets of food', chi: '几包食物' },
-    { eng: 'a mountain of blue cheese', chi: '一大堆蓝纹奶酪' },
-    { eng: 'cover one\'s ears', chi: '捂住耳朵' },
-    { eng: 'reduce the smell', chi: '减轻气味' },
-    { eng: 'turn around', chi: '转过身' },
-    { eng: 'the signs on the wall', chi: '墙上的标识' },
-    { eng: 'feel brave', chi: '感到勇敢' },
-    { eng: 'take a deep breath', chi: '深吸一口气' },
-    { eng: 'clear one\'s throat', chi: '清嗓子' },
-    { eng: 'responsibility', chi: '责任' },
-    { eng: 'stand up to bad behavior', chi: '抵制不良行为' },
-    { eng: 'make new rules', chi: '制定新规则' },
-    { eng: 'a touching story', chi: '一个感人的故事' },
-    { eng: 'pick up the pieces', chi: '收拾残局' },
-    { eng: 'clean up the mess', chi: '清理杂乱' },
-    { eng: 'say sorry to', chi: '向…道歉' },
-    { eng: 'tell the truth', chi: '说实话' },
-    { eng: 'spread some happiness', chi: '传递一些快乐' },
-    { eng: 'see the kindness in small things', chi: '发现小事中的善意' },
-    { eng: 'remind others', chi: '提醒他人' },
-    { eng: 'keep public places clean and tidy', chi: '保持公共场所干净整洁' },
-    { eng: 'make a difficult decision', chi: '做一个艰难的决定' },
-    { eng: 'a famous line', chi: '一句名言' },
-    { eng: 'the whole system of rules in a country or society', chi: '一个国家/社会的整套规则体系=law法律' },
-    { eng: 'drive very fast', chi: '开得很快' },
-    { eng: 'a very sick passenger', chi: '一位病重的乘客' },
-    { eng: 'slow down', chi: '减速' },
-    { eng: 'at once', chi: '立刻' },
-    { eng: 'the information of the guests', chi: '客人的信息' },
-    { eng: 'in some very special situations', chi: '在一些非常特殊的情况下' },
-    { eng: 'have rules for a reason', chi: '制定规则是由原因的' },
-    { eng: 'cause an accident', chi: '造成事故' },
-    { eng: 'urgent situation', chi: '紧急情况' },
-    { eng: 'cause harm', chi: '造成伤害' },
-    { eng: 'have very bad effects', chi: '产生很坏的影响' },
-    { eng: 'take part in a debate', chi: '参加辩论' },
-    { eng: 'support your arguments', chi: '支持你的论点' },
-    { eng: 'state your arguments', chi: '陈述你的论点' },
-    { eng: 'in conclusion', chi: '总之' },
-    { eng: 'post personal information', chi: '发布个人信息' },
-    { eng: 'be aware of strangers', chi: '提防陌生人' },
-    { eng: 'keep personal information private', chi: '保护个人信息隐私' },
-    { eng: 'be careful with your posts', chi: '谨慎发布内容' },
-    { eng: 'a piece of cake', chi: '小菜一碟' },
-    { eng: 'chat face to face', chi: '面对面聊天' },
-    { eng: 'get in touch with', chi: '与…取得联系' },
-    { eng: 'stay safe', chi: '保持安全' },
-    { eng: 'basic rules', chi: '基本规则' },
-    { eng: 'bring risks', chi: '带来风险' },
-    { eng: 'limit', chi: '限制' },
-    { eng: 'ask for help', chi: '求助' },
-    { eng: 'make enemies', chi: '树敌' },
-    { eng: 'trusted friends', chi: '值得信任的朋友' },
-    { eng: 'set a smart password', chi: '设置安全的密码' },
-    { eng: 'find yourself in hot water', chi: '使自己陷入困境' },
-    { eng: 'turn to your parents', chi: '向父母求助' },
-    { eng: 'cyberbullying', chi: '网络欺凌' },
-    { eng: 'social media', chi: '社交媒体' },
-    { eng: 'protect online accounts', chi: '保护网络账号' },
-    { eng: 'cut in line', chi: '插队' },
-    { eng: 'share a touching story', chi: '分享一个感人的故事' },
-    { eng: 'improve one\'s grades', chi: '提高成绩' },
-    { eng: 'wear seat belts', chi: '系安全带' },
-    { eng: 'wait in line', chi: '排队等候' },
-    { eng: 'fall over', chi: '绊倒' },
-    { eng: 'make great changes', chi: '发生巨大变化' }
+    {
+        "eng": "Do not do to others what you do not want others to do to you.",
+        "chi": "己所不欲，勿施于人。"
+    },
+    {
+        "eng": "Here and there, over the grass, stand beautiful flowers, like stars.",
+        "chi": "草地上到处都是漂亮的花朵，像星星一样散落其中。"
+    },
+    {
+        "eng": "Since then, he hasn\’t seen a child there.",
+        "chi": "从那以后，他再也没在花园里见过一个孩子。"
+    },
+    {
+        "eng": "I haven\’t heard that beautiful birdsong for a while.",
+        "chi": "我已经有段时间没听过如此美妙的鸟鸣了。"
+    },
+    {
+        "eng": "The trees are so glad that they have covered themselves with flowers.",
+        "chi": "树木们开心得满身都开满了花。"
+    },
+    {
+        "eng": "Its story started back in the Qing Dynasty.",
+        "chi": "它的故事始于清朝。"
+    },
+    {
+        "eng": "In return, they decided to do the same thing.",
+        "chi": "作为回报，他们决定如法炮制。"
+    },
+    {
+        "eng": "Hundreds of years have passed since then, and the lane is still there.",
+        "chi": "数百年光阴流转，古巷依然静立。"
+    },
+    {
+        "eng": "After reading it, the Zhang family felt ashamed.",
+        "chi": "读毕，张氏族人感到羞愧难当。"
+    },
+    {
+        "eng": "They couldn\’t reach an agreement.",
+        "chi": "他们无法达成一致。"
+    },
+    {
+        "eng": "My anger grew. My face turned as red as a tomato.",
+        "chi": "我越来越生气。我的脸变得像番茄一样红。"
+    },
+    {
+        "eng": "I covered my nose so as to reduce the smell coming from Mr Smelly Food.",
+        "chi": "我捂住鼻子，以减少臭味先生的气味。"
+    },
+    {
+        "eng": "I went to a quiet area in order to read.",
+        "chi": "为了读书，我去了一节安静的车厢。"
+    },
+    {
+        "eng": "The rules aren\’t just on the wall but also in our minds and hearts.",
+        "chi": "规则不仅写在墙上，更存在于我们的脑海和心中。"
+    },
+    {
+        "eng": "Rules are there for us to follow!",
+        "chi": "规则存在就是为了让我们去遵守的！"
+    },
+    {
+        "eng": "Remember that behaving badly online has costs.",
+        "chi": "记住，网上的不良行为是有代价的。"
+    },
+    {
+        "eng": "If you find yourself in hot water, don\’t answer any bad messages.",
+        "chi": "如果你陷入困境，不要回复任何不良信息。"
+    },
+    {
+        "eng": "Avoid posting personal information online.",
+        "chi": "避免在网上发布个人信息。"
+    },
+    {
+        "eng": "We get in touch with anyone with just one click. But the internet has also brought new risks.",
+        "chi": "我们只需轻轻一点就能联系到任何人。但互联网也带来了新的风险。"
+    },
+    {
+        "eng": "Here are the basic rules you need to know to stay safe online.",
+        "chi": "以下是你需要了解的基本规则，以确保在线安全。"
+    },
+    {
+        "eng": "I have seen the film. I don\’t want to see it again.",
+        "chi": "这部电影我已经看过了，不想再看了。"
+    },
+    {
+        "eng": "I have entered lots of competitions.",
+        "chi": "我参加过很多比赛。"
+    },
+    {
+        "eng": "Have you ever won any prizes before?",
+        "chi": "你以前得过奖吗？"
+    },
+    {
+        "eng": "My aunt has travelled all over the world.",
+        "chi": "我姑姑已经周游了世界。"
+    },
+    {
+        "eng": "Many people have agreed to help us.",
+        "chi": "许多人都同意帮助我们。"
+    },
+    {
+        "eng": "Instead of looking away, Maddie studied my face.",
+        "chi": "Maddie没有挪开视线，反而仔细地看着我的脸。"
+    },
+    {
+        "eng": "Nothing is impossible as long as you try and stick to it.",
+        "chi": "只要你尝试并坚持下去，没有什么是不可能的。"
+    },
+    {
+        "eng": "On crowded buses and trains, it felt just like a disaster.",
+        "chi": "在拥挤的公交车和火车上，感觉就像灾难。"
+    },
+    {
+        "eng": "When I got home, I rushed to the bathroom and looked in the mirror.",
+        "chi": "当我到家的时候，我冲进浴室照镜子。"
+    },
+    {
+        "eng": "Su fought his fears and became a sporting hero.",
+        "chi": "苏战胜了恐惧，成为了一名体育英雄。"
+    },
+    {
+        "eng": "It\’s amazing to see my family.",
+        "chi": "能见到家人，真是太令人开心了。"
+    },
+    {
+        "eng": "I have been back in the UK for three days.",
+        "chi": "我回到英国已经三年了。"
+    },
+    {
+        "eng": "It feels like a century.",
+        "chi": "感觉像是过了一个世纪。（度日如年）"
+    },
+    {
+        "eng": "It took forever to find a bike.",
+        "chi": "找辆自行车可真费劲，耗了老半天。"
+    },
+    {
+        "eng": "I was so tired that I gave up on cooking.",
+        "chi": "我太累了，干脆不做饭了。"
+    },
+    {
+        "eng": "I am looking forward to going back to China.",
+        "chi": "我满心期待能回到中国。"
+    },
+    {
+        "eng": "The food was stone-cold.",
+        "chi": "饭菜彻底凉透。"
+    },
+    {
+        "eng": "We should use the digital technology wisely.",
+        "chi": "我们得明智（合理）地运用数字技术。"
+    },
+    {
+        "eng": "I am afraid I have to disagree.",
+        "chi": "恐怕我不能苟同。"
+    },
+    {
+        "eng": "I ordered food through an app.",
+        "chi": "我通过软件点了外卖。"
+    },
+    {
+        "eng": "It was strange to read the words.",
+        "chi": "阅读这些文字的时候，让人有一种奇怪的感觉。"
+    },
+    {
+        "eng": "What\’s worse, children like her grow quickly and need new arms all the time.",
+        "chi": "更糟糕的是，像她这样的孩子长得快，需要一直更换新的假肢。"
+    },
+    {
+        "eng": "Last month, Lily decided to design a new cup to help her grandpa.",
+        "chi": "上个月，Lily决定设计一个新杯子来帮助她的爷爷。"
+    },
+    {
+        "eng": "Instead of being created on purpose, some inventions are created completely by accident.",
+        "chi": "有些发明创造并非有意为之，而是完全出于偶然。"
+    },
+    {
+        "eng": "Today, penicillin is one of the most used medicines in the world.",
+        "chi": "如今，盘尼西林（penicillin）是世界上最常用的药品之一。"
+    },
+    {
+        "eng": "His curiosity led him to invent the lightning rod.",
+        "chi": "他的好奇心驱使他发明了避雷针。"
+    },
+    {
+        "eng": "Zhang Heng spent years studying the sky and the earth.",
+        "chi": "张衡花费数年研究天文地理。"
+    },
+    {
+        "eng": "Her achievements continue to influence scientists today.",
+        "chi": "她的成就依旧影响着现代的科学家们。"
+    },
+    {
+        "eng": "In the past years, he always tried to improve his work.",
+        "chi": "过去的几年里，他一直努力改进他的作品。"
+    },
+    {
+        "eng": "Because of Parkinson\’s disease, the old man keeps knocking his drinks over.",
+        "chi": "因为帕金森，这个老人一直打翻他的水。"
+    },
+    {
+        "eng": "In my life, I enjoy fixing problems one after another.",
+        "chi": "生活中，我很享受解决一个又一个的问题。"
+    }
 ];
 
 /* ========== 游戏状态管理 ========== */
@@ -118,12 +229,12 @@ const GameState = {
     gameVersion: '1.3.0', // 游戏版本，用于数据兼容性检查
     encryptionSeed: "Ms.WuYYDS#2025UNIT5", // 加密种子
     timerInterval: null, // 计时器ID
-    
+
     // 初始化
     init() {
         this.loadProgress();
         this.loadLeaderboards();
-        
+
         // 如果没有玩家名称，提示输入
         if (!this.playerName || this.playerName === '玩家') {
             const name = prompt('请输入您的玩家名称（至少2个字符）：', this.playerName);
@@ -132,10 +243,10 @@ const GameState = {
                 this.saveProgress();
             }
         }
-        
+
         this.gameStartTime = Date.now();
     },
-    
+
     // 保存进度
     saveProgress() {
         try {
@@ -154,7 +265,7 @@ const GameState = {
             return false;
         }
     },
-    
+
     // 加载进度
     loadProgress() {
         try {
@@ -171,7 +282,7 @@ const GameState = {
         }
         return false;
     },
-    
+
     // 保存排行榜
     saveLeaderboards() {
         try {
@@ -183,7 +294,7 @@ const GameState = {
             return false;
         }
     },
-    
+
     // 加载排行榜
     loadLeaderboards() {
         try {
@@ -197,33 +308,33 @@ const GameState = {
             return false;
         }
     },
-    
+
     // 清除所有数据
     clearAllData() {
         try {
             localStorage.removeItem('wordGameProgress');
             localStorage.removeItem('wordGameLevelRecords');
             localStorage.removeItem('wordGameTotalRecords');
-            
+
             this.currentLevel = 1;
             this.totalScore = 0;
             this.completedLevels = new Set();
             this.levelRecords = {};
             this.totalRecords = [];
-            
+
             return true;
         } catch (e) {
             console.warn('清除数据失败:', e);
             return false;
         }
     },
-    
+
     // 添加关卡记录
     addLevelRecord(level, time, mistakes, score) {
         if (!this.levelRecords[level]) {
             this.levelRecords[level] = [];
         }
-        
+
         const record = {
             name: this.playerName,
             level: level,
@@ -233,22 +344,22 @@ const GameState = {
             date: Date.now(),
             recordId: this.generateRecordId()
         };
-        
+
         this.levelRecords[level].push(record);
         this.levelRecords[level].sort((a, b) => b.score - a.score || a.time - b.time);
-        
+
         // 只保留每个关卡前50名
         if (this.levelRecords[level].length > 50) {
             this.levelRecords[level] = this.levelRecords[level].slice(0, 50);
         }
-        
+
         this.completedLevels.add(level);
         this.saveProgress();
         this.saveLeaderboards();
-        
+
         return record;
     },
-    
+
     // 添加总记录
     addTotalRecord(totalTime) {
         const record = {
@@ -259,33 +370,33 @@ const GameState = {
             date: Date.now(),
             recordId: this.generateRecordId()
         };
-        
+
         this.totalRecords.push(record);
         this.totalRecords.sort((a, b) => b.totalScore - a.totalScore || a.totalTime - b.totalTime);
-        
+
         if (this.totalRecords.length > 50) {
             this.totalRecords = this.totalRecords.slice(0, 50);
         }
-        
+
         this.saveLeaderboards();
         return record;
     },
-    
+
     // 生成唯一的记录ID
     generateRecordId() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
     },
-    
+
     // 获取关卡记录
     getLevelRecords(level) {
         return this.levelRecords[level] || [];
     },
-    
+
     // 获取总记录
     getTotalRecords() {
         return this.totalRecords;
     },
-    
+
     // 计算得分
     calculateScore(time, mistakes, pairs) {
         const baseScore = 100;
@@ -295,7 +406,7 @@ const GameState = {
         const score = Math.max(0, Math.round(baseScore - timePenalty - mistakePenalty + bonus));
         return score;
     },
-    
+
     // 获取星级
     getStars(score) {
         if (score >= 90) return '⭐⭐⭐⭐⭐';
@@ -304,20 +415,20 @@ const GameState = {
         if (score >= 30) return '⭐⭐';
         return '⭐';
     },
-    
+
     // 开始计时器
     startTimer() {
         // 清除已有计时器
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
         }
-        
+
         // 启动新计时器
         this.timerInterval = setInterval(() => {
             this.updateTimerDisplay();
         }, 100);
     },
-    
+
     // 停止计时器
     stopTimer() {
         if (this.timerInterval) {
@@ -325,7 +436,7 @@ const GameState = {
             this.timerInterval = null;
         }
     },
-    
+
     // 更新计时器显示
     updateTimerDisplay() {
         const elapsed = (Date.now() - this.levelStartTime) / 1000;
@@ -344,27 +455,27 @@ const DataEncryptor = {
         }
         return result;
     },
-    
+
     // Base64编码
     base64Encode(str) {
         try {
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, 
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
                 (match, p1) => String.fromCharCode('0x' + p1)));
         } catch (e) {
             return btoa(unescape(encodeURIComponent(str)));
         }
     },
-    
+
     // Base64解码
     base64Decode(str) {
         try {
-            return decodeURIComponent(atob(str).split('').map(c => 
+            return decodeURIComponent(atob(str).split('').map(c =>
                 '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
         } catch (e) {
             return decodeURIComponent(escape(atob(str)));
         }
     },
-    
+
     // 生成校验和
     generateChecksum(data) {
         const str = JSON.stringify(data);
@@ -374,7 +485,7 @@ const DataEncryptor = {
         }
         return sum.toString(16);
     },
-    
+
     // 加密数据
     encryptData(data) {
         try {
@@ -386,7 +497,7 @@ const DataEncryptor = {
             return null;
         }
     },
-    
+
     // 解密数据
     decryptData(encryptedStr) {
         try {
@@ -398,7 +509,7 @@ const DataEncryptor = {
             return null;
         }
     },
-    
+
     // 导出加密数据
     exportEncryptedData() {
         const data = {
@@ -411,16 +522,16 @@ const DataEncryptor = {
             totalRecords: GameState.totalRecords,
             exportTime: Date.now()
         };
-        
+
         const encrypted = this.encryptData(data);
         if (!encrypted) throw new Error('加密失败');
-        
+
         return {
             content: encrypted,
             filename: `wordgame_${GameState.playerName}_${new Date().toISOString().slice(0, 10)}.yzgdatae`
         };
     },
-    
+
     // 导出明文数据
     exportPlainData() {
         const data = {
@@ -438,40 +549,40 @@ const DataEncryptor = {
                 completedLevels: Array.from(GameState.completedLevels)
             })
         };
-        
+
         return {
             content: JSON.stringify(data, null, 2),
             filename: `wordgame_${GameState.playerName}_${new Date().toISOString().slice(0, 10)}.yzgdata`
         };
     },
-    
+
     // 导入数据
     importData(content, isEncrypted) {
         try {
             let data;
-            
+
             if (isEncrypted) {
                 data = this.decryptData(content);
             } else {
                 data = JSON.parse(content);
-                
+
                 // 验证校验和
                 const checksum = this.generateChecksum({
                     totalScore: data.totalScore,
                     currentLevel: data.currentLevel,
                     completedLevels: data.completedLevels
                 });
-                
+
                 if (checksum !== data.checksum) {
                     throw new Error('校验和不匹配，数据可能已损坏');
                 }
             }
-            
+
             // 版本兼容性检查
             if (!data.version || data.version < '1.0.0') {
                 throw new Error('不支持的数据版本');
             }
-            
+
             return data;
         } catch (e) {
             console.error('导入失败:', e);
@@ -497,28 +608,28 @@ function createCard(text, type, data) {
     card.dataset.type = type;
     card.dataset.eng = data.eng.toLowerCase();
     card.dataset.chi = data.chi;
-    
+
     // 添加触摸和点击事件
     card.addEventListener('click', handleCardClick);
     card.addEventListener('touchstart', (e) => {
         e.preventDefault();
         handleCardClick({ currentTarget: card });
     }, { passive: false });
-    
+
     return card;
 }
 
 function handleCardClick(e) {
     const card = e.currentTarget;
     if (card.classList.contains('matched') || card.classList.contains('selected')) return;
-    
+
     if (GameState.selectedCard) {
         const isMatch = checkMatch(GameState.selectedCard, card);
         if (isMatch) {
             matchCards(GameState.selectedCard, card);
             GameState.matchedPairs++;
             GameState.selectedCard = null;
-            
+
             if (GameState.matchedPairs === GameState.totalPairs) {
                 setTimeout(showCongrats, 600);
             }
@@ -534,7 +645,7 @@ function handleCardClick(e) {
 function checkMatch(card1, card2) {
     const type1 = card1.dataset.type, type2 = card2.dataset.type;
     return (type1 === 'english' && type2 === 'chinese' && card1.dataset.eng === card2.dataset.eng) ||
-           (type1 === 'chinese' && type2 === 'english' && card1.dataset.eng === card2.dataset.eng);
+        (type1 === 'chinese' && type2 === 'english' && card1.dataset.eng === card2.dataset.eng);
 }
 
 function matchCards(card1, card2) {
@@ -546,7 +657,7 @@ function handleMismatch(card1, card2) {
     GameState.mistakes++;
     card1.classList.add('mismatch');
     card2.classList.add('mismatch');
-    
+
     setTimeout(() => {
         card1.classList.remove('selected', 'mismatch');
         card2.classList.remove('mismatch');
@@ -558,14 +669,14 @@ function handleMismatch(card1, card2) {
 function renderGame() {
     const container = document.getElementById('game');
     container.innerHTML = '';
-    
+
     const cards = [];
     GameState.currentExpressions.forEach((expr) => {
         const engCard = createCard(expr.eng, 'english', expr);
         const chiCard = createCard(expr.chi, 'chinese', expr);
         cards.push(engCard, chiCard);
     });
-    
+
     shuffle(cards).forEach(card => container.appendChild(card));
 }
 
@@ -574,7 +685,7 @@ function startLevel(level) {
         endGame();
         return;
     }
-    
+
     const startIdx = (level - 1) * GameState.pairsPerLevel;
     const endIdx = Math.min(startIdx + GameState.pairsPerLevel, ALL_EXPRESSIONS.length);
     GameState.currentExpressions = ALL_EXPRESSIONS.slice(startIdx, endIdx);
@@ -584,13 +695,13 @@ function startLevel(level) {
     GameState.levelScore = 0;
     GameState.levelStartTime = Date.now();
     GameState.currentLevel = level;
-    
+
     // 启动计时器
     GameState.startTimer();
-    
+
     renderGame();
     updateUI();
-    
+
     document.getElementById('level').textContent = level;
     document.getElementById('progress').textContent = `关卡 ${level}/${GameState.levels} | 总分: ${GameState.totalScore}`;
 }
@@ -598,15 +709,15 @@ function startLevel(level) {
 function showCongrats() {
     // 停止计时器
     GameState.stopTimer();
-    
+
     const elapsed = (Date.now() - GameState.levelStartTime) / 1000;
     const score = GameState.calculateScore(elapsed, GameState.mistakes, GameState.totalPairs);
     GameState.levelScore = score;
     GameState.totalScore += score;
-    
+
     // 添加记录
     const record = GameState.addLevelRecord(GameState.currentLevel, elapsed, GameState.mistakes, score);
-    
+
     // 显示通关信息
     const congrats = document.createElement('div');
     congrats.style.cssText = `
@@ -615,7 +726,7 @@ function showCongrats() {
         justify-content: center; align-items: center; z-index: 1002; 
         padding: 4vh; text-align: center;
     `;
-    
+
     congrats.innerHTML = `
         <div style="font-size: clamp(1.8em, 5vw, 2.5em); margin-bottom: 2vh; color: #ffd700;">🎉 恭喜通关！</div>
         <div style="font-size: clamp(1.2em, 3.5vw, 1.5em); margin-bottom: 1vh; color: white;">第${GameState.currentLevel}关 完成！</div>
@@ -636,16 +747,16 @@ function showCongrats() {
             </button>
         </div>
     `;
-    
+
     document.body.appendChild(congrats);
-    
+
     updateUI();
-    
+
     // 如果通关了最后一关
     if (GameState.currentLevel === GameState.levels) {
         const totalElapsed = (Date.now() - GameState.gameStartTime) / 1000;
         GameState.addTotalRecord(totalElapsed);
-        
+
         setTimeout(() => {
             congrats.innerHTML = `
                 <div style="font-size: clamp(1.8em, 5vw, 2.5em); margin-bottom: 2vh; color: #ffd700;">🏆 全关通关！</div>
@@ -676,7 +787,7 @@ function showCongrats() {
 function nextLevel() {
     const congrats = document.querySelector('body > div[style*="position: fixed"]');
     if (congrats) congrats.remove();
-    
+
     if (GameState.currentLevel < GameState.levels) {
         startLevel(GameState.currentLevel + 1);
     } else {
@@ -696,7 +807,7 @@ function endGame() {
 function updateUI() {
     // 更新计时器显示
     GameState.updateTimerDisplay();
-    
+
     // 更新其他UI元素
     document.getElementById('mistakes').textContent = GameState.mistakes;
     document.getElementById('levelScore').textContent = GameState.levelScore;
@@ -710,11 +821,11 @@ function showLeaderboard(initialTab = 'level1') {
     const panel = document.getElementById('leaderboardPanel');
     const tabsContainer = document.getElementById('leaderboardTabs');
     const contentContainer = document.getElementById('leaderboardContent');
-    
+
     // 生成选项卡
     tabsContainer.innerHTML = '';
     contentContainer.innerHTML = '';
-    
+
     // 添加关卡选项卡
     for (let i = 1; i <= GameState.levels; i++) {
         const tab = document.createElement('button');
@@ -723,14 +834,14 @@ function showLeaderboard(initialTab = 'level1') {
         tab.onclick = () => showLevelLeaderboard(i);
         tabsContainer.appendChild(tab);
     }
-    
+
     // 添加总排行榜选项卡
     const totalTab = document.createElement('button');
     totalTab.className = `tab-btn ${initialTab === 'total' ? 'active' : ''}`;
     totalTab.textContent = '总排行榜';
     totalTab.onclick = () => showTotalLeaderboard();
     tabsContainer.appendChild(totalTab);
-    
+
     // 显示初始内容
     if (initialTab === 'total') {
         showTotalLeaderboard();
@@ -738,20 +849,20 @@ function showLeaderboard(initialTab = 'level1') {
         const level = initialTab.replace('level', '');
         showLevelLeaderboard(parseInt(level));
     }
-    
+
     panel.classList.add('active');
 }
 
 function showLevelLeaderboard(level) {
     const contentContainer = document.getElementById('leaderboardContent');
     const tabs = document.querySelectorAll('.tab-btn');
-    
+
     // 更新选项卡状态
     tabs.forEach(tab => tab.classList.remove('active'));
     tabs[level - 1]?.classList.add('active');
-    
+
     const records = GameState.getLevelRecords(level);
-    
+
     if (records.length === 0) {
         contentContainer.innerHTML = `
             <li style="text-align: center; padding: 4vh; color: #7f8c8d;">
@@ -761,7 +872,7 @@ function showLevelLeaderboard(level) {
         `;
         return;
     }
-    
+
     contentContainer.innerHTML = '';
     records.slice(0, 20).forEach((record, index) => {
         const li = document.createElement('li');
@@ -779,13 +890,13 @@ function showLevelLeaderboard(level) {
 function showTotalLeaderboard() {
     const contentContainer = document.getElementById('leaderboardContent');
     const tabs = document.querySelectorAll('.tab-btn');
-    
+
     // 更新选项卡状态
     tabs.forEach(tab => tab.classList.remove('active'));
     tabs[tabs.length - 1]?.classList.add('active');
-    
+
     const records = GameState.getTotalRecords();
-    
+
     if (records.length === 0) {
         contentContainer.innerHTML = `
             <li style="text-align: center; padding: 4vh; color: #7f8c8d;">
@@ -795,7 +906,7 @@ function showTotalLeaderboard() {
         `;
         return;
     }
-    
+
     contentContainer.innerHTML = '';
     records.slice(0, 20).forEach((record, index) => {
         const li = document.createElement('li');
@@ -818,17 +929,17 @@ function hideLeaderboard() {
 function showLevelSelect() {
     // 暂停当前计时器
     GameState.stopTimer();
-    
+
     const modal = document.getElementById('levelModal');
     const grid = document.getElementById('levelGrid');
-    
+
     grid.innerHTML = '';
-    
+
     for (let i = 1; i <= GameState.levels; i++) {
         const btn = document.createElement('button');
         btn.className = 'level-btn';
         btn.textContent = i;
-        
+
         if (i === GameState.currentLevel) {
             btn.classList.add('current');
         } else if (GameState.completedLevels.has(i)) {
@@ -837,22 +948,22 @@ function showLevelSelect() {
             btn.classList.add('locked');
             btn.disabled = true;
         }
-        
+
         btn.onclick = () => {
             if (!btn.classList.contains('locked')) {
                 GameState.currentLevel = i;
                 startLevel(i);
                 hideLevelSelect();
-                
+
                 // 移除之前的通关信息
                 const congrats = document.querySelector('body > div[style*="position: fixed"]');
                 if (congrats) congrats.remove();
             }
         };
-        
+
         grid.appendChild(btn);
     }
-    
+
     modal.classList.add('active');
 }
 
@@ -917,21 +1028,21 @@ function downloadFile(content, filename, mimeType) {
 
 function handleFileImport(file) {
     if (!file) return;
-    
+
     const statusDiv = document.getElementById('importStatus');
     statusDiv.style.display = 'block';
     statusDiv.innerHTML = `<p>正在处理文件: ${file.name}...</p>`;
-    
+
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         try {
             const content = e.target.result;
             const isEncrypted = file.name.endsWith('.yzgdatae');
-            
+
             statusDiv.innerHTML += '<p>正在解密/解析数据...</p>';
-            
+
             const data = DataEncryptor.importData(content, isEncrypted);
-            
+
             // 更新游戏状态
             GameState.playerName = data.playerName || '玩家';
             GameState.totalScore = data.totalScore || 0;
@@ -939,19 +1050,19 @@ function handleFileImport(file) {
             GameState.completedLevels = new Set(data.completedLevels || []);
             GameState.levelRecords = data.levelRecords || {};
             GameState.totalRecords = data.totalRecords || [];
-            
+
             // 保存并更新UI
             GameState.saveProgress();
             GameState.saveLeaderboards();
             startLevel(GameState.currentLevel);
-            
+
             statusDiv.innerHTML = `
                 <p style="color: #27ae60; font-weight: bold;">✅ 导入成功！</p>
                 <p>玩家: ${GameState.playerName}</p>
                 <p>当前关卡: ${GameState.currentLevel}</p>
                 <p>总分: ${GameState.totalScore}</p>
             `;
-            
+
             setTimeout(hideImportModal, 3000);
         } catch (e) {
             statusDiv.innerHTML = `
@@ -960,14 +1071,14 @@ function handleFileImport(file) {
             `;
         }
     };
-    
-    reader.onerror = function() {
+
+    reader.onerror = function () {
         statusDiv.innerHTML = `
             <p style="color: #e74c3c; font-weight: bold;">❌ 文件读取失败</p>
             <p>请重试或更换文件</p>
         `;
     };
-    
+
     reader.readAsText(file);
 }
 
@@ -990,7 +1101,7 @@ function clearAllGameData() {
 }
 
 /* ========== 初始化游戏 ========== */
-window.onload = function() {
+window.onload = function () {
     GameState.init();
     startLevel(GameState.currentLevel);
 };
