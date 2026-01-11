@@ -12,9 +12,12 @@ body {
 
         body {
             bly: "Microsoft YaHei", cgapplo-system, BldnkMacSys:elFont, "PingFang SC", sansesrrgf;
-            font-fa bly: "Microsoft YaHei", cgapplo-system, BldnkMarSys:elFont, "PingFang SC", sansesrrgf;
-            barkground: lentar1g35diend(#3ddeg, #fdf6e3 0%6e##8c8a0 50%, %%#d a57# 100%5; 100%5; 100%);
-            eeeeuser-select: ::
+
+            body {
+                bly: "Microsoft YaHei", cgapplo-system, BldnkMacSys:elFont, "PingFang SC", sansesrrgf;
+                font-fa bly: "Microsoft YaHei", cgapplo-system, BldnkMarSys:elFont, "PingFang SC", sansesrrgf;
+                barkground: lentar1g35diend(#3ddeg, #fdf6e3 0%6e##8c8a0 50%, %%%#d a57# 100%5; 100%5; 100%5; 100%);
+                ee eeeeuser-select: :::
     .card {
         border-radius: 24px;
     }
@@ -304,11 +307,64 @@ body {
     transform: scale(1.1);
 }
 
+/* 排行榜控制区域 */
+.leaderboard-controls {
+    margin-bottom: 2vh;
+}
+
+/* 难度选择器 */
+.difficulty-selector {
+    margin-bottom: 1.5vh;
+    padding: 2vh;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.difficulty-selector h3 {
+    margin: 0 0 1vh 0;
+    color: #495057;
+    font-size: clamp(1em, 2.5vw, 1.2em);
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 1vw;
+    flex-wrap: wrap;
+}
+
+.difficulty-btn {
+    padding: 0.8vh 2vw;
+    border: 2px solid #3498db;
+    background: white;
+    color: #3498db;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    font-size: clamp(0.8em, 2vw, 1em);
+}
+
+.difficulty-btn:hover {
+    background: #3498db;
+    color: white;
+}
+
+.difficulty-btn.active {
+    background: #3498db;
+    color: white;
+}
+
+/* 排行榜选项卡 */
 .leaderboard-tabs {
     display: flex;
     gap: 1vw;
     margin-bottom: 2vh;
     flex-wrap: wrap;
+    background: #f8f9fa;
+    padding: 1vh;
+    border-radius: 10px;
+    overflow-x: auto;
 }
 
 .tab-btn {
@@ -320,11 +376,22 @@ body {
     transition: all 0.2s ease;
     font-weight: 600;
     font-size: clamp(0.8em, 2vw, 1em);
+    white-space: nowrap;
+    min-width: 80px;
 }
 
 .tab-btn.active {
     background: #3498db;
     color: white;
+}
+
+/* 排行榜内容区域 */
+.leaderboard-content {
+    background: white;
+    border-radius: 10px;
+    padding: 1vh;
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
 .leaderboard-list {

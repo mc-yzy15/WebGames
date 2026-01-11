@@ -2191,7 +2191,7 @@ function showCongrats() {
             <button class="control-btn" onclick="nextLevel()" style="min-width: 120px;">
                 ${GameState.currentLevel < GameState.levels ? '下一关' : '查看总榜'}
             </button>
-            <button class="control-btn secondary" onclick="showLevelLeaderboard(${GameState.currentLevel})" style="min-width: 120px;">
+            <button class="control-btn secondary" onclick="showLeaderboard('level${GameState.currentLevel}')" style="min-width: 120px;">
                 本关排行
             </button>
             <button class="control-btn warning" onclick="this.parentElement.parentElement.remove()" style="min-width: 120px;">
@@ -2674,6 +2674,25 @@ function clearAllGameData() {
         hideClearDataModal();
         alert('✅ 所有游戏数据已清除！');
     }
+}
+
+/* ========== 难度选择功能 ========== */
+function showDifficultySelect() {
+    document.getElementById('difficultyModal').classList.add('active');
+}
+
+function hideDifficultySelect() {
+    document.getElementById('difficultyModal').classList.remove('active');
+}
+
+function setGameDifficulty(difficulty) {
+    GameState.setDifficulty(difficulty);
+    hideDifficultySelect();
+    
+    // 重新开始当前关卡，应用新难度
+    startLevel(GameState.currentLevel);
+    
+    alert(`✅ 难度已设置为：${difficulty === 'easy' ? '简单' : difficulty === 'normal' ? '普通' : '困难'}`);
 }
 
 /* ========== 初始化游戏 ========== */

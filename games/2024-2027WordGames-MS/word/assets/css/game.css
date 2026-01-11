@@ -750,6 +750,55 @@ body {
     }
 }
 
+/* 难度选择按钮样式 */
+.difficulty-option-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2vh;
+    border: 2px solid #3498db;
+    background: white;
+    color: #3498db;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+}
+
+.difficulty-option-btn:hover {
+    background: #3498db;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.difficulty-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+.difficulty-name {
+    font-weight: bold;
+    font-size: clamp(1em, 2.5vw, 1.2em);
+}
+
+.difficulty-stars {
+    font-size: clamp(1em, 2.5vw, 1.2em);
+}
+
+.difficulty-desc {
+    font-size: clamp(0.9em, 2.2vw, 1em);
+    opacity: 0.9;
+}
+
+.difficulty-desc div {
+    margin: 0.5vh 0;
+}
+
 /* 响应式调整 */
 @media (max-width: 768px) {
     .container {

@@ -33,6 +33,9 @@
             <button class="control-btn secondary" onclick="showLeaderboard()" aria-label="查看排行榜">
                 <span class="icon">🏆</span> 排行榜
             </button>
+            <button class="control-btn info" onclick="showDifficultySelect()" aria-label="选择难度">
+                <span class="icon">🎯</span> 选择难度
+            </button>
             <button class="control-btn success" onclick="showExportModal()" aria-label="导出成绩">
                 <span class="icon">📤</span> 导出成绩
             </button>
@@ -173,6 +176,58 @@
                 </div>
                 <div class="modal-buttons">
                     <button class="control-btn secondary" onclick="hideLevelSelect()" aria-label="取消选择关卡">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 难度选择对话框 -->
+        <div class="modal" id="difficultyModal" role="dialog" aria-modal="true" aria-labelledby="difficultyTitle">
+            <div class="modal-content">
+                <h3 id="difficultyTitle"><span class="icon">🎯</span> 选择游戏难度</h3>
+                <p>选择适合你的游戏难度：</p>
+
+                <div class="difficulty-options"
+                    style="display: flex; flex-direction: column; gap: 1.5vh; margin: 2vh 0;">
+                    <button class="difficulty-option-btn" onclick="setGameDifficulty('easy')">
+                        <div class="difficulty-header">
+                            <span class="difficulty-name">简单</span>
+                            <span class="difficulty-stars">⭐⭐</span>
+                        </div>
+                        <div class="difficulty-desc">
+                            <div>每关6对词组</div>
+                            <div>无限试错次数</div>
+                            <div>轻微时间惩罚</div>
+                        </div>
+                    </button>
+
+                    <button class="difficulty-option-btn" onclick="setGameDifficulty('normal')">
+                        <div class="difficulty-header">
+                            <span class="difficulty-name">普通</span>
+                            <span class="difficulty-stars">⭐⭐⭐</span>
+                        </div>
+                        <div class="difficulty-desc">
+                            <div>每关9对词组</div>
+                            <div>3次试错机会</div>
+                            <div>中等时间惩罚</div>
+                        </div>
+                    </button>
+
+                    <button class="difficulty-option-btn" onclick="setGameDifficulty('hard')">
+                        <div class="difficulty-header">
+                            <span class="difficulty-name">困难</span>
+                            <span class="difficulty-stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                        <div class="difficulty-desc">
+                            <div>每关12对词组</div>
+                            <div>仅1次试错机会</div>
+                            <div>严厉时间惩罚</div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideDifficultySelect()"
+                        aria-label="取消难度选择">取消</button>
                 </div>
             </div>
         </div>
