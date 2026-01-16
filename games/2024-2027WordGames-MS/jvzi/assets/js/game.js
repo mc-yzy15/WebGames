@@ -247,42 +247,47 @@ const GameState = {
     gameVersion: '1.3.0', // 游戏版本，用于数据兼容性检查
     encryptionSeed: "Ms.WuYYDS#2025UNIT5", // 加密种子
     timerInterval: null, // 计时器ID
+    saveTimeout: null, // 延迟保存计时器
 
     // 初始化
     init() {
         this.loadProgress();
         this.loadLeaderboards();
 
-        // 如果没有玩家名称，提示输入
+        // 如果没有玩家名称，使用默认名称
         if (!this.playerName || this.playerName === '玩家') {
-            const name = prompt('请输入您的玩家名称（至少2个字符）：', this.playerName);
-            if (name && name.trim().length >= 2) {
-                this.playerName = name.trim();
-                this.saveProgress();
-            }
+            // 直接使用默认名称，避免使用prompt()
+            this.playerName = '玩家';
+            this.saveProgress();
         }
 
         this.gameStartTime = Date.now();
     },
 
-    // 保存进度
+    // 延迟保存进度，避免频繁操作localStorage
     saveProgress() {
-        try {
-            const data = {
-                version: this.gameVersion,
-                currentLevel: this.currentLevel,
-                totalScore: this.totalScore,
-                completedLevels: Array.from(this.completedLevels),
-                playerName: this.playerName,
-                difficulty: this.difficulty,
-                saveTime: Date.now()
-            };
-            localStorage.setItem('wordGameProgress', JSON.stringify(data));
-            return true;
-        } catch (e) {
-            console.warn('保存进度失败:', e);
-            return false;
+        // 清除之前的定时器
+        if (this.saveTimeout) {
+            clearTimeout(this.saveTimeout);
         }
+
+        // 设置新的定时器，延迟500ms保存
+        this.saveTimeout = setTimeout(() => {
+            try {
+                const data = {
+                    version: this.gameVersion,
+                    currentLevel: this.currentLevel,
+                    totalScore: this.totalScore,
+                    completedLevels: Array.from(this.completedLevels),
+                    playerName: this.playerName,
+                    difficulty: this.difficulty,
+                    saveTime: Date.now()
+                };
+                localStorage.setItem('wordGameProgress', JSON.stringify(data));
+            } catch (e) {
+                console.warn('保存进度失败:', e);
+            }
+        }, 500);
     },
 
     // 加载进度
@@ -303,17 +308,23 @@ const GameState = {
         return false;
     },
 
-    // 保存排行榜
+    // 延迟保存排行榜
     saveLeaderboards() {
-        try {
-            localStorage.setItem('wordGameLevelRecords', JSON.stringify(this.levelRecords));
-            localStorage.setItem('wordGameTotalRecords', JSON.stringify(this.totalRecords));
-            localStorage.setItem('wordGameSpeedrunRecords', JSON.stringify(this.speedrunRecords));
-            return true;
-        } catch (e) {
-            console.warn('保存排行榜失败:', e);
-            return false;
+        // 清除之前的定时器
+        if (this.saveTimeout) {
+            clearTimeout(this.saveTimeout);
         }
+
+        // 设置新的定时器，延迟1000ms保存
+        this.saveTimeout = setTimeout(() => {
+            try {
+                localStorage.setItem('wordGameLevelRecords', JSON.stringify(this.levelRecords));
+                localStorage.setItem('wordGameTotalRecords', JSON.stringify(this.totalRecords));
+                localStorage.setItem('wordGameSpeedrunRecords', JSON.stringify(this.speedrunRecords));
+            } catch (e) {
+                console.warn('保存排行榜失败:', e);
+            }
+        }, 1000);
     },
 
     // 加载排行榜
@@ -512,10 +523,10 @@ const GameState = {
             clearInterval(this.timerInterval);
         }
 
-        // 启动新计时器
+        // 启动新计时器，减少更新频率
         this.timerInterval = setInterval(() => {
             this.updateTimerDisplay();
-        }, 100);
+        }, 200); // 从100ms改为200ms，减少DOM操作频率
     },
 
     // 停止计时器
@@ -529,7 +540,7 @@ const GameState = {
     // 更新计时器显示
     updateTimerDisplay() {
         const elapsed = (Date.now() - this.levelStartTime) / 1000;
-        document.getElementById('time').textContent = elapsed.toFixed(3);
+        document.getElementById('time').textContent = elapsed.toFixed(2); // 从3位小数改为2位，减少DOM操作
     }
 };
 
@@ -778,6 +789,13 @@ function shuffle(array) {
     return array;
 }
 
+// 初始化游戏
+function initGame() {
+    GameState.init();
+    setupCardEventDelegation();
+    startLevel(1);
+}
+
 function createCard(text, type, data) {
     const card = document.createElement('div');
     card.className = `card ${type}`;
@@ -787,18 +805,32 @@ function createCard(text, type, data) {
     card.dataset.eng = data.eng.toLowerCase();
     card.dataset.chi = data.chi;
 
-    // 添加触摸和点击事件
-    card.addEventListener('click', handleCardClick);
-    card.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        handleCardClick({ currentTarget: card });
-    }, { passive: false });
-
     return card;
 }
 
-function handleCardClick(e) {
-    const card = e.currentTarget;
+// 事件委托处理卡片点击
+function setupCardEventDelegation() {
+    const gameContainer = document.getElementById('game');
+    
+    // 点击事件
+    gameContainer.addEventListener('click', (e) => {
+        const card = e.target.closest('.card');
+        if (card) {
+            handleCardClick(card);
+        }
+    });
+
+    // 触摸事件
+    gameContainer.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const card = e.target.closest('.card');
+        if (card) {
+            handleCardClick(card);
+        }
+    }, { passive: false });
+}
+
+function handleCardClick(card) {
     if (card.classList.contains('matched') || card.classList.contains('selected')) return;
 
     if (GameState.selectedCard) {
@@ -866,6 +898,9 @@ function renderGame() {
     const container = document.getElementById('game');
     container.innerHTML = '';
 
+    // 创建文档片段，减少DOM操作次数
+    const fragment = document.createDocumentFragment();
+
     // 按照一中一英的顺序创建卡片对
     const cardPairs = [];
     GameState.currentExpressions.forEach((expr) => {
@@ -888,8 +923,11 @@ function renderGame() {
         [cardPairs[j], cardPairs[j+1], cardPairs[i], cardPairs[i-1]];
     }
 
-    // 显示随机排列的卡片
-    cardPairs.forEach(card => container.appendChild(card));
+    // 将所有卡片添加到文档片段
+    cardPairs.forEach(card => fragment.appendChild(card));
+
+    // 一次性添加到DOM
+    container.appendChild(fragment);
 }
 
 function startLevel(level) {
@@ -1469,5 +1507,6 @@ function clearAllGameData() {
 /* ========== 初始化游戏 ========== */
 window.onload = function () {
     GameState.init();
+    setupCardEventDelegation();
     startLevel(GameState.currentLevel);
 };
