@@ -16,6 +16,33 @@ body {
     margin: 0;
     background-color: var(--primary-bg);
     font-family: Arial, sans-serif;
+    color: var(--text-color);
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    background-color: var(--secondary-bg);
+    border-radius: 15px;
+    box-shadow: var(--shadow-effect);
+}
+
+h1 {
+    color: var(--accent-color);
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.game-description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    color: var(--text-color);
+    padding: 0 20px;
 }
 
 .game-container {
@@ -36,6 +63,8 @@ body {
     margin: 0 auto 20px;
     width: 300px;
     height: 300px;
+    touch-action: none;
+    /* 防止触摸设备上的默认行为 */
 }
 
 #gameControls {
@@ -60,7 +89,15 @@ body {
     color: var(--accent-color);
 }
 
-#startBtn {
+#highScore {
+    font-size: 18px;
+    margin: 5px 0 15px;
+    color: #ffd700;
+    /* 金色 */
+}
+
+#startBtn,
+#pauseBtn {
     font-size: 18px;
     padding: 12px 24px;
     background: var(--button-gradient);
@@ -76,9 +113,11 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin: 5px;
 }
 
-#startBtn::before {
+#startBtn::before,
+#pauseBtn::before {
     content: '';
     position: absolute;
     top: 2px;
@@ -90,18 +129,18 @@ body {
     pointer-events: none;
 }
 
-#startBtn:hover {
+#startBtn:hover,
+#pauseBtn:hover {
     transform: translateY(-2px);
     box-shadow: 6px 6px 12px #bebebe,
         -6px -6px 12px #ffffff;
-    background: linear-gradient(145deg, #f5f5f5, #d0d0d0);
 }
 
-#startBtn:active {
+#startBtn:active,
+#pauseBtn:active {
     transform: translateY(1px);
     box-shadow: inset 4px 4px 8px #bebebe,
         inset -4px -4px 8px #ffffff;
-    background: linear-gradient(145deg, #e6e6e6, #c0c0c0);
 }
 
 .controls {
@@ -178,22 +217,27 @@ body {
     .controls {
         width: 150px;
     }
-    
+
     .control-btn {
         width: 50px;
         height: 50px;
         font-size: 20px;
     }
-    
+
     #score {
         font-size: 20px;
     }
-    
-    #startBtn {
+
+    #highScore {
+        font-size: 16px;
+    }
+
+    #startBtn,
+    #pauseBtn {
         font-size: 16px;
         padding: 10px 20px;
     }
-    
+
     #gameCanvas {
         width: 250px;
         height: 250px;
