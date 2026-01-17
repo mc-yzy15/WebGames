@@ -1,22 +1,57 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z152M2QNJW"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-Z152M2QNJW');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2048 - 现代科技版</title>
+    <title>2048游戏 - 现代科技版 | 免费在线数字益智游戏</title>
+    <meta name="description" content="2048游戏现代科技版，滑动方块，合并数字，达到2048的目标。挑战你的逻辑思维和数学能力，免费在线玩！">
+    <link rel="canonical" href="https://github.com/mc-yzy15/WebGames/tree/main/games/2048">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Game",
+        "name": "2048游戏",
+        "description": "2048游戏现代科技版，滑动方块，合并数字，达到2048的目标。挑战你的逻辑思维和数学能力。",
+        "url": "https://github.com/mc-yzy15/WebGames/tree/main/games/2048",
+        "potentialAction": {
+            "@type": "PlayAction",
+            "name": "开始游戏",
+            "target": "https://github.com/mc-yzy15/WebGames/tree/main/games/2048"
+        },
+        "gamePlayMode": "SinglePlayer",
+        "gameCategory": "Puzzle",
+        "interactivityType": "Active"
+    }
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <div class="score-panel">
-            <h1>2048</h1>
-            <div class="score">
-                <p>分数</p>
-                <p id="score">0</p>
+    <div class="container">
+        <h1>2048游戏</h1>
+        <p class="game-description">
+            欢迎来到2048游戏现代科技版！这是一款经典的数字益智游戏，通过滑动方块，合并相同数字，最终达到2048的目标。
+            挑战你的逻辑思维和数学能力，看看你能创造多高的分数！
+        </p>
+        <div class="game-container">
+            <div class="score-panel">
+                <h2>2048</h2>
+                <div class="score">
+                    <p>分数</p>
+                    <p id="score">0</p>
+                </div>
+                <button id="newGameBtn">新游戏</button>
             </div>
-            <button id="newGameBtn">新游戏</button>
+            <div class="game-board" id="gameBoard"></div>
         </div>
-        <div class="game-board" id="gameBoard"></div>
     </div>
     <script src="script.js"></script>
 </body>

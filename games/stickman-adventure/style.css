@@ -14,12 +14,38 @@ body {
     background-image: radial-gradient(circle at center, #2d1b69 0%, var(--primary-bg) 100%);
     color: var(--text-color);
     margin: 0;
-    padding: 0;
+    padding: 20px;
     font-family: Arial, sans-serif;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    padding: 30px;
+    background: rgba(26, 15, 65, 0.8);
+    border-radius: 20px;
+    box-shadow: var(--shadow-effect);
+    border: 1px solid var(--border-color);
+}
+
+h1 {
+    color: var(--accent-color);
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+}
+
+.game-description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    color: var(--text-color);
+    padding: 0 20px;
 }
 
 .cyber-container {
