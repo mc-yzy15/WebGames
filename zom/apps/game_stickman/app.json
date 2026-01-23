@@ -1,0 +1,18 @@
+{
+  "id": "game_stickman",
+  "name": "Stickman Adventure",
+  "version": "1.0.0",
+  "description": "Stickman adventure game",
+  "author": "Unknown",
+  "main": "index.js",
+  "icon": "icon.png",
+  "permissions": [],
+  "dependencies": [],
+  "window": {
+    "title": "Stickman Adventure",
+    "width": 500,
+    "height": 600,
+    "resizable": true,
+    "position": "center"
+  }
+}

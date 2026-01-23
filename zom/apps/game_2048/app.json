@@ -1,0 +1,18 @@
+{
+  "id": "game_2048",
+  "name": "2048",
+  "version": "1.0.0",
+  "description": "2048 game",
+  "author": "Unknown",
+  "main": "index.js",
+  "icon": "icon.png",
+  "permissions": [],
+  "dependencies": [],
+  "window": {
+    "title": "2048",
+    "width": 500,
+    "height": 600,
+    "resizable": true,
+    "position": "center"
+  }
+}
