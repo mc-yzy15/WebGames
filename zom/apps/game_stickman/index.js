@@ -26,20 +26,34 @@ class GameStickman {
       <div class="container">
         <h1>Stickman Adventure</h1>
         <div class="game-info">
+          <div class="health-bar">
+            <span>Health:</span>
+            <div class="bar-container">
+              <div class="health-progress" style="width: 100%;"></div>
+            </div>
+          </div>
           <div class="score" id="score">Score: 0</div>
-          <button id="startButton">Start</button>
-          <button id="restartButton">Restart</button>
+          <button id="startButton" class="cyber-button">Start</button>
+          <button id="restartButton" class="cyber-button">Restart</button>
         </div>
         <canvas id="gameCanvas" width="400" height="400"></canvas>
         <div class="game-controls">
-          <button id="left" class="control-btn">←</button>
-          <button id="jump" class="control-btn">Jump</button>
-          <button id="right" class="control-btn">→</button>
+          <button id="left" class="cyber-button">←</button>
+          <button id="jump" class="cyber-button">Jump</button>
+          <button id="attack" class="cyber-button">Attack</button>
+          <button id="right" class="cyber-button">→</button>
         </div>
       </div>
       <script src="script.js"></script>
     `;
     this.appElement.appendChild(gameContainer);
+
+    // 初始化游戏
+    setTimeout(() => {
+      if (window.StickmanAdventure) {
+        window.StickmanAdventure.init(gameContainer);
+      }
+    }, 100);
   }
 
   /**
