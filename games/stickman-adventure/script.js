@@ -174,7 +174,6 @@ const StickmanAdventure = (() => {
                     player.y + player.height > enemy.y
                 ) {
                     state.enemies.splice(index, 1);
-                    setTimeout(() => spawnEnemies(), CONFIG.enemyRespawnTime);
                 }
             });
         }
@@ -272,12 +271,23 @@ const StickmanAdventure = (() => {
             ctx.shadowColor = '#00ffff';
             ctx.shadowBlur = 20;
             ctx.fillRect(player.x, player.y, player.width + 20, player.height);
+            // 添加攻击动画效果
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(player.x + player.width, player.y + player.height / 2 - 5, 15, 10);
         } else {
+            // 站立/奔跑动画
             ctx.shadowColor = '#00aaff';
             ctx.shadowBlur = 15;
             ctx.fillRect(player.x, player.y, player.width, player.height);
         }
         ctx.shadowBlur = 0;
+        
+        // 添加玩家眼睛
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(player.x + player.width * 0.3, player.y + player.height * 0.3, 3, 0, Math.PI * 2);
+        ctx.arc(player.x + player.width * 0.7, player.y + player.height * 0.3, 3, 0, Math.PI * 2);
+        ctx.fill();
     }
 
     // 游戏循环

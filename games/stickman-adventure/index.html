@@ -52,6 +52,22 @@
             欢迎来到火柴人冒险游戏！这是一款刺激的动作冒险游戏，控制你的火柴人角色，通过跳跃和攻击，克服各种障碍和敌人，完成冒险任务。
             挑战你的反应能力和游戏技巧，享受刺激的游戏体验！
         </p>
+        
+        <!-- 游戏控制面板 -->
+        <div class="game-controls">
+            <button id="difficultyBtn" class="cyber-button control-btn">🎯 难度选择</button>
+            <button id="levelBtn" class="cyber-button control-btn">📋 关卡选择</button>
+            <button id="tutorialBtn" class="cyber-button control-btn">📚 教程</button>
+            <button id="exportBtn" class="cyber-button control-btn">💾 导出数据</button>
+        </div>
+        
+        <!-- 游戏状态显示 -->
+        <div class="game-status">
+            <span id="currentLevel">关卡: 1</span>
+            <span id="score">分数: 0</span>
+            <span id="difficulty">难度: 简单</span>
+        </div>
+        
         <div class="cyber-container">
             <canvas id="gameCanvas"></canvas>
             <div class="hud-panel">
@@ -64,6 +80,54 @@
                 <div class="control-group">
                     <button id="jumpBtn" class="cyber-button">▲ 跳跃</button>
                     <button id="attackBtn" class="cyber-button">⚡ 攻击</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 教程面板 -->
+        <div id="tutorialPanel" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>游戏教程</h2>
+                <div id="tutorialContent">
+                    <h3>基本操作</h3>
+                    <p>← → 方向键: 左右移动</p>
+                    <p>↑ 方向键或跳跃按钮: 跳跃</p>
+                    <p>攻击按钮: 攻击敌人</p>
+                    <h3>游戏目标</h3>
+                    <p>消灭所有敌人，到达关卡终点</p>
+                    <p>保护好你的生命值，不要被敌人碰到</p>
+                    <h3>关卡系统</h3>
+                    <p>游戏共有10个关卡，难度逐渐增加</p>
+                    <p>每个关卡都有不同的平台布局和敌人配置</p>
+                    <h3>难度选择</h3>
+                    <p>简单: 敌人速度慢，生命值高</p>
+                    <p>中等: 敌人速度中等，生命值适中</p>
+                    <p>困难: 敌人速度快，生命值低</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 难度选择面板 -->
+        <div id="difficultyPanel" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>选择难度</h2>
+                <div class="difficulty-options">
+                    <button class="difficulty-option" data-difficulty="easy">简单</button>
+                    <button class="difficulty-option" data-difficulty="medium">中等</button>
+                    <button class="difficulty-option" data-difficulty="hard">困难</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 关卡选择面板 -->
+        <div id="levelPanel" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>选择关卡</h2>
+                <div class="level-grid" id="levelGrid">
+                    <!-- 关卡按钮将通过JavaScript动态生成 -->
                 </div>
             </div>
         </div>

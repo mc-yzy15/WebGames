@@ -208,8 +208,18 @@ const SnakeGame = (() => {
     // 绘制蛇
     function drawSnake() {
         state.snake.forEach((segment, index) => {
-            // 使用缓存的渐变
-            ctx.fillStyle = snakeGradient;
+            // 根据位置调整颜色，让蛇有渐变效果
+            const gradient = ctx.createLinearGradient(
+                segment.x * CONFIG.gridSize,
+                segment.y * CONFIG.gridSize,
+                segment.x * CONFIG.gridSize + CONFIG.gridSize,
+                segment.y * CONFIG.gridSize + CONFIG.gridSize
+            );
+            const alpha = 1 - (index / state.snake.length) * 0.5;
+            gradient.addColorStop(0, `rgba(76, 175, 80, ${alpha})`);
+            gradient.addColorStop(1, `rgba(69, 160, 73, ${alpha})`);
+            
+            ctx.fillStyle = gradient;
             ctx.fillRect(
                 segment.x * CONFIG.gridSize,
                 segment.y * CONFIG.gridSize,
@@ -224,23 +234,59 @@ const SnakeGame = (() => {
                 ctx.arc(segment.x * CONFIG.gridSize + 5, segment.y * CONFIG.gridSize + 5, 2, 0, 2 * Math.PI);
                 ctx.arc(segment.x * CONFIG.gridSize + 10, segment.y * CONFIG.gridSize + 5, 2, 0, 2 * Math.PI);
                 ctx.fill();
+                
+                // 绘制舌头
+                if (state.dx > 0) {
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.fillRect(segment.x * CONFIG.gridSize + CONFIG.gridSize - 2, segment.y * CONFIG.gridSize + CONFIG.gridSize / 2 - 2, 4, 4);
+                } else if (state.dx < 0) {
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.fillRect(segment.x * CONFIG.gridSize - 4, segment.y * CONFIG.gridSize + CONFIG.gridSize / 2 - 2, 4, 4);
+                } else if (state.dy > 0) {
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.fillRect(segment.x * CONFIG.gridSize + CONFIG.gridSize / 2 - 2, segment.y * CONFIG.gridSize + CONFIG.gridSize - 2, 4, 4);
+                } else if (state.dy < 0) {
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.fillRect(segment.x * CONFIG.gridSize + CONFIG.gridSize / 2 - 2, segment.y * CONFIG.gridSize - 4, 4, 4);
+                }
             }
         });
     }
 
     // 绘制食物
     function drawFood() {
-        // 使用缓存的渐变
-        ctx.fillStyle = foodGradient;
+        // 使用动态渐变，让食物有呼吸效果
+        const time = Date.now() * 0.001;
+        const pulse = Math.sin(time * 3) * 0.1 + 1;
+        
+        const foodX = state.food.x * CONFIG.gridSize + CONFIG.gridSize / 2;
+        const foodY = state.food.y * CONFIG.gridSize + CONFIG.gridSize / 2;
+        
+        // 创建径向渐变
+        const gradient = ctx.createRadialGradient(
+            foodX, foodY, 0,
+            foodX, foodY, CONFIG.gridSize / 2 - 1
+        );
+        gradient.addColorStop(0, '#ff6b6b');
+        gradient.addColorStop(0.5, '#ff8787');
+        gradient.addColorStop(1, '#ee5253');
+        
+        ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.arc(
-            state.food.x * CONFIG.gridSize + CONFIG.gridSize / 2,
-            state.food.y * CONFIG.gridSize + CONFIG.gridSize / 2,
-            CONFIG.gridSize / 2 - 1,
+            foodX,
+            foodY,
+            (CONFIG.gridSize / 2 - 1) * pulse,
             0,
             2 * Math.PI
         );
         ctx.fill();
+        
+        // 添加食物光芒效果
+        ctx.shadowColor = '#ff6b6b';
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.shadowBlur = 0;
     }
 
     // 绘制倒计时

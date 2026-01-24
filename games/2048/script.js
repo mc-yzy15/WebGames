@@ -50,6 +50,11 @@ const GameManager = (() => {
         if(emptyCells.length > 0) {
             const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
             board[randomIndex] = Math.random() < 0.9 ? 2 : 4;
+            // 添加出现动画
+            const cellElement = document.querySelectorAll('.cell')[randomIndex];
+            if (cellElement) {
+                cellElement.style.animation = 'cellAppear 0.3s ease-out';
+            }
             renderBoard();
         }
     }

@@ -65,6 +65,7 @@ h1 {
     height: 300px;
     touch-action: none;
     /* 防止触摸设备上的默认行为 */
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
 }
 
 #gameControls {

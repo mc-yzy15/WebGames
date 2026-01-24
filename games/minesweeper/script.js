@@ -64,7 +64,7 @@ const Minesweeper = (() => {
 
     // 更新地雷计数器
     function updateMineCounter() {
-        mineCounter.textContent = state.remainingMines;
+        mineCounter.textContent = `剩余地雷：${state.remainingMines}`;
     }
 
     // 生成地雷
@@ -233,7 +233,15 @@ const Minesweeper = (() => {
 
                     // 绘制旗帜
                     if (state.flags[y][x]) {
-                        ctx.fillStyle = '#ff0066';
+                        // 旗帜颜色渐变
+                        const flagGradient = ctx.createLinearGradient(
+                            cellX, cellY,
+                            cellX + CONFIG.CELL_SIZE, cellY + CONFIG.CELL_SIZE
+                        );
+                        flagGradient.addColorStop(0, '#ff0066');
+                        flagGradient.addColorStop(1, '#ff3385');
+                        
+                        ctx.fillStyle = flagGradient;
                         ctx.beginPath();
                         ctx.moveTo(cellX + CONFIG.CELL_SIZE / 2, cellY + 5);
                         ctx.lineTo(cellX + CONFIG.CELL_SIZE - 5, cellY + CONFIG.CELL_SIZE / 2);
@@ -246,9 +254,24 @@ const Minesweeper = (() => {
 
                     // 绘制已揭示的内容
                     if (state.revealed[y][x]) {
+                        // 添加揭示动画效果
+                        ctx.shadowColor = '#00ffff';
+                        ctx.shadowBlur = 3;
+                        ctx.fillRect(cellX, cellY, CONFIG.CELL_SIZE - 1, CONFIG.CELL_SIZE - 1);
+                        ctx.shadowBlur = 0;
+                        
                         // 地雷
                         if (state.board[y][x] === -1) {
-                            ctx.fillStyle = '#ff0066';
+                            // 地雷颜色渐变
+                            const mineGradient = ctx.createRadialGradient(
+                                cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2, 0,
+                                cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2, CONFIG.CELL_SIZE / 4
+                            );
+                            mineGradient.addColorStop(0, '#ff0066');
+                            mineGradient.addColorStop(0.5, '#ff3385');
+                            mineGradient.addColorStop(1, '#ff0066');
+                            
+                            ctx.fillStyle = mineGradient;
                             ctx.beginPath();
                             ctx.arc(cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2, CONFIG.CELL_SIZE / 4, 0, Math.PI * 2);
                             ctx.fill();
@@ -256,6 +279,21 @@ const Minesweeper = (() => {
                             ctx.shadowBlur = 10;
                             ctx.fill();
                             ctx.shadowBlur = 0;
+                            
+                            // 添加地雷爆炸效果
+                            for (let i = 0; i < 8; i++) {
+                                const angle = (Math.PI * 2 * i) / 8;
+                                const length = CONFIG.CELL_SIZE / 3;
+                                ctx.strokeStyle = '#ff0066';
+                                ctx.lineWidth = 2;
+                                ctx.beginPath();
+                                ctx.moveTo(cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2);
+                                ctx.lineTo(
+                                    cellX + CONFIG.CELL_SIZE / 2 + Math.cos(angle) * length,
+                                    cellY + CONFIG.CELL_SIZE / 2 + Math.sin(angle) * length
+                                );
+                                ctx.stroke();
+                            }
                         }
                         // 数字
                         else if (state.board[y][x] > 0) {
@@ -266,7 +304,8 @@ const Minesweeper = (() => {
                             ctx.font = 'bold 16px Arial';
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
-                            ctx.fillText(state.board[y][x], cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2);
+                            
+                            // 数字发光效果
                             ctx.shadowColor = colors[state.board[y][x]];
                             ctx.shadowBlur = 5;
                             ctx.fillText(state.board[y][x], cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2);
