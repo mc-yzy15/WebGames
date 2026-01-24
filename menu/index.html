@@ -173,6 +173,15 @@
         .banner a:hover {
             text-shadow: 0 0 8px currentColor;
         }
+
+        .banner .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.5);
+        }
+
+        .banner .game-card:hover .game-image {
+            opacity: 0.8;
+        }
     </style>
 </head>
 
@@ -187,18 +196,23 @@
             <div class="subtitle">科幻游戏中心 - 探索无限可能</div>
         </header>
 
-        <div class="banner">
-            <div style="background: rgba(0, 20, 40, 0.8); border: 1px solid #00aaff; padding: 15px; margin-bottom: 30px; border-radius: 8px; text-align: center;">
-                <p style="margin: 0 0 10px 0; font-size: 1.1em;"><img src="https://zeros.xin/favicon.ico" alt="ZerOS" style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;"> <a href="http://zeros.xin" target="_blank" style="color: #00ffff; text-decoration: none; font-weight: bold;">ZerOS - 浏览器虚拟操作系统</a></p>
-                <p style="margin: 0; color: #a0c0ff; font-size: 0.95em;">体验链接</p>
+        <div class="banner" style="margin-bottom: 30px;">
+            <div class="game-card" style="background: rgba(0, 20, 40, 0.8); border: 1px solid #00aaff; padding: 15px; text-align: center; cursor: pointer;" onclick="window.open('http://zeros.xin', '_blank');">
+                <div style="margin-bottom: 10px; font-size: 1.1em; color: #00ffff;">
+                    <img src="https://zeros.xin/favicon.ico" alt="ZerOS" style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;"> ZerOS - 浏览器虚拟操作系统
+                </div>
+                <div style="color: #a0c0ff; font-size: 0.95em; margin-bottom: 10px;">体验链接</div>
+                <div style="color: #00aaff; font-size: 0.9em; text-decoration: underline;">点击访问</div>
             </div>
         </div>
 
-        <div class="banner">
-            <div style="background: rgba(40, 0, 20, 0.8); border: 1px solid #ff5500; padding: 15px; margin-bottom: 30px; border-radius: 8px; text-align: center;">
-                <p style="margin: 0 0 10px 0; font-size: 1.1em;"><img src="https://eftserver.yzy15.dpdns.org/favicon.ico" alt="塔科夫服务器" style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;"> <a href="https://eftserver.yzy15.dpdns.org" target="_blank" style="color: #ff9900; text-decoration: none; font-weight: bold;">塔科夫私人服务器</a></p>
-                <p style="margin: 0; color: #ffb0a0; font-size: 0.95em;">完全免费的逃离塔科夫离线服务器（可联机），拥有优秀的管理团队和优异的服务器性能，为玩家提供流畅稳定的对战体验。</p>
-                <p style="margin: 8px 0 0 0; font-size: 0.9em;"><a href="https://eftserver.yzy15.dpdns.org" target="_blank" style="color: #ff9900; text-decoration: underline;">立即查看</a></p>
+        <div class="banner" style="margin-bottom: 30px;">
+            <div class="game-card" style="background: rgba(40, 0, 20, 0.8); border: 1px solid #ff5500; padding: 15px; text-align: center; cursor: pointer;" onclick="window.open('https://eftserver.yzy15.dpdns.org', '_blank');">
+                <div style="margin-bottom: 10px; font-size: 1.1em; color: #ff9900;">
+                    <img src="https://eftserver.yzy15.dpdns.org/favicon.ico" alt="塔科夫服务器" style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;"> 塔科夫私人服务器
+                </div>
+                <div style="color: #ffb0a0; font-size: 0.95em; margin-bottom: 10px;">完全免费的逃离塔科夫离线服务器（可联机），拥有优秀的管理团队和优异的服务器性能，为玩家提供流畅稳定的对战体验。</div>
+                <div style="color: #ff9900; font-size: 0.9em; text-decoration: underline;">点击访问</div>
             </div>
         </div>
 
