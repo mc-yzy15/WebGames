@@ -47,8 +47,7 @@
 
     <!-- 外部资源引用 -->
     <!-- 样式资源 -->
-    <link rel="stylesheet" href="./assets/css/game.css"
-        onerror="this.onerror=null; console.error('Failed to load CSS file');">
+    <link rel="stylesheet" href="./assets/css/game.css" id="gameCss">
 
     <!-- 预加载关键资源 -->
     <link rel="preload" href="./assets/js/game.js" as="script">
@@ -285,8 +284,7 @@
     </div>
 
     <!-- JavaScript资源 -->
-    <script src="./assets/js/game.js"
-        onerror="this.onerror=null; console.error('Failed to load JavaScript file'); alert('游戏资源加载失败，请刷新页面重试');"></script>
+    <script src="./assets/js/game.js" id="gameJs"></script>
 </body>
 
 </html>

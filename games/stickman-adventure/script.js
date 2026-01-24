@@ -216,18 +216,22 @@ const StickmanAdventure = (() => {
 
     // 绘制游戏元素
     function draw() {
-        // 清空画布
-        ctx.fillStyle = '#1a0f41';
-        ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
+        try {
+            // 清空画布
+            ctx.fillStyle = '#1a0f41';
+            ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
 
-        // 绘制平台
-        drawPlatforms();
+            // 绘制平台
+            drawPlatforms();
 
-        // 绘制敌人
-        drawEnemies();
+            // 绘制敌人
+            drawEnemies();
 
-        // 绘制玩家
-        drawPlayer();
+            // 绘制玩家
+            drawPlayer();
+        } catch (error) {
+            console.error('绘制游戏元素时出错:', error);
+        }
     }
 
     // 绘制平台
@@ -320,5 +324,11 @@ const StickmanAdventure = (() => {
     };
 })();
 
-// 页面加载时初始化游戏
-window.onload = StickmanAdventure.init;
+// 页面加载完成后初始化游戏
+window.addEventListener('load', function() {
+    try {
+        StickmanAdventure.init();
+    } catch (error) {
+        console.error('初始化火柴人冒险游戏时出错:', error);
+    }
+});

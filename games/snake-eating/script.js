@@ -301,12 +301,24 @@ const SnakeGame = (() => {
     // 游戏结束
     function gameOver() {
         state.gameRunning = false;
+        state.gamePaused = false;
+        
+        // 清理所有定时器和动画帧
         if (state.animationId) {
             cancelAnimationFrame(state.animationId);
+            state.animationId = null;
         }
+        
+        // 清理倒计时定时器
+        if (state.countdownStartTime) {
+            state.countdownStartTime = 0;
+        }
+        
         startBtn.textContent = '重新开始';
         startBtn.style.display = 'inline-block';
         pauseBtn.style.display = 'none';
+        pauseBtn.textContent = '暂停游戏';
+        
         showGameOverModal();
     }
 
@@ -565,8 +577,14 @@ const SnakeGame = (() => {
     };
 })();
 
-// 初始化游戏
-SnakeGame.init();
+// 页面加载完成后初始化游戏
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        SnakeGame.init();
+    } catch (error) {
+        console.error('初始化贪吃蛇游戏时出错:', error);
+    }
+});
 
 // 为了兼容性，将changeDirectionByButton暴露到全局
 window.changeDirectionByButton = SnakeGame.changeDirectionByButton;

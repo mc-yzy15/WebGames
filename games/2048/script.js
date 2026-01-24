@@ -261,6 +261,9 @@ const GameManager = (() => {
             renderBoard();
             checkGameOver();
         }
+        
+        // 阻止默认的键盘行为（如页面滚动）
+        e.preventDefault();
     }
 
     // 公开方法

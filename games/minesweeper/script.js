@@ -209,70 +209,74 @@ const Minesweeper = (() => {
 
     // 绘制游戏板
     function drawBoard() {
-        // 清空画布
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        try {
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // 批量绘制，减少Canvas API调用
-        for (let y = 0; y < CONFIG.GRID_SIZE; y++) {
-            for (let x = 0; x < CONFIG.GRID_SIZE; x++) {
-                const cellX = x * CONFIG.CELL_SIZE;
-                const cellY = y * CONFIG.CELL_SIZE;
+            // 批量绘制，减少Canvas API调用
+            for (let y = 0; y < CONFIG.GRID_SIZE; y++) {
+                for (let x = 0; x < CONFIG.GRID_SIZE; x++) {
+                    const cellX = x * CONFIG.CELL_SIZE;
+                    const cellY = y * CONFIG.CELL_SIZE;
 
-                // 绘制单元格背景
-                ctx.fillStyle = state.revealed[y][x] ? '#1a1a3a' : '#2d2d5a';
-                ctx.fillRect(cellX, cellY, CONFIG.CELL_SIZE - 1, CONFIG.CELL_SIZE - 1);
-
-                // 添加发光效果
-                if (!state.revealed[y][x]) {
-                    ctx.shadowColor = '#00ffff';
-                    ctx.shadowBlur = 5;
+                    // 绘制单元格背景
+                    ctx.fillStyle = state.revealed[y][x] ? '#1a1a3a' : '#2d2d5a';
                     ctx.fillRect(cellX, cellY, CONFIG.CELL_SIZE - 1, CONFIG.CELL_SIZE - 1);
-                    ctx.shadowBlur = 0;
-                }
 
-                // 绘制旗帜
-                if (state.flags[y][x]) {
-                    ctx.fillStyle = '#ff0066';
-                    ctx.beginPath();
-                    ctx.moveTo(cellX + CONFIG.CELL_SIZE / 2, cellY + 5);
-                    ctx.lineTo(cellX + CONFIG.CELL_SIZE - 5, cellY + CONFIG.CELL_SIZE / 2);
-                    ctx.lineTo(cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE - 5);
-                    ctx.lineTo(cellX + 5, cellY + CONFIG.CELL_SIZE / 2);
-                    ctx.closePath();
-                    ctx.fill();
-                    continue;
-                }
-
-                // 绘制已揭示的内容
-                if (state.revealed[y][x]) {
-                    // 地雷
-                    if (state.board[y][x] === -1) {
-                        ctx.fillStyle = '#ff0066';
-                        ctx.beginPath();
-                        ctx.arc(cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2, CONFIG.CELL_SIZE / 4, 0, Math.PI * 2);
-                        ctx.fill();
-                        ctx.shadowColor = '#ff0066';
-                        ctx.shadowBlur = 10;
-                        ctx.fill();
+                    // 添加发光效果
+                    if (!state.revealed[y][x]) {
+                        ctx.shadowColor = '#00ffff';
+                        ctx.shadowBlur = 5;
+                        ctx.fillRect(cellX, cellY, CONFIG.CELL_SIZE - 1, CONFIG.CELL_SIZE - 1);
                         ctx.shadowBlur = 0;
                     }
-                    // 数字
-                    else if (state.board[y][x] > 0) {
-                        const colors = [
-                            '', '#00ffff', '#00ff99', '#ffff00', '#ff9900', '#ff0000', '#cc00cc', '#9900ff', '#0000ff'
-                        ];
-                        ctx.fillStyle = colors[state.board[y][x]];
-                        ctx.font = 'bold 16px Arial';
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillText(state.board[y][x], cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2);
-                        ctx.shadowColor = colors[state.board[y][x]];
-                        ctx.shadowBlur = 5;
-                        ctx.fillText(state.board[y][x], cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2);
-                        ctx.shadowBlur = 0;
+
+                    // 绘制旗帜
+                    if (state.flags[y][x]) {
+                        ctx.fillStyle = '#ff0066';
+                        ctx.beginPath();
+                        ctx.moveTo(cellX + CONFIG.CELL_SIZE / 2, cellY + 5);
+                        ctx.lineTo(cellX + CONFIG.CELL_SIZE - 5, cellY + CONFIG.CELL_SIZE / 2);
+                        ctx.lineTo(cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE - 5);
+                        ctx.lineTo(cellX + 5, cellY + CONFIG.CELL_SIZE / 2);
+                        ctx.closePath();
+                        ctx.fill();
+                        continue;
+                    }
+
+                    // 绘制已揭示的内容
+                    if (state.revealed[y][x]) {
+                        // 地雷
+                        if (state.board[y][x] === -1) {
+                            ctx.fillStyle = '#ff0066';
+                            ctx.beginPath();
+                            ctx.arc(cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2, CONFIG.CELL_SIZE / 4, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.shadowColor = '#ff0066';
+                            ctx.shadowBlur = 10;
+                            ctx.fill();
+                            ctx.shadowBlur = 0;
+                        }
+                        // 数字
+                        else if (state.board[y][x] > 0) {
+                            const colors = [
+                                '', '#00ffff', '#00ff99', '#ffff00', '#ff9900', '#ff0000', '#cc00cc', '#9900ff', '#0000ff'
+                            ];
+                            ctx.fillStyle = colors[state.board[y][x]];
+                            ctx.font = 'bold 16px Arial';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(state.board[y][x], cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2);
+                            ctx.shadowColor = colors[state.board[y][x]];
+                            ctx.shadowBlur = 5;
+                            ctx.fillText(state.board[y][x], cellX + CONFIG.CELL_SIZE / 2, cellY + CONFIG.CELL_SIZE / 2);
+                            ctx.shadowBlur = 0;
+                        }
                     }
                 }
             }
+        } catch (error) {
+            console.error('绘制游戏板时出错:', error);
         }
     }
 
