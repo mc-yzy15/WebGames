@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5T8BBJZ9');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTC7MX1MPZ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-FTC7MX1MPZ');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火柴人冒险游戏 - 动作冒险游戏 | 免费在线玩</title>
+    <meta name="description" content="火柴人冒险游戏是一款动作冒险游戏，控制火柴人角色跳跃和攻击，完成冒险任务。挑战你的反应能力和游戏技巧，享受刺激的游戏体验！">
+    <link rel="canonical" href="https://github.com/mc-yzy15/WebGames/tree/main/games/stickman-adventure">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Game",
+        "name": "火柴人冒险游戏",
+        "description": "火柴人冒险游戏是一款动作冒险游戏，控制火柴人角色跳跃和攻击，完成冒险任务。挑战你的反应能力和游戏技巧。",
+        "url": "https://github.com/mc-yzy15/WebGames/tree/main/games/stickman-adventure",
+        "potentialAction": {
+            "@type": "PlayAction",
+            "name": "开始游戏",
+            "target": "https://github.com/mc-yzy15/WebGames/tree/main/games/stickman-adventure"
+        },
+        "gamePlayMode": "SinglePlayer",
+        "gameCategory": "Action",
+        "interactivityType": "Active"
+    }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5T8BBJZ9"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="container">
+        <h1>火柴人冒险游戏</h1>
+        <p class="game-description">
+            欢迎来到火柴人冒险游戏！这是一款刺激的动作冒险游戏，控制你的火柴人角色，通过跳跃和攻击，克服各种障碍和敌人，完成冒险任务。
+            挑战你的反应能力和游戏技巧，享受刺激的游戏体验！
+        </p>
+        <div class="cyber-container">
+            <canvas id="gameCanvas"></canvas>
+            <div class="hud-panel">
+                <div class="health-bar">
+                    <span>🛡️ 生命值:</span>
+                    <div class="bar-container">
+                        <div class="health-progress"></div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button id="jumpBtn" class="cyber-button">▲ 跳跃</button>
+                    <button id="attackBtn" class="cyber-button">⚡ 攻击</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

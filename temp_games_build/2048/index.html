@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5T8BBJZ9');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTC7MX1MPZ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-FTC7MX1MPZ');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048游戏 - 现代科技版 | 免费在线数字益智游戏</title>
+    <meta name="description" content="2048游戏现代科技版，滑动方块，合并数字，达到2048的目标。挑战你的逻辑思维和数学能力，免费在线玩！">
+    <link rel="canonical" href="https://github.com/mc-yzy15/WebGames/tree/main/games/2048">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Game",
+        "name": "2048游戏",
+        "description": "2048游戏现代科技版，滑动方块，合并数字，达到2048的目标。挑战你的逻辑思维和数学能力。",
+        "url": "https://github.com/mc-yzy15/WebGames/tree/main/games/2048",
+        "potentialAction": {
+            "@type": "PlayAction",
+            "name": "开始游戏",
+            "target": "https://github.com/mc-yzy15/WebGames/tree/main/games/2048"
+        },
+        "gamePlayMode": "SinglePlayer",
+        "gameCategory": "Puzzle",
+        "interactivityType": "Active"
+    }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5T8BBJZ9"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="container">
+        <h1>2048游戏</h1>
+        <p class="game-description">
+            欢迎来到2048游戏现代科技版！这是一款经典的数字益智游戏，通过滑动方块，合并相同数字，最终达到2048的目标。
+            挑战你的逻辑思维和数学能力，看看你能创造多高的分数！
+        </p>
+        <div class="game-container">
+            <div class="score-panel">
+                <h2>2048</h2>
+                <div class="score">
+                    <p>分数</p>
+                    <p id="score">0</p>
+                </div>
+                <button id="newGameBtn">新游戏</button>
+            </div>
+            <div class="game-board" id="gameBoard"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

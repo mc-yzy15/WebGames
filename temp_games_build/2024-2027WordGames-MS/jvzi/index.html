@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5T8BBJZ9');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTC7MX1MPZ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-FTC7MX1MPZ');
+    </script>
+    <!-- 文档元数据 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#d4a574">
+    <meta name="description" content="英语句子游戏，通过游戏化方式学习英语句子，提高语言表达能力。包含多个关卡和难度级别，适合各个年龄段的学习者。免费在线玩！">
+    <link rel="canonical" href="https://github.com/mc-yzy15/WebGames/tree/main/games/2024-2027WordGames-MS/jvzi">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Game",
+        "name": "英语句子游戏",
+        "description": "英语句子游戏，通过游戏化方式学习英语句子，提高语言表达能力。包含多个关卡和难度级别。",
+        "url": "https://github.com/mc-yzy15/WebGames/tree/main/games/2024-2027WordGames-MS/jvzi",
+        "potentialAction": {
+            "@type": "PlayAction",
+            "name": "开始游戏",
+            "target": "https://github.com/mc-yzy15/WebGames/tree/main/games/2024-2027WordGames-MS/jvzi"
+        },
+        "gamePlayMode": "SinglePlayer",
+        "gameCategory": "Educational",
+        "interactivityType": "Active"
+    }
+    </script>
+
+    <!-- 页面标题 -->
+    <title>英语句子游戏 - 在线学习英语 | 免费教育游戏</title>
+
+    <!-- 外部资源引用 -->
+    <!-- 样式资源 -->
+    <link rel="stylesheet" href="./assets/css/game.css"
+        onerror="this.onerror=null; console.error('Failed to load CSS file');">
+
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="./assets/js/game.js" as="script">
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5T8BBJZ9"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- 游戏主界面容器 -->
+    <div class="game-container">
+        <!-- 游戏标题 -->
+        <header class="header">句子游戏</header>
+
+        <!-- 游戏控制按钮区 -->
+        <nav class="game-controls">
+            <button class="control-btn" onclick="showLevelSelect()" aria-label="选择关卡">
+                <span class="icon">🎮</span> 选择关卡
+            </button>
+            <button class="control-btn secondary" onclick="showLeaderboard()" aria-label="查看排行榜">
+                <span class="icon">🏆</span> 排行榜
+            </button>
+            <button class="control-btn info" onclick="showDifficultySelect()" aria-label="选择难度">
+                <span class="icon">🎯</span> 选择难度
+            </button>
+            <button class="control-btn success" onclick="showExportModal()" aria-label="导出成绩">
+                <span class="icon">📤</span> 导出成绩
+            </button>
+            <button class="control-btn warning" onclick="showImportModal()" aria-label="导入成绩">
+                <span class="icon">📥</span> 导入成绩
+            </button>
+            <button class="control-btn danger" onclick="showClearDataModal()" aria-label="清除数据">
+                <span class="icon">🗑️</span> 清除数据
+            </button>
+        </nav>
+
+        <!-- 游戏进度信息 -->
+        <section class="game-info">
+            <div class="progress">
+                进度: <span id="progress">关卡 1/10</span> | 总分: <span id="totalScore">0</span>
+            </div>
+            <div class="level-info">
+                当前关卡: <span id="level">1</span> | 匹配所有英文与中文对！
+            </div>
+        </section>
+
+        <!-- 游戏统计数据 -->
+        <section class="game-stats">
+            <div class="stats">
+                <div class="stat-item">
+                    本关用时: <span id="time" class="timer-display">0.000</span> 秒
+                </div>
+                <div class="stat-item">
+                    试错次数: <span id="mistakes">0</span>
+                </div>
+                <div class="stat-item">
+                    本关分数: <span id="levelScore">0</span> <span id="stars" class="stars"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 游戏卡片容器 -->
+        <main class="game-board">
+            <div class="container" id="game"></div>
+        </main>
+    </div>
+
+    <!-- 模态对话框容器 -->
+    <div class="modals-container">
+        <!-- 排行榜面板 -->
+        <div class="leaderboard-panel" id="leaderboardPanel" role="dialog" aria-modal="true"
+            aria-labelledby="leaderboardTitle">
+            <div class="leaderboard-container">
+                <div class="leaderboard-header">
+                    <h2 id="leaderboardTitle">🏆 排行榜</h2>
+                    <button class="close-btn" onclick="hideLeaderboard()" aria-label="关闭排行榜">×</button>
+                </div>
+                <div class="leaderboard-tabs" id="leaderboardTabs">
+                    <!-- 选项卡由JS动态生成 -->
+                </div>
+                <ul class="leaderboard-list" id="leaderboardContent">
+                    <!-- 排行榜内容由JS动态生成 -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- 导入数据对话框 -->
+        <div class="modal" id="importModal" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+            <div class="modal-content">
+                <h3 id="importTitle"><span class="icon">📤</span> 导入游戏数据</h3>
+                <p>请选择要导入的.yzgdatae或.yzgldrb文件：</p>
+
+                <div class="file-format-hint">
+                    <strong>支持的文件格式：</strong>
+                    <ul>
+                        <li><strong>.yzgdatae</strong> - 加密数据文件（包含完整游戏数据）</li>
+                        <li><strong>.yzgldrb</strong> - 仅包含排行榜数据的文件</li>
+                    </ul>
+                </div>
+
+                <div class="file-upload-section">
+                    <input type="file" id="importFile" accept=".yzgdatae,.yzgdata,.yzgldrb" style="display: none;"
+                        onchange="handleFileImport(this.files[0])">
+                    <button class="control-btn success" onclick="document.getElementById('importFile').click()"
+                        aria-label="选择文件">
+                        <span class="icon">📁</span> 选择文件
+                    </button>
+                </div>
+
+                <div id="importStatus" class="status-message"
+                    style="display: none; padding: 2vh; background: #f8f9fa; border-radius: 10px; margin: 2vh 0;"></div>
+
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideImportModal()" aria-label="取消导入">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导出数据对话框 -->
+        <div class="modal" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+            <div class="modal-content">
+                <h3 id="exportTitle"><span class="icon">📥</span> 导出游戏数据</h3>
+                <p>请选择导出格式：</p>
+
+                <div class="export-options" style="display: flex; flex-direction: column; gap: 1.5vh;">
+                    <button class="control-btn success" onclick="downloadEncryptedData()" aria-label="导出完整加密文件"
+                        style="flex: 1; min-width: 150px;">
+                        <span class="icon">🔒</span> 导出完整加密文件 (.yzgdatae)
+                    </button>
+                    <button class="control-btn info" onclick="downloadLeaderboardData()" aria-label="仅导出排行榜数据"
+                        style="flex: 1; min-width: 150px;">
+                        <span class="icon">🏆</span> 仅导出排行榜数据 (.yzgldrb)
+                    </button>
+                </div>
+
+                <div class="file-format-hint">
+                    <strong>格式说明：</strong>
+                    <ul>
+                        <li><strong>.yzgdatae</strong> - AES加密，包含完整游戏数据，安全性高</li>
+                        <li><strong>.yzgldrb</strong> - 仅包含排行榜数据，可用于排行榜分享</li>
+                    </ul>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideExportModal()" aria-label="关闭导出对话框">关闭</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 关卡选择对话框 -->
+        <div class="modal" id="levelModal" role="dialog" aria-modal="true" aria-labelledby="levelSelectTitle">
+            <div class="modal-content">
+                <h3 id="levelSelectTitle"><span class="icon">🎮</span> 选择关卡</h3>
+                <p>选择要挑战的关卡（绿色为已通关）：</p>
+                <div class="level-grid" id="levelGrid">
+                    <!-- 关卡按钮由JS动态生成 -->
+                </div>
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideLevelSelect()" aria-label="取消选择关卡">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 难度选择对话框 -->
+        <div class="modal" id="difficultyModal" role="dialog" aria-modal="true" aria-labelledby="difficultyTitle">
+            <div class="modal-content">
+                <h3 id="difficultyTitle"><span class="icon">🎯</span> 选择游戏难度</h3>
+                <p>选择适合你的游戏难度：</p>
+
+                <div class="difficulty-options"
+                    style="display: flex; flex-direction: column; gap: 1.5vh; margin: 2vh 0;">
+                    <button class="difficulty-option-btn" onclick="setGameDifficulty('easy')">
+                        <div class="difficulty-header">
+                            <span class="difficulty-name">简单</span>
+                            <span class="difficulty-stars">⭐⭐</span>
+                        </div>
+                        <div class="difficulty-desc">
+                            <div>每关6对句子</div>
+                            <div>无限试错次数</div>
+                            <div>轻微时间惩罚</div>
+                        </div>
+                    </button>
+
+                    <button class="difficulty-option-btn" onclick="setGameDifficulty('normal')">
+                        <div class="difficulty-header">
+                            <span class="difficulty-name">普通</span>
+                            <span class="difficulty-stars">⭐⭐⭐</span>
+                        </div>
+                        <div class="difficulty-desc">
+                            <div>每关9对句子</div>
+                            <div>3次试错机会</div>
+                            <div>中等时间惩罚</div>
+                        </div>
+                    </button>
+
+                    <button class="difficulty-option-btn" onclick="setGameDifficulty('hard')">
+                        <div class="difficulty-header">
+                            <span class="difficulty-name">困难</span>
+                            <span class="difficulty-stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                        <div class="difficulty-desc">
+                            <div>每关12对句子</div>
+                            <div>仅1次试错机会</div>
+                            <div>严厉时间惩罚</div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideDifficultySelect()"
+                        aria-label="取消难度选择">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 清除数据确认对话框 -->
+        <div class="modal" id="clearDataModal" role="dialog" aria-modal="true" aria-labelledby="clearDataTitle">
+            <div class="modal-content">
+                <h3 id="clearDataTitle"><span class="icon">⚠️</span> 清除游戏数据</h3>
+                <p class="warning-text">
+                    此操作将清除所有游戏数据，包括：<br>
+                    • 当前游戏进度<br>
+                    • 所有排行榜记录<br>
+                    • 已完成的关卡<br><br>
+                    <strong style="color: #e74c3c;">此操作不可撤销！</strong>
+                </p>
+                <div class="modal-buttons">
+                    <button class="control-btn secondary" onclick="hideClearDataModal()" aria-label="取消清除数据">取消</button>
+                    <button class="control-btn danger" onclick="clearAllGameData()" aria-label="确认清除数据">确认清除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript资源 -->
+    <script src="./assets/js/game.js"
+        onerror="this.onerror=null; console.error('Failed to load JavaScript file'); alert('游戏资源加载失败，请刷新页面重试');"></script>
+</body>
+
+</html>

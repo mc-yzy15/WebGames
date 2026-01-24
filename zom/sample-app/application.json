@@ -1,0 +1,16 @@
+{
+  "name": "sample-app",
+  "version": "1.0.0",
+  "description": "示例应用程序，展示如何创建 ZOM 软件包",
+  "script": "sample-app.js",
+  "styles": ["sample-app.css"],
+  "icon": "icon.svg",
+  "assets": [],
+  "type": "GUI",
+  "autoStart": false,
+  "priority": 5,
+  "alwaysShowInTaskbar": false,
+  "allowMultipleInstances": true,
+  "supportsPreview": true,
+  "category": "utility"
+}

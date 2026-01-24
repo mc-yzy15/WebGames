@@ -1,0 +1,245 @@
+:root {
+    --primary-bg: #1a1a2e;
+    --secondary-bg: #25254a;
+    --accent-color: #00ffff;
+    --button-gradient: linear-gradient(135deg, #0066ff, #00aaff);
+    --border-color: #303060;
+    --text-color: #ffffff;
+    --shadow-effect: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--primary-bg);
+    font-family: Arial, sans-serif;
+    color: var(--text-color);
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    background-color: var(--secondary-bg);
+    border-radius: 15px;
+    box-shadow: var(--shadow-effect);
+}
+
+h1 {
+    color: var(--accent-color);
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.game-description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    color: var(--text-color);
+    padding: 0 20px;
+}
+
+.game-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#gameCanvas {
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    box-shadow: var(--shadow-effect);
+    margin: 0 auto 20px;
+    width: 300px;
+    height: 300px;
+    touch-action: none;
+    /* 防止触摸设备上的默认行为 */
+}
+
+#gameControls {
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 8px;
+    width: 100%;
+    max-width: 300px;
+}
+
+#gameScore {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#score {
+    font-size: 24px;
+    margin: 10px 0;
+    color: var(--accent-color);
+}
+
+#highScore {
+    font-size: 18px;
+    margin: 5px 0 15px;
+    color: #ffd700;
+    /* 金色 */
+}
+
+#startBtn,
+#pauseBtn {
+    font-size: 18px;
+    padding: 12px 24px;
+    background: var(--button-gradient);
+    color: var(--text-color);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 5px 5px 10px #bebebe,
+        -5px -5px 10px #ffffff;
+    position: relative;
+    overflow: hidden;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 5px;
+}
+
+#startBtn::before,
+#pauseBtn::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+}
+
+#startBtn:hover,
+#pauseBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px #bebebe,
+        -6px -6px 12px #ffffff;
+}
+
+#startBtn:active,
+#pauseBtn:active {
+    transform: translateY(1px);
+    box-shadow: inset 4px 4px 8px #bebebe,
+        inset -4px -4px 8px #ffffff;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 180px;
+    margin: 20px auto;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    background: linear-gradient(145deg, #f0f0f0, #cacaca);
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 10px #bebebe,
+        -5px -5px 10px #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+.control-btn::before {
+    content: '';
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px #bebebe,
+        -6px -6px 12px #ffffff;
+}
+
+.control-btn:active {
+    transform: translateY(1px);
+    box-shadow: inset 4px 4px 8px #bebebe,
+        inset -4px -4px 8px #ffffff;
+}
+
+#up {
+    grid-column: 2;
+}
+
+#left {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#right {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+#down {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+    .controls {
+        width: 150px;
+    }
+
+    .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    #score {
+        font-size: 20px;
+    }
+
+    #highScore {
+        font-size: 16px;
+    }
+
+    #startBtn,
+    #pauseBtn {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    #gameCanvas {
+        width: 250px;
+        height: 250px;
+    }
+}
