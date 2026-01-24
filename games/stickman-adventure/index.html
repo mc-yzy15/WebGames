@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-5T8BBJZ9');</script>
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-5T8BBJZ9');</script>
     <!-- End Google Tag Manager -->
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTC7MX1MPZ"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', 'G-FTC7MX1MPZ');
@@ -41,10 +45,11 @@
     </script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5T8BBJZ9"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5T8BBJZ9" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div class="container">
         <h1>火柴人冒险游戏</h1>
@@ -52,7 +57,7 @@
             欢迎来到火柴人冒险游戏！这是一款刺激的动作冒险游戏，控制你的火柴人角色，通过跳跃和攻击，克服各种障碍和敌人，完成冒险任务。
             挑战你的反应能力和游戏技巧，享受刺激的游戏体验！
         </p>
-        
+
         <!-- 游戏控制面板 -->
         <div class="game-controls">
             <button id="difficultyBtn" class="cyber-button control-btn">🎯 难度选择</button>
@@ -60,14 +65,14 @@
             <button id="tutorialBtn" class="cyber-button control-btn">📚 教程</button>
             <button id="exportBtn" class="cyber-button control-btn">💾 导出数据</button>
         </div>
-        
+
         <!-- 游戏状态显示 -->
         <div class="game-status">
             <span id="currentLevel">关卡: 1</span>
             <span id="score">分数: 0</span>
             <span id="difficulty">难度: 简单</span>
         </div>
-        
+
         <div class="cyber-container">
             <canvas id="gameCanvas"></canvas>
             <div class="hud-panel">
@@ -83,7 +88,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- 教程面板 -->
         <div id="tutorialPanel" class="modal">
             <div class="modal-content">
@@ -107,7 +112,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- 难度选择面板 -->
         <div id="difficultyPanel" class="modal">
             <div class="modal-content">
@@ -120,7 +125,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- 关卡选择面板 -->
         <div id="levelPanel" class="modal">
             <div class="modal-content">
@@ -134,4 +139,5 @@
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>

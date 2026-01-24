@@ -265,8 +265,6 @@ h1 {
         height: 60px;
         font-size: 20px;
     }
-}   background: linear-gradient(to bottom, var(--secondary-bg), var(--primary-bg));
-    display: block;
 }
 
 .hud-panel {
