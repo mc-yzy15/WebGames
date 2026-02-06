@@ -2964,124 +2964,124 @@ const StickmanAdventure = (() => {
                 enemy.isJumping = false;
             }
         });
+    }
+
+    // 优化：更新爆炸敌人AI
+    function updateExploderEnemyAI(enemy, dx, dy, distance, distanceSquared) {
+        enemy.state = enemy.state || 'approaching';
+        enemy.explosionRadius = enemy.explosionRadius || 100;
+        enemy.explosionDamage = enemy.explosionDamage || 40;
+        enemy.detectionRange = enemy.detectionRange || 300;
+        enemy.explosionDelay = enemy.explosionDelay || 30;
+
+        const dx = state.player.x - enemy.x;
+        const dy = state.player.y - enemy.y;
+
+        if (distance < enemy.explosionRadius * 0.5) {
+            enemy.state = 'exploding';
+        } else if (distance < enemy.detectionRange) {
+            enemy.state = 'approaching';
+        } else {
+            enemy.state = 'wandering';
+        }
+
+        switch (enemy.state) {
+            case 'wandering': {
+                enemy.wanderTimer = enemy.wanderTimer || 0;
+                enemy.wanderDirection = enemy.wanderDirection || (Math.random() > 0.5 ? 1 : -1);
+
+                enemy.x += enemy.speed * enemy.wanderDirection * 0.5;
+                enemy.wanderTimer++;
+
+                if (enemy.wanderTimer > 60) {
+                    enemy.wanderDirection *= -1;
+                    enemy.wanderTimer = 0;
+                }
+
+                if (Math.random() < 0.02 && !enemy.isJumping) {
+                    enemy.velocityY = enemy.jumpForce * 1.1;
+                    enemy.isJumping = true;
+                }
+                break;
+            }
+
+            case 'approaching': {
+                const playerVelocityX = state.player.velocityX;
+                const playerVelocityY = state.player.velocityY;
+
+                const predictionTime = 0.5;
+                const predictedX = state.player.x + playerVelocityX * predictionTime;
+                const predictedY = state.player.y + playerVelocityY * predictionTime;
+
+                const targetVelocityX = (predictedX > enemy.x + enemy.width / 2) ? enemy.speed * 1.8 :
+                    (predictedX < enemy.x - enemy.width / 2) ? -enemy.speed * 1.8 : 0;
+                enemy.velocityX += (targetVelocityX - enemy.velocityX) * 0.25;
+                enemy.direction = Math.sign(enemy.velocityX) || 1;
+
+                enemy.x += enemy.velocityX;
+
+                if (predictedY < enemy.y - 30 && distance < 350 && !enemy.isJumping) {
+                    const jumpDistance = Math.abs(predictedX - enemy.x);
+                    const jumpHeight = enemy.y - predictedY;
+                    const gravity = enemy.gravity;
+
+                    const jumpTime = Math.sqrt(2 * jumpHeight / gravity);
+                    const requiredVelocityX = jumpDistance / jumpTime;
+
+                    if (Math.abs(requiredVelocityX - enemy.velocityX) < 3) {
+                        enemy.velocityY = -Math.sqrt(2 * jumpHeight * gravity) * 1.2;
+                        enemy.isJumping = true;
+                    }
+                }
+                break;
+            }
+
+            case 'exploding': {
+                enemy.explosionTimer = enemy.explosionTimer || 0;
+                enemy.explosionTimer++;
+
+                if (enemy.explosionTimer % 10 < 5) {
+                    enemy.isBlinking = true;
+                } else {
+                    enemy.isBlinking = false;
+                }
+
+                if (enemy.explosionTimer > enemy.explosionDelay) {
+                    explodeEnemy(enemy, index);
+                }
+                break;
+            }
+        }
+
+        enemy.velocityY += enemy.gravity;
+        enemy.y += enemy.velocityY;
+
+        enemy.isJumping = true;
+        state.platforms.forEach(platform => {
+            if (
+                enemy.x < platform.x + platform.width &&
+                enemy.x + enemy.width > platform.x &&
+                enemy.y + enemy.height > platform.y &&
+                enemy.y + enemy.height < platform.y + 15 &&
+                enemy.velocityY > 0
+            ) {
+                enemy.y = platform.y - enemy.height;
+                enemy.velocityY = 0;
+                enemy.isJumping = false;
+            }
+        });
         break;
     }
 
-                case 'exploder': {
-    enemy.state = enemy.state || 'approaching';
-    enemy.explosionRadius = enemy.explosionRadius || 100;
-    enemy.explosionDamage = enemy.explosionDamage || 40;
-    enemy.detectionRange = enemy.detectionRange || 300;
-    enemy.explosionDelay = enemy.explosionDelay || 30;
-
-    const dx = state.player.x - enemy.x;
-    const dy = state.player.y - enemy.y;
-
-    if (distance < enemy.explosionRadius * 0.5) {
-        enemy.state = 'exploding';
-    } else if (distance < enemy.detectionRange) {
-        enemy.state = 'approaching';
-    } else {
-        enemy.state = 'wandering';
+    if (enemy.x < 0) enemy.x = 0;
+    if (enemy.x + enemy.width > CONFIG.canvasWidth) {
+        enemy.x = CONFIG.canvasWidth - enemy.width;
     }
 
-    switch (enemy.state) {
-        case 'wandering': {
-            enemy.wanderTimer = enemy.wanderTimer || 0;
-            enemy.wanderDirection = enemy.wanderDirection || (Math.random() > 0.5 ? 1 : -1);
-
-            enemy.x += enemy.speed * enemy.wanderDirection * 0.5;
-            enemy.wanderTimer++;
-
-            if (enemy.wanderTimer > 60) {
-                enemy.wanderDirection *= -1;
-                enemy.wanderTimer = 0;
-            }
-
-            if (Math.random() < 0.02 && !enemy.isJumping) {
-                enemy.velocityY = enemy.jumpForce * 1.1;
-                enemy.isJumping = true;
-            }
-            break;
-        }
-
-        case 'approaching': {
-            const playerVelocityX = state.player.velocityX;
-            const playerVelocityY = state.player.velocityY;
-
-            const predictionTime = 0.5;
-            const predictedX = state.player.x + playerVelocityX * predictionTime;
-            const predictedY = state.player.y + playerVelocityY * predictionTime;
-
-            const targetVelocityX = (predictedX > enemy.x + enemy.width / 2) ? enemy.speed * 1.8 :
-                (predictedX < enemy.x - enemy.width / 2) ? -enemy.speed * 1.8 : 0;
-            enemy.velocityX += (targetVelocityX - enemy.velocityX) * 0.25;
-            enemy.direction = Math.sign(enemy.velocityX) || 1;
-
-            enemy.x += enemy.velocityX;
-
-            if (predictedY < enemy.y - 30 && distance < 350 && !enemy.isJumping) {
-                const jumpDistance = Math.abs(predictedX - enemy.x);
-                const jumpHeight = enemy.y - predictedY;
-                const gravity = enemy.gravity;
-
-                const jumpTime = Math.sqrt(2 * jumpHeight / gravity);
-                const requiredVelocityX = jumpDistance / jumpTime;
-
-                if (Math.abs(requiredVelocityX - enemy.velocityX) < 3) {
-                    enemy.velocityY = -Math.sqrt(2 * jumpHeight * gravity) * 1.2;
-                    enemy.isJumping = true;
-                }
-            }
-            break;
-        }
-
-        case 'exploding': {
-            enemy.explosionTimer = enemy.explosionTimer || 0;
-            enemy.explosionTimer++;
-
-            if (enemy.explosionTimer % 10 < 5) {
-                enemy.isBlinking = true;
-            } else {
-                enemy.isBlinking = false;
-            }
-
-            if (enemy.explosionTimer > enemy.explosionDelay) {
-                explodeEnemy(enemy, index);
-            }
-            break;
-        }
+    if (!enemy.isJumping && enemy.type !== 'flying') {
+        enemy.velocityX *= 0.9;
     }
-
-    enemy.velocityY += enemy.gravity;
-    enemy.y += enemy.velocityY;
-
-    enemy.isJumping = true;
-    state.platforms.forEach(platform => {
-        if (
-            enemy.x < platform.x + platform.width &&
-            enemy.x + enemy.width > platform.x &&
-            enemy.y + enemy.height > platform.y &&
-            enemy.y + enemy.height < platform.y + 15 &&
-            enemy.velocityY > 0
-        ) {
-            enemy.y = platform.y - enemy.height;
-            enemy.velocityY = 0;
-            enemy.isJumping = false;
-        }
-    });
-    break;
-}
-
-if (enemy.x < 0) enemy.x = 0;
-if (enemy.x + enemy.width > CONFIG.canvasWidth) {
-    enemy.x = CONFIG.canvasWidth - enemy.width;
-}
-
-if (!enemy.isJumping && enemy.type !== 'flying') {
-    enemy.velocityX *= 0.9;
-}
-        };
+};
     }
 
 // 敌人攻击
