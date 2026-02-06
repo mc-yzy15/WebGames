@@ -58,6 +58,8 @@ h1 {
     box-shadow: var(--shadow-effect);
     border: 1px solid var(--border-color);
     overflow: hidden;
+}
+
 #gameCanvas {
     width: 100%;
     height: 100%;
