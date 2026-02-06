@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "englishwordgamev2024",
+  "productName": "English Word Game V2024",
   "version": "0.1.0",
   "identifier": "com.yzy15.englishwordgamev2024",
   "build": {
@@ -13,9 +13,12 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "englishwordgamev2024",
-        "width": 800,
-        "height": 600
+        "title": "English Word Game V2024",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600,
+        "center": true
       }
     ],
     "security": {

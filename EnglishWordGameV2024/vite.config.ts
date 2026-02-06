@@ -1,11 +1,14 @@
 import { defineConfig } from "vite";
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
 
-// @ts-expect-error process is a nodejs global
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
-
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
   // 1. prevent Vite from obscuring rust errors
@@ -25,6 +28,21 @@ export default defineConfig(async () => ({
     watch: {
       // 3. tell Vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
+    },
+  },
+  // 配置构建选项
+  build: {
+    // 输出目录
+    outDir: "dist",
+    // 资源内联限制
+    assetsInlineLimit: 0,
+    // 滚动优化
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        word: resolve(__dirname, "src/games/word/index.html"),
+        jvzi: resolve(__dirname, "src/games/jvzi/index.html"),
+      },
     },
   },
 }));
