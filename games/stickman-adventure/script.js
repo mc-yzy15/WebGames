@@ -2828,148 +2828,144 @@ const StickmanAdventure = (() => {
 
         enemy.x = Math.max(0, Math.min(CONFIG.canvasWidth - enemy.width, enemy.x));
         enemy.y = Math.max(30, Math.min(CONFIG.canvasHeight - 80, enemy.y));
-    }
 
-    const attackChance = enemy.state === 'attacking' ? 0.9 :
-        enemy.state === 'chasing' ? 0.4 : 0.15;
+        const attackChance = enemy.state === 'attacking' ? 0.9 :
+            enemy.state === 'chasing' ? 0.4 : 0.15;
 
-    if (distance < enemy.attackRange && enemy.lastAttackCooldown <= 0 && Math.random() < attackChance) {
-        if (enemy.state === 'attacking' && enemy.attackPhase === 1) {
-            enemyShoot(enemy, index);
-        } else {
-            enemyAttack(enemy, index);
-        }
-    }
-    break;
-}
-
-                case 'shooter': {
-    enemy.state = enemy.state || 'positioning';
-    enemy.attackCooldown = enemy.attackCooldown || 90;
-    enemy.shootAccuracy = enemy.shootAccuracy || 0.8;
-    enemy.retreatDistance = enemy.retreatDistance || 200;
-
-    const dx = state.player.x - enemy.x;
-    const dy = state.player.y - enemy.y;
-
-    enemy.direction = dx > 0 ? 1 : -1;
-
-    let optimalPlatform = null;
-    let optimalScore = -Infinity;
-
-    state.platforms.forEach(platform => {
-        const platformY = platform.y;
-        const platformCenterX = platform.x + platform.width / 2;
-
-        const heightScore = -platformY * 0.5;
-        const distanceScore = Math.max(0, 300 - Math.abs(dx));
-        const widthScore = platform.width * 0.1;
-
-        const platformScore = heightScore + distanceScore + widthScore;
-
-        if (platformScore > optimalScore) {
-            optimalScore = platformScore;
-            optimalPlatform = platform;
-        }
-    });
-
-    const canSeePlayer = !state.platforms.some(platform => {
-        const lineStart = { x: enemy.x + enemy.width / 2, y: enemy.y + enemy.height / 2 };
-        const lineEnd = { x: state.player.x + state.player.width / 2, y: state.player.y + state.player.height / 2 };
-        const rect = {
-            x: platform.x,
-            y: platform.y,
-            width: platform.width,
-            height: platform.height
-        };
-
-        return rect.y > Math.min(lineStart.y, lineEnd.y) &&
-            rect.y < Math.max(lineStart.y, lineEnd.y) &&
-            rect.x < Math.max(lineStart.x, lineEnd.x) &&
-            rect.x + rect.width > Math.min(lineStart.x, lineEnd.x);
-    });
-
-    if (distance > 300 || (distance > 200 && !canSeePlayer)) {
-        enemy.state = 'approaching';
-        enemy.x += enemy.speed * enemy.direction * 0.7;
-
-        if (optimalPlatform && enemy.y + enemy.height < optimalPlatform.y - 30 && !enemy.isJumping) {
-            if (Math.random() < 0.8) {
-                enemy.velocityY = enemy.jumpForce * 1.3;
-                enemy.isJumping = true;
+        if (distance < enemy.attackRange && enemy.lastAttackCooldown <= 0 && Math.random() < attackChance) {
+            if (enemy.state === 'attacking' && enemy.attackPhase === 1) {
+                enemyShoot(enemy, index);
+            } else {
+                enemyAttack(enemy, index);
             }
         }
-    } else if (distance < 120) {
-        enemy.state = 'retreating';
-        enemy.x -= enemy.speed * enemy.direction * 0.8;
+    }
 
-        if (!enemy.isJumping && Math.random() < 0.5) {
-            enemy.velocityY = enemy.jumpForce * 0.9;
-            enemy.isJumping = true;
-        }
-    } else {
-        enemy.state = 'positioning';
+    // 优化：更新射手敌人AI
+    function updateShooterEnemyAI(enemy, dx, dy, distance, distanceSquared) {
+        enemy.state = enemy.state || 'positioning';
+        enemy.attackCooldown = enemy.attackCooldown || 90;
+        enemy.shootAccuracy = enemy.shootAccuracy || 0.8;
+        enemy.retreatDistance = enemy.retreatDistance || 200;
 
-        if (optimalPlatform) {
-            const platformCenter = optimalPlatform.x + optimalPlatform.width / 2;
-            if (Math.abs(enemy.x - platformCenter) > 15) {
-                enemy.x += Math.sign(platformCenter - enemy.x) * enemy.speed * 0.4;
+        enemy.direction = dx > 0 ? 1 : -1;
+
+        let optimalPlatform = null;
+        let optimalScore = -Infinity;
+
+        state.platforms.forEach(platform => {
+            const platformY = platform.y;
+            const platformCenterX = platform.x + platform.width / 2;
+
+            const heightScore = -platformY * 0.5;
+            const distanceScore = Math.max(0, 300 - Math.abs(dx));
+            const widthScore = platform.width * 0.1;
+
+            const platformScore = heightScore + distanceScore + widthScore;
+
+            if (platformScore > optimalScore) {
+                optimalScore = platformScore;
+                optimalPlatform = platform;
             }
+        });
 
-            if (enemy.y + enemy.height < optimalPlatform.y - 25 && !enemy.isJumping) {
+        const canSeePlayer = !state.platforms.some(platform => {
+            const lineStart = { x: enemy.x + enemy.width / 2, y: enemy.y + enemy.height / 2 };
+            const lineEnd = { x: state.player.x + state.player.width / 2, y: state.player.y + state.player.height / 2 };
+            const rect = {
+                x: platform.x,
+                y: platform.y,
+                width: platform.width,
+                height: platform.height
+            };
+
+            return rect.y > Math.min(lineStart.y, lineEnd.y) &&
+                rect.y < Math.max(lineStart.y, lineEnd.y) &&
+                rect.x < Math.max(lineStart.x, lineEnd.x) &&
+                rect.x + rect.width > Math.min(lineStart.x, lineEnd.x);
+        });
+
+        if (distance > 300 || (distance > 200 && !canSeePlayer)) {
+            enemy.state = 'approaching';
+            enemy.x += enemy.speed * enemy.direction * 0.7;
+
+            if (optimalPlatform && enemy.y + enemy.height < optimalPlatform.y - 30 && !enemy.isJumping) {
                 if (Math.random() < 0.8) {
-                    enemy.velocityY = enemy.jumpForce * 1.4;
+                    enemy.velocityY = enemy.jumpForce * 1.3;
                     enemy.isJumping = true;
                 }
             }
+        } else if (distance < 120) {
+            enemy.state = 'retreating';
+            enemy.x -= enemy.speed * enemy.direction * 0.8;
+
+            if (!enemy.isJumping && Math.random() < 0.5) {
+                enemy.velocityY = enemy.jumpForce * 0.9;
+                enemy.isJumping = true;
+            }
+        } else {
+            enemy.state = 'positioning';
+
+            if (optimalPlatform) {
+                const platformCenter = optimalPlatform.x + optimalPlatform.width / 2;
+                if (Math.abs(enemy.x - platformCenter) > 15) {
+                    enemy.x += Math.sign(platformCenter - enemy.x) * enemy.speed * 0.4;
+                }
+
+                if (enemy.y + enemy.height < optimalPlatform.y - 25 && !enemy.isJumping) {
+                    if (Math.random() < 0.8) {
+                        enemy.velocityY = enemy.jumpForce * 1.4;
+                        enemy.isJumping = true;
+                    }
+                }
+            }
         }
-    }
 
-    const shootChance = enemy.state === 'positioning' ? 0.95 :
-        enemy.state === 'approaching' ? 0.3 : 0.1;
+        const shootChance = enemy.state === 'positioning' ? 0.95 :
+            enemy.state === 'approaching' ? 0.3 : 0.1;
 
-    if (distance < enemy.attackRange && enemy.lastAttackCooldown <= 0 && canSeePlayer && Math.random() < shootChance) {
-        const playerVelocityX = state.player.velocityX;
-        const playerVelocityY = state.player.velocityY;
-        const bulletSpeed = 8;
+        if (distance < enemy.attackRange && enemy.lastAttackCooldown <= 0 && canSeePlayer && Math.random() < shootChance) {
+            const playerVelocityX = state.player.velocityX;
+            const playerVelocityY = state.player.velocityY;
+            const bulletSpeed = 8;
 
-        const timeToHit = distance / bulletSpeed;
-        const predictedPlayerX = state.player.x + playerVelocityX * timeToHit;
-        const predictedPlayerY = state.player.y + playerVelocityY * timeToHit;
+            const timeToHit = distance / bulletSpeed;
+            const predictedPlayerX = state.player.x + playerVelocityX * timeToHit;
+            const predictedPlayerY = state.player.y + playerVelocityY * timeToHit;
 
-        const shootDx = predictedPlayerX - enemy.x;
-        const shootDy = predictedPlayerY - enemy.y;
-        const shootAngle = Math.atan2(shootDy, shootDx);
+            const shootDx = predictedPlayerX - enemy.x;
+            const shootDy = predictedPlayerY - enemy.y;
+            const shootAngle = Math.atan2(shootDy, shootDx);
 
-        let accuracy = enemy.shootAccuracy;
-        if (enemy.state === 'approaching') accuracy *= 0.5;
-        if (enemy.isJumping) accuracy *= 0.7;
+            let accuracy = enemy.shootAccuracy;
+            if (enemy.state === 'approaching') accuracy *= 0.5;
+            if (enemy.isJumping) accuracy *= 0.7;
 
-        const randomFactor = (Math.random() - 0.5) * (1 - accuracy) * 2;
-        const finalShootAngle = shootAngle + randomFactor;
+            const randomFactor = (Math.random() - 0.5) * (1 - accuracy) * 2;
+            const finalShootAngle = shootAngle + randomFactor;
 
-        enemyShoot(enemy, index);
-    }
-
-    enemy.velocityY += enemy.gravity;
-    enemy.y += enemy.velocityY;
-
-    enemy.isJumping = true;
-    state.platforms.forEach(platform => {
-        if (
-            enemy.x < platform.x + platform.width &&
-            enemy.x + enemy.width > platform.x &&
-            enemy.y + enemy.height > platform.y &&
-            enemy.y + enemy.height < platform.y + 15 &&
-            enemy.velocityY > 0
-        ) {
-            enemy.y = platform.y - enemy.height;
-            enemy.velocityY = 0;
-            enemy.isJumping = false;
+            enemyShoot(enemy, index);
         }
-    });
-    break;
-}
+
+        enemy.velocityY += enemy.gravity;
+        enemy.y += enemy.velocityY;
+
+        enemy.isJumping = true;
+        state.platforms.forEach(platform => {
+            if (
+                enemy.x < platform.x + platform.width &&
+                enemy.x + enemy.width > platform.x &&
+                enemy.y + enemy.height > platform.y &&
+                enemy.y + enemy.height < platform.y + 15 &&
+                enemy.velocityY > 0
+            ) {
+                enemy.y = platform.y - enemy.height;
+                enemy.velocityY = 0;
+                enemy.isJumping = false;
+            }
+        });
+        break;
+    }
 
                 case 'exploder': {
     enemy.state = enemy.state || 'approaching';
