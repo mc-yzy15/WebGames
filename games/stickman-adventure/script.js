@@ -2481,6 +2481,17 @@ const StickmanAdventure = (() => {
 
             // 优化：批量平台碰撞检测
             updateEnemyPlatformCollision(enemy);
+
+            // 边界检查
+            if (enemy.x < 0) enemy.x = 0;
+            if (enemy.x + enemy.width > CONFIG.canvasWidth) {
+                enemy.x = CONFIG.canvasWidth - enemy.width;
+            }
+
+            // 地面摩擦
+            if (!enemy.isJumping && enemy.type !== 'flying') {
+                enemy.velocityX *= 0.9;
+            }
         }
     }
 
@@ -3067,15 +3078,6 @@ const StickmanAdventure = (() => {
                 enemy.isJumping = false;
             }
         });
-    }
-
-    if (enemy.x < 0) enemy.x = 0;
-    if (enemy.x + enemy.width > CONFIG.canvasWidth) {
-        enemy.x = CONFIG.canvasWidth - enemy.width;
-    }
-
-    if (!enemy.isJumping && enemy.type !== 'flying') {
-        enemy.velocityX *= 0.9;
     }
 }
 
