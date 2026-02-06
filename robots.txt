@@ -1,15 +1,16 @@
 User-agent: *
 Allow: /
 Disallow: /cgi-bin/
+Disallow: /temp/
+Disallow: /private/
 
-Sitemap: https://webgames.yzy15.dpdns.org/sitemap.xml
-
-# 针对特定爬虫的设置
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
-User-agent: DuckDuckBot
+User-agent: Slurp
 Allow: /
+
+Sitemap: https://webgames.yzy15.dpdns.org/sitemap.xml
