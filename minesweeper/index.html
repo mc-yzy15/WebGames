@@ -1,69 +1,43 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-5T8BBJZ9');</script>
-    <!-- End Google Tag Manager -->
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z152M2QNJW"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri App</title>
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
 
-        gtag('config', 'G-Z152M2QNJW');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>扫雷游戏在线玩 - 经典益智解谜游戏 | WebGames</title>
-    <meta name="description" content="免费在线玩经典扫雷游戏，通过逻辑推理和策略思维找出所有地雷位置。挑战你的智力极限，提升逻辑分析能力，重温经典益智游戏魅力！">
-    <meta name="keywords" content="扫雷游戏,在线游戏,益智游戏,解谜游戏,逻辑推理,经典游戏,免费游戏">
-    <meta name="author" content="mc-yzy15">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://webgames.yzy15.dpdns.org/games/minesweeper/">
-    <link rel="canonical" href="https://github.com/mc-yzy15/WebGames/tree/main/games/minesweeper">
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Game",
-        "name": "扫雷游戏",
-        "description": "经典扫雷游戏，通过逻辑推理找出所有地雷的位置。挑战你的思维能力和判断力。",
-        "url": "https://github.com/mc-yzy15/WebGames/tree/main/games/minesweeper",
-        "potentialAction": {
-            "@type": "PlayAction",
-            "name": "开始游戏",
-            "target": "https://github.com/mc-yzy15/WebGames/tree/main/games/minesweeper"
-        },
-        "gamePlayMode": "SinglePlayer",
-        "gameCategory": "Puzzle",
-        "interactivityType": "Active"
-    }
-    </script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5T8BBJZ9"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <div class="container">
-        <h1>扫雷游戏</h1>
-        <p class="game-description">
-            欢迎来到经典扫雷游戏！这是一款考验逻辑思维和判断力的益智游戏，通过点击方块并根据数字提示，避开所有地雷，找出安全区域。
-            挑战你的思维能力，看看你能多快完成游戏！
-        </p>
-        <div class="game-container">
-            <canvas id="gameCanvas"></canvas>
-            <div class="game-controls">
-                <div id="mineCounter">剩余地雷：10</div>
-                <button id="newGameBtn">新游戏</button>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
+  <body>
+    <main class="container">
+      <h1>Welcome to Tauri</h1>
+
+      <div class="row">
+        <a href="https://vite.dev" target="_blank">
+          <img src="/src/assets/vite.svg" class="logo vite" alt="Vite logo" />
+        </a>
+        <a href="https://tauri.app" target="_blank">
+          <img
+            src="/src/assets/tauri.svg"
+            class="logo tauri"
+            alt="Tauri logo"
+          />
+        </a>
+        <a href="https://www.typescriptlang.org/docs" target="_blank">
+          <img
+            src="/src/assets/typescript.svg"
+            class="logo typescript"
+            alt="typescript logo"
+          />
+        </a>
+      </div>
+      <p>Click on the Tauri logo to learn more about the framework</p>
+
+      <form class="row" id="greet-form">
+        <input id="greet-input" placeholder="Enter a name..." />
+        <button type="submit">Greet</button>
+      </form>
+      <p id="greet-msg"></p>
+    </main>
+  </body>
 </html>

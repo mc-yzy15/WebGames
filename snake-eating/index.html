@@ -1,124 +1,43 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri App</title>
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
 
-<head>
-    <!-- Google Tag Manager -->
-    <script>(function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-5T8BBJZ9');</script>
-    <!-- End Google Tag Manager -->
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTC7MX1MPZ"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+  <body>
+    <main class="container">
+      <h1>Welcome to Tauri</h1>
 
-        gtag('config', 'G-FTC7MX1MPZ');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>贪吃蛇游戏在线玩 - 经典免费网页游戏 | WebGames</title>
-    <meta name="description" content="免费在线玩经典贪吃蛇游戏，无需下载，支持键盘和触屏操作。挑战你的反应速度和策略规划，创造最高得分记录，享受怀旧游戏乐趣！">
-    <meta name="keywords" content="贪吃蛇游戏,在线游戏,经典游戏,免费游戏,网页游戏,怀旧游戏,休闲游戏">
-    <meta name="author" content="mc-yzy15">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://webgames.yzy15.dpdns.org/games/snake-eating/">
-    <link rel="canonical" href="https://github.com/mc-yzy15/WebGames/tree/main/games/snake-eating">
-    <link rel="stylesheet" href="style.css">
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Game",
-        "name": "贪吃蛇游戏在线玩",
-        "alternateName": ["经典贪吃蛇", "Snake Game", "在线贪吃蛇"],
-        "description": "免费在线玩经典贪吃蛇游戏，无需下载，支持键盘和触屏操作。挑战你的反应速度和策略规划，创造最高得分记录，享受怀旧游戏乐趣！",
-        "url": "https://webgames.yzy15.dpdns.org/games/snake-eating/",
-        "image": "https://webgames.yzy15.dpdns.org/games/snake-eating/screenshot.png",
-        "author": {
-            "@type": "Organization",
-            "name": "WebGames"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "WebGames",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://webgames.yzy15.dpdns.org/logo.png"
-            }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "2025-01-29",
-        "gamePlayMode": "SinglePlayer",
-        "genre": ["Casual", "Arcade", "Puzzle"],
-        "audience": {
-            "@type": "Audience",
-            "audienceType": "Everyone"
-        },
-        "softwareVersion": "1.0",
-        "operatingSystem": "Web Browser",
-        "playMode": "SinglePlayer",
-        "potentialAction": {
-            "@type": "PlayAction",
-            "name": "开始游戏",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "https://webgames.yzy15.dpdns.org/games/snake-eating/",
-                "actionPlatform": [
-                    "https://schema.org/DesktopWebPlatform",
-                    "https://schema.org/MobileWebPlatform"
-                ]
-            }
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.5",
-            "reviewCount": "128"
-        },
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "CNY"
-        }
-    }
-    </script>
-</head>
+      <div class="row">
+        <a href="https://vite.dev" target="_blank">
+          <img src="/src/assets/vite.svg" class="logo vite" alt="Vite logo" />
+        </a>
+        <a href="https://tauri.app" target="_blank">
+          <img
+            src="/src/assets/tauri.svg"
+            class="logo tauri"
+            alt="Tauri logo"
+          />
+        </a>
+        <a href="https://www.typescriptlang.org/docs" target="_blank">
+          <img
+            src="/src/assets/typescript.svg"
+            class="logo typescript"
+            alt="typescript logo"
+          />
+        </a>
+      </div>
+      <p>Click on the Tauri logo to learn more about the framework</p>
 
-<body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5T8BBJZ9" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <div class="container">
-        <h1>经典贪吃蛇游戏</h1>
-        <p class="game-description">
-            欢迎来到经典贪吃蛇游戏！这是一款经典的休闲游戏，考验你的反应能力和游戏技巧。
-            通过方向键或触屏操作控制蛇的移动，吃掉食物来增长身体并获得分数。
-            小心不要撞到墙壁或自己的身体，否则游戏就会结束。挑战自己，创造最高得分记录吧！
-        </p>
-        <div class="game-container">
-            <canvas id="gameCanvas" width="300" height="300"></canvas>
-            <div id="gameControls">
-                <div id="gameScore">
-                    <div id="score">得分: 0</div>
-                    <div id="highScore">最高分: 0</div>
-                    <button id="startBtn">开始游戏</button>
-                    <button id="pauseBtn" style="display: none;">暂停游戏</button>
-                </div>
-                <div class="controls">
-                    <button id="up" class="control-btn">↑</button>
-                    <button id="left" class="control-btn">←</button>
-                    <button id="right" class="control-btn">→</button>
-                    <button id="down" class="control-btn">↓</button>
-                </div>
-            </div>
-        </div>
-        <script src="script.js"></script>
-</body>
-
+      <form class="row" id="greet-form">
+        <input id="greet-input" placeholder="Enter a name..." />
+        <button type="submit">Greet</button>
+      </form>
+      <p id="greet-msg"></p>
+    </main>
+  </body>
 </html>
