@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 id: 2,
                 title: 'ZerOS',
                 category: '系统',
-                description: '浏览器虚拟操作系统，提供完整的桌面体验。',
+                description: '浏览器虚拟操作系统，提供完整的桌面体验，包含游戏中心、应用商店等功能。',
                 url: 'http://zeros.xin',
                 icon: '🖥️'
             },
@@ -28,15 +28,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 icon: '🔫'
             },
             {
-                id: 3,
+                id: 4,
                 title: 'Word Game系列',
                 category: '文字游戏',
                 description: '包含英语单词游戏和句子游戏，锻炼你的语言能力。',
                 url: './games/2024-2027WordGames-MS/',
-                icon: '�'
+                icon: '📚'
             },
             {
-                id: 4,
+                id: 5,
                 title: '贪吃蛇',
                 category: '经典游戏',
                 description: '经典贪吃蛇游戏，在线免费玩，支持键盘和触屏操作，挑战你的反应能力。',
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 icon: '🐍'
             },
             {
-                id: 5,
+                id: 6,
                 title: '扫雷',
                 category: '益智游戏',
                 description: '经典扫雷游戏，通过逻辑推理找出所有地雷的位置，考验你的思维能力。',
@@ -52,12 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 icon: '💣'
             },
             {
-                id: 6,
+                id: 7,
                 title: '2048',
                 category: '数字游戏',
                 description: '数字益智游戏，滑动方块合并数字，达到2048目标，锻炼你的数学思维。',
                 url: './games/2048/',
-                icon: '�'
+                icon: '🔢'
             }
         ],
         'arcade-games': [
@@ -271,11 +271,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 初始化页面函数
     function initializePage() {
-        // 默认显示我的网站
-        showSection('my-sites');
+        // 默认显示我的游戏
+        showSection('my-games');
 
         // 设置默认激活的导航项
-        document.querySelector('.nav-item[data-target="my-sites"]').classList.add('active');
+        document.querySelector('.nav-item[data-target="my-games"]').classList.add('active');
     }
 
     // 显示指定内容区域
