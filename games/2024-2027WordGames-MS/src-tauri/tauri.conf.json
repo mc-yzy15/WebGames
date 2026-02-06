@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "英语单词游戏",
+  "version": "1.0.0",
+  "identifier": "com.wordgames.app",
+  "build": {
+    "frontendDist": ".",
+    "devUrl": null
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "英语单词游戏",
+        "width": 1024,
+        "height": 768,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
