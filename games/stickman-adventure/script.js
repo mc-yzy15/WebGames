@@ -2726,106 +2726,109 @@ const StickmanAdventure = (() => {
                 }
                 break;
         }
-
-                case 'flying': {
-    const flyTargetX = state.player.x;
-    const flyTargetY = state.player.y;
-
-    enemy.state = enemy.state || 'patrolling';
-    enemy.flySpeed = enemy.flySpeed || enemy.speed * 0.3;
-    enemy.attackCooldown = enemy.attackCooldown || 60;
-    enemy.orbitRadius = enemy.orbitRadius || 120;
-
-    const visibilityDistance = 400;
-    if (distance < 100) {
-        enemy.state = 'attacking';
-    } else if (distance < visibilityDistance) {
-        enemy.state = 'chasing';
-    } else {
-        enemy.state = 'patrolling';
     }
 
-    switch (enemy.state) {
-        case 'patrolling': {
-            enemy.patrolCenter = enemy.patrolCenter || { x: enemy.x, y: enemy.y };
-            enemy.patrolTime = enemy.patrolTime || 0;
+    // 优化：更新飞行敌人AI
+    function updateFlyingEnemyAI(enemy, dx, dy, distance, distanceSquared) {
+        const flyTargetX = state.player.x;
+        const flyTargetY = state.player.y;
 
-            enemy.x = enemy.patrolCenter.x + Math.sin(enemy.patrolTime * 0.002) * 150;
-            enemy.y = enemy.patrolCenter.y + Math.cos(enemy.patrolTime * 0.003) * 80;
-            enemy.patrolTime += 1;
+        enemy.state = enemy.state || 'patrolling';
+        enemy.flySpeed = enemy.flySpeed || enemy.speed * 0.3;
+        enemy.attackCooldown = enemy.attackCooldown || 60;
+        enemy.orbitRadius = enemy.orbitRadius || 120;
 
-            break;
+        const visibilityDistance = 400;
+        if (distance < 100) {
+            enemy.state = 'attacking';
+        } else if (distance < visibilityDistance) {
+            enemy.state = 'chasing';
+        } else {
+            enemy.state = 'patrolling';
         }
 
-        case 'chasing': {
-            const approachSpeed = 0.05;
-            const heightOffset = -20;
+        switch (enemy.state) {
+            case 'patrolling': {
+                enemy.patrolCenter = enemy.patrolCenter || { x: enemy.x, y: enemy.y };
+                enemy.patrolTime = enemy.patrolTime || 0;
 
-            const horizontalDistance = Math.abs(flyTargetX - enemy.x);
-            const verticalDistance = Math.abs((flyTargetY + heightOffset) - enemy.y);
+                enemy.x = enemy.patrolCenter.x + Math.sin(enemy.patrolTime * 0.002) * 150;
+                enemy.y = enemy.patrolCenter.y + Math.cos(enemy.patrolTime * 0.003) * 80;
+                enemy.patrolTime += 1;
 
-            if (horizontalDistance > 50) {
-                enemy.x += (flyTargetX - enemy.x) * approachSpeed * 1.5;
-            } else {
-                enemy.y += ((flyTargetY + heightOffset) - enemy.y) * approachSpeed * 1.2;
+                break;
             }
 
-            enemy.y += Math.sin(state.lastTime * 0.01 + index) * 0.6;
-            break;
-        }
+            case 'chasing': {
+                const approachSpeed = 0.05;
+                const heightOffset = -20;
 
-        case 'attacking': {
-            enemy.attackPhase = enemy.attackPhase || 0;
-            enemy.attackTimer = enemy.attackTimer || 0;
+                const horizontalDistance = Math.abs(flyTargetX - enemy.x);
+                const verticalDistance = Math.abs((flyTargetY + heightOffset) - enemy.y);
 
-            switch (enemy.attackPhase) {
-                case 0: {
-                    const orbitSpeed = 0.006;
-                    const orbitAngle = state.lastTime * orbitSpeed + index;
-                    enemy.x = flyTargetX + Math.cos(orbitAngle) * enemy.orbitRadius;
-                    enemy.y = flyTargetY + Math.sin(orbitAngle) * enemy.orbitRadius;
-
-                    enemy.attackTimer++;
-                    if (enemy.attackTimer > 120) {
-                        enemy.attackPhase = 1;
-                        enemy.attackTimer = 0;
-                    }
-                    break;
+                if (horizontalDistance > 50) {
+                    enemy.x += (flyTargetX - enemy.x) * approachSpeed * 1.5;
+                } else {
+                    enemy.y += ((flyTargetY + heightOffset) - enemy.y) * approachSpeed * 1.2;
                 }
 
-                case 1: {
-                    enemy.x += (flyTargetX - enemy.x) * 0.12;
-                    enemy.y += (flyTargetY - enemy.y) * 0.15;
-
-                    enemy.attackTimer++;
-                    if (enemy.attackTimer > 60) {
-                        enemy.attackPhase = 2;
-                        enemy.attackTimer = 0;
-                    }
-                    break;
-                }
-
-                case 2: {
-                    enemy.x += (enemy.x - flyTargetX) * 0.1;
-                    enemy.y += (enemy.y - flyTargetY) * 0.1;
-
-                    enemy.attackTimer++;
-                    if (enemy.attackTimer > 80) {
-                        enemy.attackPhase = 0;
-                        enemy.attackTimer = 0;
-                        enemy.orbitRadius = Math.random() * 100 + 80;
-                    }
-                    break;
-                }
+                enemy.y += Math.sin(state.lastTime * 0.01) * 0.6;
+                break;
             }
-            break;
+
+            case 'attacking': {
+                enemy.attackPhase = enemy.attackPhase || 0;
+                enemy.attackTimer = enemy.attackTimer || 0;
+
+                switch (enemy.attackPhase) {
+                    case 0: {
+                        const orbitSpeed = 0.006;
+                        const orbitAngle = state.lastTime * orbitSpeed;
+                        enemy.x = flyTargetX + Math.cos(orbitAngle) * enemy.orbitRadius;
+                        enemy.y = flyTargetY + Math.sin(orbitAngle) * enemy.orbitRadius;
+
+                        enemy.attackTimer++;
+                        if (enemy.attackTimer > 120) {
+                            enemy.attackPhase = 1;
+                            enemy.attackTimer = 0;
+                        }
+                        break;
+                    }
+
+                    case 1: {
+                        enemy.x += (flyTargetX - enemy.x) * 0.12;
+                        enemy.y += (flyTargetY - enemy.y) * 0.15;
+
+                        enemy.attackTimer++;
+                        if (enemy.attackTimer > 60) {
+                            enemy.attackPhase = 2;
+                            enemy.attackTimer = 0;
+                        }
+                        break;
+                    }
+
+                    case 2: {
+                        enemy.x += (enemy.x - flyTargetX) * 0.1;
+                        enemy.y += (enemy.y - flyTargetY) * 0.1;
+
+                        enemy.attackTimer++;
+                        if (enemy.attackTimer > 80) {
+                            enemy.attackPhase = 0;
+                            enemy.attackTimer = 0;
+                            enemy.orbitRadius = Math.random() * 100 + 80;
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
         }
+
+        enemy.direction = flyTargetX > enemy.x ? 1 : -1;
+
+        enemy.x = Math.max(0, Math.min(CONFIG.canvasWidth - enemy.width, enemy.x));
+        enemy.y = Math.max(30, Math.min(CONFIG.canvasHeight - 80, enemy.y));
     }
-
-    enemy.direction = flyTargetX > enemy.x ? 1 : -1;
-
-    enemy.x = Math.max(0, Math.min(CONFIG.canvasWidth - enemy.width, enemy.x));
-    enemy.y = Math.max(30, Math.min(CONFIG.canvasHeight - 80, enemy.y));
 
     const attackChance = enemy.state === 'attacking' ? 0.9 :
         enemy.state === 'chasing' ? 0.4 : 0.15;
