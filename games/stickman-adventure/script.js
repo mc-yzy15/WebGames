@@ -2974,9 +2974,6 @@ const StickmanAdventure = (() => {
         enemy.detectionRange = enemy.detectionRange || 300;
         enemy.explosionDelay = enemy.explosionDelay || 30;
 
-        const dx = state.player.x - enemy.x;
-        const dy = state.player.y - enemy.y;
-
         if (distance < enemy.explosionRadius * 0.5) {
             enemy.state = 'exploding';
         } else if (distance < enemy.detectionRange) {
