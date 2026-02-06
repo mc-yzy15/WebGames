@@ -3067,7 +3067,6 @@ const StickmanAdventure = (() => {
                 enemy.isJumping = false;
             }
         });
-        break;
     }
 
     if (enemy.x < 0) enemy.x = 0;
@@ -3078,8 +3077,7 @@ const StickmanAdventure = (() => {
     if (!enemy.isJumping && enemy.type !== 'flying') {
         enemy.velocityX *= 0.9;
     }
-};
-    }
+}
 
 // 敌人攻击
 function enemyAttack(enemy, index) {
