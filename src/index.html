@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WebGames - 游戏菜单</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="menu-container">
+            <header class="menu-header">
+                <h1>🎮 WebGames</h1>
+                <p class="subtitle">选择你喜欢的游戏开始玩</p>
+            </header>
+
+            <main class="games-grid">
+                <div class="game-card" data-game="2048">
+                    <div class="game-icon">🔢</div>
+                    <h3>2048</h3>
+                    <p class="game-desc">数字益智游戏，滑动方块合并相同数字</p>
+                    <button class="play-btn" onclick="launchGame('2048')">开始游戏</button>
+                </div>
+
+                <div class="game-card" data-game="minesweeper">
+                    <div class="game-icon">💣</div>
+                    <h3>扫雷</h3>
+                    <p class="game-desc">经典扫雷游戏，找出所有地雷位置</p>
+                    <button class="play-btn" onclick="launchGame('minesweeper')">开始游戏</button>
+                </div>
+
+                <div class="game-card" data-game="snake-eating">
+                    <div class="game-icon">🐍</div>
+                    <h3>贪吃蛇</h3>
+                    <p class="game-desc">经典贪吃蛇，挑战你的反应速度</p>
+                    <button class="play-btn" onclick="launchGame('snake-eating')">开始游戏</button>
+                </div>
+
+                <div class="game-card" data-game="word">
+                    <div class="game-icon">📝</div>
+                    <h3>单词句子消消乐</h3>
+                    <p class="game-desc">猜单词游戏，组合单词句子</p>
+                    <button class="play-btn" onclick="launchGame('word')">开始游戏</button>
+                </div>
+            </main>
+
+            <footer class="menu-footer">
+                <p>© 2025 WebGames by mc-yzy15</p>
+                <div class="social-links">
+                    <a href="https://github.com/mc-yzy15/WebGames" target="_blank">GitHub</a>
+                    <a href="https://space.bilibili.com/1338637552" target="_blank">Bilibili</a>
+                    <a href="https://blog.csdn.net/m0_68339835" target="_blank">CSDN</a>
+                </div>
+            </footer>
+        </div>
+
+        <script src="menu.js"></script>
+    </body>
+</html>

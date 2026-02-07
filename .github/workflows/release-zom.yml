@@ -1,0 +1,136 @@
+name: Release ZOM Package
+
+on:
+  push:
+    branches: 
+      - 'zom'
+    paths:
+      - 'src/**'
+      - '.github/workflows/release-zom.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PowerShell
+      shell: powershell
+      run: |
+        $ErrorActionPreference = 'Stop'
+        Write-Host "PowerShell version: $($PSVersionTable.PSVersion)"
+        
+    - name: Create Release Directory
+      shell: powershell
+      run: |
+        New-Item -ItemType Directory -Force -Path "release"
+        
+    - name: Build ZOM Package
+      shell: powershell
+      run: |
+        $ErrorActionPreference = 'Stop'
+        
+        # 获取时间戳
+        $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+        Write-Host "Build timestamp: $timestamp"
+        
+        # 创建临时目录
+        $tempDir = "temp_zom_build"
+        New-Item -ItemType Directory -Force -Path $tempDir
+        
+        # 复制menu目录下的文件到临时目录
+        Copy-Item -Path "menu\*" -Destination $tempDir -Recurse -Force
+        
+        # 创建ZOM包 (ZIP格式)
+        $zomFile = "release\WebGamesMenu_$timestamp.zom"
+        Compress-Archive -Path "$tempDir\*" -DestinationPath $zomFile -Force
+        
+        Write-Host "ZOM package created: $zomFile"
+        
+        # 清理临时目录
+        Remove-Item -Path $tempDir -Recurse -Force
+        
+        # 输出文件名供后续步骤使用
+        echo "ZOM_FILE=WebGamesMenu_$timestamp.zom" >> $env:GITHUB_ENV
+        echo "TIMESTAMP=$timestamp" >> $env:GITHUB_ENV
+        
+    - name: Get Version Info
+      shell: powershell
+      run: |
+        $version = (Get-Content "menu\application.json" | ConvertFrom-Json).version
+        echo "VERSION=$version" >> $env:GITHUB_ENV
+        Write-Host "Package version: $version"
+        
+    - name: Delete Existing Pre-release
+      shell: powershell
+      run: |
+        $ErrorActionPreference = 'SilentlyContinue'
+        
+        # 获取现有的InstantRelease预发布版本
+        $releases = gh release list --limit 100 | Select-String "InstantRelease"
+        foreach ($release in $releases) {
+          $tag = ($release -split "\s+")[0]
+          Write-Host "Deleting existing pre-release: $tag"
+          gh release delete $tag --yes
+        }
+      env:
+        GH_TOKEN: ${{ secrets.TOKEN }}
+        
+    - name: Create Release
+      shell: powershell
+      run: |
+        $ErrorActionPreference = 'Stop'
+        
+        $tagName = "InstantRelease_${{ env.TIMESTAMP }}"
+        $releaseName = "InstantRelease ${{ env.TIMESTAMP }}"
+        $version = "${{ env.VERSION }}"
+        $zomFile = "${{ env.ZOM_FILE }}"
+        
+        # 创建发布说明
+        $notes = @"
+# WebGames Menu v$version
+
+## 自动构建发布
+
+此版本由 CI/CD 自动构建并发布。
+
+### 构建信息
+- **版本**: $version
+- **构建时间**: ${{ env.TIMESTAMP }}
+- **提交**: ${{ github.sha }}
+
+### 文件说明
+- `$zomFile`: ZerOS 程序安装包 (ZOM格式)
+
+### 安装方法
+在 ZerOS 系统中使用以下命令安装：
+```bash
+zominstall D:/path/to/$zomFile
+```
+
+### 包含的游戏
+- 🔢 2048 - 数字益智游戏
+- 💣 扫雷 - 经典扫雷游戏
+- 🐍 贪吃蛇 - 经典贪吃蛇游戏
+- 📝 猜单词 - 猜单词游戏
+
+---
+⚠️ 这是一个预发布版本 (Pre-release)，可能包含未测试的功能。
+"@
+
+        # 创建预发布版本
+        gh release create $tagName `
+          --title "$releaseName" `
+          --notes "$notes" `
+          --prerelease `
+          "release\$zomFile"
+          
+        Write-Host "Release created successfully: $tagName"
+      env:
+        GH_TOKEN: ${{ secrets.TOKEN }}
