@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>账号管理 - English Word Game V2024</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+  <style>
+    /* 账号管理专用样式 */
+    .account-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 15px;
+      color: white;
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+    .page-header p {
+      margin: 10px 0 0 0;
+      opacity: 0.9;
+    }
+
+    /* 登录/注册区域 */
+    .auth-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .auth-box {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-box h2 {
+      margin-top: 0;
+      color: #333;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .btn-danger {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
+    }
+
+    .btn-success {
+      background: #27ae60;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #219a52;
+    }
+
+    /* 账号信息面板 */
+    .account-dashboard {
+      display: none;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .account-dashboard.active {
+      display: block;
+    }
+
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .avatar-container {
+      position: relative;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #667eea;
+    }
+
+    .avatar-upload {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .user-info h2 {
+      margin: 0 0 5px 0;
+      color: #333;
+    }
+
+    .user-info p {
+      margin: 0;
+      color: #666;
+    }
+
+    .user-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+    }
+
+    .stat-card p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    /* 标签页 */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .tab.active {
+      color: #667eea;
+      border-bottom-color: #667eea;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* 设置表单 */
+    .settings-form {
+      max-width: 500px;
+    }
+
+    .settings-form .form-group {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .settings-form .form-group label {
+      flex: 0 0 120px;
+      margin-bottom: 0;
+    }
+
+    .settings-form .form-group input,
+    .settings-form .form-group select {
+      flex: 1;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 26px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background-color: #667eea;
+    }
+
+    .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(24px);
+    }
+
+    /* 账号列表 */
+    .account-list {
+      display: grid;
+      gap: 15px;
+    }
+
+    .account-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      transition: all 0.3s;
+    }
+
+    .account-item:hover {
+      background: #e9ecef;
+    }
+
+    .account-item .avatar {
+      width: 50px;
+      height: 50px;
+      border-width: 2px;
+    }
+
+    .account-item .info {
+      flex: 1;
+    }
+
+    .account-item .info h4 {
+      margin: 0 0 5px 0;
+      color: #333;
+    }
+
+    .account-item .info p {
+      margin: 0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .account-item .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .account-item .btn-small {
+      padding: 8px 16px;
+      font-size: 14px;
+      width: auto;
+    }
+
+    /* 导入导出 */
+    .import-export {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .import-export {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .import-box, .export-box {
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      left: -9999px;
+    }
+
+    .file-input-label {
+      display: block;
+      padding: 40px 20px;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .file-input-label:hover {
+      border-color: #667eea;
+      background: #f0f0f0;
+    }
+
+    /* 消息提示 */
+    .message {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    /* 浏览器提示 */
+    .browser-warning {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .browser-warning h3 {
+      margin-top: 0;
+    }
+
+    /* 密码强度 */
+    .password-strength {
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0;
+      transition: all 0.3s;
+    }
+
+    .password-strength-bar.weak {
+      width: 33%;
+      background: #e74c3c;
+    }
+
+    .password-strength-bar.medium {
+      width: 66%;
+      background: #f39c12;
+    }
+
+    .password-strength-bar.strong {
+      width: 100%;
+      background: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <div class="account-page">
+    <!-- 页面标题 -->
+    <div class="page-header">
+      <h1>👤 账号管理中心</h1>
+      <p>管理您的游戏账号、设置和数据</p>
+    </div>
+
+    <!-- 浏览器环境提示 -->
+    <div id="browser-warning" class="browser-warning" style="display: none;">
+      <h3>🖥️ 桌面应用功能</h3>
+      <p>账号系统需要运行桌面应用才能使用完整功能。</p>
+      <p>请使用 <code>npm run tauri dev</code> 启动桌面应用。</p>
+    </div>
+
+    <!-- 消息提示 -->
+    <div id="message" class="message"></div>
+
+    <!-- 登录/注册区域 -->
+    <div id="auth-section" class="auth-container">
+      <!-- 登录 -->
+      <div class="auth-box">
+        <h2>🔐 登录账号</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-username">用户名</label>
+            <input type="text" id="login-username" placeholder="请输入用户名" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">密码</label>
+            <input type="password" id="login-password" placeholder="请输入密码" required>
+          </div>
+          <button type="submit" class="btn btn-primary">登录</button>
+        </form>
+      </div>
+
+      <!-- 注册 -->
+      <div class="auth-box">
+        <h2>📝 创建账号</h2>
+        <form id="register-form">
+          <div class="form-group">
+            <label for="register-username">用户名</label>
+            <input type="text" id="register-username" placeholder="设置用户名" required maxlength="20">
+          </div>
+          <div class="form-group">
+            <label for="register-password">密码</label>
+            <input type="password" id="register-password" placeholder="设置密码" required minlength="6">
+            <div class="password-strength">
+              <div id="password-strength-bar" class="password-strength-bar"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="register-password-confirm">确认密码</label>
+            <input type="password" id="register-password-confirm" placeholder="再次输入密码" required>
+          </div>
+          <button type="submit" class="btn btn-success">创建账号</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 账号信息面板（登录后显示） -->
+    <div id="dashboard" class="account-dashboard">
+      <!-- 头部信息 -->
+      <div class="dashboard-header">
+        <div class="avatar-container">
+          <img id="user-avatar" src="" alt="头像" class="avatar">
+          <input type="file" id="avatar-input" accept="image/*" style="display: none;">
+          <button class="avatar-upload" onclick="document.getElementById('avatar-input').click()">📷</button>
+        </div>
+        <div class="user-info">
+          <h2 id="user-name">用户名</h2>
+          <p id="user-email">邮箱未设置</p>
+          <p id="user-created">创建于: --</p>
+        </div>
+      </div>
+
+      <!-- 统计信息 -->
+      <div class="user-stats">
+        <div class="stat-card">
+          <h3 id="stat-score">0</h3>
+          <p>总分数</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="stat-games">0</h3>
+          <p>游戏次数</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="stat-time">0h</h3>
+          <p>游戏时长</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="stat-streak">0</h3>
+          <p>连续登录</p>
+        </div>
+      </div>
+
+      <!-- 标签页 -->
+      <div class="tabs">
+        <button class="tab active" data-tab="profile">个人资料</button>
+        <button class="tab" data-tab="settings">账号设置</button>
+        <button class="tab" data-tab="security">安全设置</button>
+        <button class="tab" data-tab="data">数据管理</button>
+      </div>
+
+      <!-- 个人资料 -->
+      <div id="tab-profile" class="tab-content active">
+        <h3>编辑个人资料</h3>
+        <form id="profile-form" class="settings-form">
+          <div class="form-group">
+            <label for="edit-nickname">昵称</label>
+            <input type="text" id="edit-nickname" placeholder="设置昵称">
+          </div>
+          <div class="form-group">
+            <label for="edit-email">邮箱</label>
+            <input type="email" id="edit-email" placeholder="设置邮箱">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: auto; padding: 12px 30px;">保存修改</button>
+        </form>
+      </div>
+
+      <!-- 账号设置 -->
+      <div id="tab-settings" class="tab-content">
+        <h3>偏好设置</h3>
+        <form id="settings-form" class="settings-form">
+          <div class="form-group">
+            <label>主题</label>
+            <select id="setting-theme">
+              <option value="auto">自动</option>
+              <option value="light">浅色</option>
+              <option value="dark">深色</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>语言</label>
+            <select id="setting-language">
+              <option value="zh-CN">简体中文</option>
+              <option value="en-US">English</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>音效</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="setting-sound">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>音乐</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="setting-music">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>自动保存</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="setting-autosave">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>显示通知</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="setting-notifications">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: auto; padding: 12px 30px;">保存设置</button>
+        </form>
+      </div>
+
+      <!-- 安全设置 -->
+      <div id="tab-security" class="tab-content">
+        <h3>修改密码</h3>
+        <form id="password-form" class="settings-form">
+          <div class="form-group">
+            <label for="old-password">当前密码</label>
+            <input type="password" id="old-password" placeholder="输入当前密码" required>
+          </div>
+          <div class="form-group">
+            <label for="new-password">新密码</label>
+            <input type="password" id="new-password" placeholder="设置新密码" required minlength="6">
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">确认新密码</label>
+            <input type="password" id="confirm-password" placeholder="再次输入新密码" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: auto; padding: 12px 30px;">修改密码</button>
+        </form>
+
+        <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+        <h3>危险操作</h3>
+        <button id="btn-logout" class="btn btn-secondary" style="width: auto; margin-right: 10px;">退出登录</button>
+        <button id="btn-delete-account" class="btn btn-danger" style="width: auto;">删除账号</button>
+      </div>
+
+      <!-- 数据管理 -->
+      <div id="tab-data" class="tab-content">
+        <h3>导入/导出数据</h3>
+        <div class="import-export">
+          <div class="import-box">
+            <h4>📥 导入账号</h4>
+            <p style="color: #666; margin-bottom: 15px;">从 .yzdatae 文件导入账号数据</p>
+            <div class="file-input-wrapper">
+              <input type="file" id="import-file" accept=".yzdatae">
+              <label for="import-file" class="file-input-label">
+                点击或拖拽文件到此处
+              </label>
+            </div>
+            <button id="btn-import" class="btn btn-primary" style="margin-top: 15px;">导入</button>
+          </div>
+          <div class="export-box">
+            <h4>📤 导出账号</h4>
+            <p style="color: #666; margin-bottom: 15px;">将当前账号数据导出为 .yzdatae 文件</p>
+            <p style="color: #999; font-size: 14px; margin-bottom: 15px;">
+              导出的文件包含您的所有游戏数据和设置，请妥善保管。
+            </p>
+            <button id="btn-export" class="btn btn-success">导出当前账号</button>
+          </div>
+        </div>
+
+        <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+        <h3>其他账号</h3>
+        <div id="other-accounts" class="account-list">
+          <p style="color: #666;">加载中...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/account-page.ts"></script>
+</body>
+</html>
