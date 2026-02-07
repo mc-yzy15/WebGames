@@ -1,12 +1,27 @@
 {
     "name": "WebGamesMenu",
     "version": "1.0.0",
-    "description": "WebGames游戏菜单 - 一个集成了多款小游戏的游戏平台",
+    "description": "WebGames 游戏菜单 - 一个集成了多款小游戏的游戏平台，专为 ZerOS 系统优化",
     "script": "menu.js",
     "styles": ["style.css"],
     "icon": "icon.svg",
     "assets": [
-        "index.html"
+        "index.html",
+        "2048/index.html",
+        "2048/script.js",
+        "2048/style.css",
+        "minesweeper/index.html",
+        "minesweeper/script.js",
+        "minesweeper/style.css",
+        "snake-eating/index.html",
+        "snake-eating/script.js",
+        "snake-eating/style.css",
+        "2024-2027WordGames-MS/word/index.html",
+        "2024-2027WordGames-MS/word/assets/css/game.css",
+        "2024-2027WordGames-MS/word/assets/js/game.js",
+        "2024-2027WordGames-MS/jvzi/index.html",
+        "2024-2027WordGames-MS/jvzi/assets/css/game.css",
+        "2024-2027WordGames-MS/jvzi/assets/js/game.js"
     ],
     "type": "GUI",
     "autoStart": false,
@@ -14,5 +29,35 @@
     "alwaysShowInTaskbar": true,
     "allowMultipleInstances": false,
     "supportsPreview": true,
-    "category": "game"
+    "category": "game",
+    "author": "mc-yzy15",
+    "copyright": "© 2025 mc-yzy15",
+    "license": "MIT",
+    "homepage": "https://github.com/mc-yzy15/WebGames",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mc-yzy15/WebGames.git"
+    },
+    "bugs": {
+        "url": "https://github.com/mc-yzy15/WebGames/issues"
+    },
+    "keywords": [
+        "game",
+        "menu",
+        "2048",
+        "minesweeper",
+        "snake",
+        "word",
+        "puzzle"
+    ],
+    "permissions": [
+        "GUI_WINDOW_CREATE",
+        "GUI_WINDOW_MANAGE",
+        "KERNEL_DISK_READ"
+    ],
+    "minZerOSVersion": "1.0.0",
+    "supportedPlatforms": [
+        "web",
+        "zeros"
+    ]
 }

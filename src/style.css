@@ -1,19 +1,72 @@
-/* WebGames Menu Styles */
+/**
+ * WebGames Menu Styles
+ * 
+ * 专为 ZerOS 系统优化的样式，支持 ZerOS 主题变量
+ * 
+ * @author mc-yzy15
+ * @version 1.0.0
+ */
 
+/* ========================================
+   CSS 变量定义 - 支持 ZerOS 主题
+   ======================================== */
+:root {
+    /* ZerOS 主题变量 - 默认值 */
+    --theme-background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    --theme-background-elevated: rgba(255, 255, 255, 0.05);
+    --theme-background-hover: rgba(255, 255, 255, 0.1);
+    --theme-text: #ffffff;
+    --theme-text-secondary: #a0a0a0;
+    --theme-text-muted: #888888;
+    --theme-border: rgba(255, 255, 255, 0.1);
+    --theme-border-hover: rgba(0, 212, 255, 0.3);
+    --theme-accent-primary: #00d4ff;
+    --theme-accent-secondary: #7b2cbf;
+    --theme-shadow: rgba(0, 0, 0, 0.3);
+    --theme-shadow-hover: rgba(0, 212, 255, 0.2);
+    
+    /* 组件特定变量 */
+    --card-bg: var(--theme-background-elevated);
+    --card-border: var(--theme-border);
+    --card-hover-bg: var(--theme-background-hover);
+    --card-hover-border: var(--theme-border-hover);
+    --text-primary: var(--theme-text);
+    --text-secondary: var(--theme-text-secondary);
+    --text-muted: var(--theme-text-muted);
+}
+
+/* ========================================
+   基础重置
+   ======================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ========================================
+   主体样式
+   ======================================== */
 body {
-    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    font-family: 'Segoe UI', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--theme-background);
     min-height: 100vh;
-    color: #fff;
+    color: var(--text-primary);
     overflow-x: hidden;
+    line-height: 1.6;
 }
 
+/* ZerOS 窗口容器样式 */
+.webgames-menu-container {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: var(--theme-background);
+}
+
+/* ========================================
+   菜单容器
+   ======================================== */
 .menu-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -23,7 +76,9 @@ body {
     flex-direction: column;
 }
 
-/* Header Styles */
+/* ========================================
+   头部样式
+   ======================================== */
 .menu-header {
     text-align: center;
     margin-bottom: 50px;
@@ -33,8 +88,8 @@ body {
 .menu-header h1 {
     font-size: 3rem;
     margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+    text-shadow: 2px 2px 4px var(--theme-shadow);
+    background: linear-gradient(45deg, var(--theme-accent-primary), var(--theme-accent-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -42,11 +97,13 @@ body {
 
 .subtitle {
     font-size: 1.2rem;
-    color: #a0a0a0;
+    color: var(--text-secondary);
     letter-spacing: 2px;
 }
 
-/* Games Grid */
+/* ========================================
+   游戏网格
+   ======================================== */
 .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -55,53 +112,94 @@ body {
     flex: 1;
 }
 
-/* Game Card */
+/* ========================================
+   游戏卡片
+   ======================================== */
 .game-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--card-bg);
     border-radius: 20px;
     padding: 30px;
     text-align: center;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
+    border: 1px solid var(--card-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     animation: fadeInUp 0.8s ease-out;
     animation-fill-mode: both;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
+/* 卡片动画延迟 */
 .game-card:nth-child(1) { animation-delay: 0.1s; }
 .game-card:nth-child(2) { animation-delay: 0.2s; }
 .game-card:nth-child(3) { animation-delay: 0.3s; }
 .game-card:nth-child(4) { animation-delay: 0.4s; }
 .game-card:nth-child(5) { animation-delay: 0.5s; }
 
+/* 卡片悬停效果 */
 .game-card:hover {
     transform: translateY(-10px);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    border-color: rgba(0, 212, 255, 0.3);
+    background: var(--card-hover-bg);
+    box-shadow: 0 20px 40px var(--theme-shadow),
+                0 0 30px var(--theme-shadow-hover);
+    border-color: var(--card-hover-border);
 }
 
+/* 卡片光效 */
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.game-card:hover::before {
+    left: 100%;
+}
+
+/* 游戏图标 */
 .game-icon {
     font-size: 4rem;
     margin-bottom: 15px;
     display: block;
+    transition: transform 0.3s ease;
 }
 
+.game-card:hover .game-icon {
+    transform: scale(1.1);
+}
+
+/* 游戏标题 */
 .game-card h3 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #fff;
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
+/* 游戏描述 */
 .game-desc {
     font-size: 0.95rem;
-    color: #b0b0b0;
+    color: var(--text-secondary);
     margin-bottom: 20px;
     line-height: 1.5;
 }
 
+/* ========================================
+   游戏按钮
+   ======================================== */
 .play-btn {
-    background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+    background: linear-gradient(45deg, var(--theme-accent-primary), var(--theme-accent-secondary));
     border: none;
     padding: 12px 30px;
     border-radius: 25px;
@@ -112,52 +210,106 @@ body {
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.play-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.5s;
 }
 
 .play-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+    box-shadow: 0 10px 30px var(--theme-shadow-hover);
+}
+
+.play-btn:hover::before {
+    left: 100%;
 }
 
 .play-btn:active {
     transform: scale(0.98);
 }
 
-/* Footer */
+/* ========================================
+   页脚
+   ======================================== */
 .menu-footer {
     text-align: center;
     padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--theme-border);
     animation: fadeIn 1s ease-out;
 }
 
 .menu-footer p {
-    color: #888;
+    color: var(--text-muted);
     margin-bottom: 15px;
+    font-size: 0.9rem;
 }
 
 .social-links {
     display: flex;
     justify-content: center;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .social-links a {
-    color: #00d4ff;
+    color: var(--theme-accent-primary);
     text-decoration: none;
     padding: 8px 16px;
     border-radius: 20px;
     background: rgba(0, 212, 255, 0.1);
     transition: all 0.3s ease;
     font-size: 0.9rem;
+    border: 1px solid transparent;
 }
 
 .social-links a:hover {
     background: rgba(0, 212, 255, 0.2);
     transform: translateY(-2px);
+    border-color: var(--theme-accent-primary);
 }
 
-/* Animations */
+/* ========================================
+   安装程序样式
+   ======================================== */
+.webgames-setup-container {
+    /* 样式在 setup.js 中通过 JavaScript 设置 */
+}
+
+/* ========================================
+   游戏窗口样式
+   ======================================== */
+.game-window {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+}
+
+.game-window iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #fff;
+}
+
+/* ========================================
+   动画定义
+   ======================================== */
 @keyframes fadeInDown {
     from {
         opacity: 0;
@@ -189,10 +341,25 @@ body {
     }
 }
 
-/* Responsive */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ========================================
+   响应式设计
+   ======================================== */
 @media (max-width: 768px) {
     .menu-header h1 {
         font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
     }
     
     .games-grid {
@@ -204,22 +371,71 @@ body {
         padding: 20px;
     }
     
+    .game-icon {
+        font-size: 3rem;
+    }
+    
     .social-links {
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
     }
 }
 
-/* Background Animation */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(123, 44, 191, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+@media (max-width: 480px) {
+    .menu-container {
+        padding: 20px 15px;
+    }
+    
+    .menu-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .game-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .play-btn {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ========================================
+   ZerOS 特定样式覆盖
+   ======================================== */
+.zos-gui-window .webgames-menu-container {
+    /* 在 ZerOS 窗口内的特定样式 */
+    border-radius: 0;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--theme-accent-primary), var(--theme-accent-secondary));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--theme-accent-secondary), var(--theme-accent-primary));
+}
+
+/* 选择文本样式 */
+::selection {
+    background: var(--theme-accent-primary);
+    color: #fff;
+}
+
+/* 焦点样式 */
+*:focus-visible {
+    outline: 2px solid var(--theme-accent-primary);
+    outline-offset: 2px;
 }
