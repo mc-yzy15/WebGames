@@ -2,10 +2,9 @@ name: Release ZOM Package
 
 on:
   push:
-    branches:
-      - "zom"
+    branches: [zom]
     paths:
-      - "src/**"
+      - "release/**"
       - ".github/workflows/release-zom.yml"
   workflow_dispatch:
 
@@ -15,10 +14,11 @@ permissions:
 jobs:
   build-and-release:
     runs-on: windows-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: zom
 
       - name: Setup PowerShell
         shell: powershell
@@ -44,10 +44,10 @@ jobs:
           $tempDir = "temp_zom_build"
           New-Item -ItemType Directory -Force -Path $tempDir
 
-          # 复制menu目录下的文件到临时目录
-          Copy-Item -Path "menu\*" -Destination $tempDir -Recurse -Force
+          # 复制 release 目录下的文件到临时目录
+          Copy-Item -Path "release\*" -Destination $tempDir -Recurse -Force
 
-          # 创建ZOM包 (ZIP格式)
+          # 创建 ZOM 包 (ZIP 格式)
           $zomFile = "release\WebGamesMenu_$timestamp.zom"
           Compress-Archive -Path "$tempDir\*" -DestinationPath $zomFile -Force
 
@@ -63,34 +63,42 @@ jobs:
       - name: Get Version Info
         shell: powershell
         run: |
-          $version = (Get-Content "menu\application.json" | ConvertFrom-Json).version
+          $version = (Get-Content "src\application.json" | ConvertFrom-Json).version
           echo "VERSION=$version" >> $env:GITHUB_ENV
           Write-Host "Package version: $version"
 
       - name: Delete Existing Pre-release
         shell: powershell
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
         run: |
           $ErrorActionPreference = 'SilentlyContinue'
 
-          # 获取现有的InstantRelease预发布版本
+          # 获取现有的 InstantRelease 预发布版本
           $releases = gh release list --limit 100 | Select-String "InstantRelease"
           foreach ($release in $releases) {
             $tag = ($release -split "\s+")[0]
             Write-Host "Deleting existing pre-release: $tag"
             gh release delete $tag --yes
           }
-        env:
-          GH_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Create Release
         shell: powershell
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
         run: |
           $ErrorActionPreference = 'Stop'
 
           $tagName = "InstantRelease_${{ env.TIMESTAMP }}"
           $releaseName = "InstantRelease ${{ env.TIMESTAMP }}"
           $version = "${{ env.VERSION }}"
-          $zomFile = "${{ env.ZOM_FILE }}"
+          $zomFile = "release\${{ env.ZOM_FILE }}"
 
-          # 创建发布说明
-          $notes = @"
+          # 构建发布说明
+          $notes = "# WebGames Menu v$version`n`n## 自动构建发布`n`n此版本由 CI/CD 自动构建并发布。`n`n### 构建信息`n- **版本**: $version`n- **构建时间**: ${{ env.TIMESTAMP }}`n- **提交**: ${{ github.sha }}`n`n### 文件说明`n- `$zomFile`: ZerOS 程序安装包 (ZOM 格式)`n`n### 包含的游戏`n- 🔢 2048 - 数字益智游戏`n- 💣 扫雷 - 经典扫雷游戏`n- 🐍 贪吃蛇 - 经典贪吃蛇游戏`n- 📝 猜单词 - 猜单词游戏`n- 🀄 猜字 - 中文猜字游戏`n`n---`n⚠️ 这是一个预发布版本 (Pre-release)，可能包含未测试的功能。"
+
+          gh release create $tagName `
+            --title "$releaseName" `
+            --notes "$notes" `
+            --prerelease `
+            "$zomFile"
